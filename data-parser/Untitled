@@ -1,0 +1,6 @@
+Class Element():
+
+
+Class XML():
+  def __init(self)__:
+    self.root = Element("body")

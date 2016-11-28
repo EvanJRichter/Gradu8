@@ -90,3 +90,11 @@ app.run(['$rootScope', '$window', 'srvAuth', '$location', function($rootScope, $
     }         
   });
 }]);
+
+app.directive("fb:login-button", function($rootScope) {
+    return function (scope, iElement, iAttrs) {
+        if (FB) {
+            FB.XFBML.parse(iElement[0]);
+        }
+    };
+});

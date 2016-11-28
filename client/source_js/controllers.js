@@ -13,6 +13,10 @@ gradu8Controllers.controller('IntroController', ['$scope', 'CommonData', 'srvAut
     $scope.displayText = "Logged out"
   };
 
+  $scope.fb_login = function() {
+    FB.login( function() {}, { scope: 'email,public_profile' } );
+  } 
+
 
 }]);
 

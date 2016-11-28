@@ -3,5 +3,8 @@
  */
 module.exports = function (app, router) {
   app.use('/api', require('./home.js')(router));
-  app.use('/api', require('./llama.js')(router));
+  // app.use('/api', require('./llama.js')(router));
+  app.use('/api', require('./label.js')(router));
+  app.use('/api', require('./class.js')(router));
+  app.use('/api', require('./user.js')(router));
 };

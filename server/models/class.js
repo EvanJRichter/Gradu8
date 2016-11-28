@@ -11,17 +11,17 @@
 // }
 
 var mongoose = require('mongoose');
+require('mongoose-double')(mongoose);
 
 // Define our beer schema
 var ClassSchema = new mongoose.Schema({
-  name: String,
+  number: String,
   department: String,
-  crn: Number,
   fall: Boolean,
   spring: Boolean,
   credit: Number,
-  prereqs: [Schema.Types.ObjectId],
-  average_gpa: Number,
+  prereqs: [String],
+  average_gpa: mongoose.Schema.Types.Double,
   public: {type: Boolean, default: true}
 });
 

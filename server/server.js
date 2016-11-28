@@ -6,6 +6,9 @@ var bodyParser = require('body-parser');
 // Create our Express application
 var app = express();
 
+var mongoose = require('mongoose');
+mongoose.connect("mongodb://admin:test@ds111748.mlab.com:11748/gradua8");
+
 // Use environment defined port or 3000
 var port = process.env.PORT || 3000;
 

@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import urllib
+import json
 
 def fetch_department():
 	url = "http://catalog.illinois.edu/courses-of-instruction/"
@@ -14,7 +15,6 @@ def fetch_department():
 		if link:
 			links.append(link['href'])
 			parsed += fetch_classes(link['href'])
-	# print parsed
 	return parsed
 
 def fetch_classes(url):
@@ -30,12 +30,17 @@ def prepare_info(course):
 	info = course.find("a", {"class": "schedlink"}).text.split()
 	description = course.find("p", {"class": "courseblockdesc"}).text
 	department, number, title, credit = get_course_info(info)
+	gpa = get_gpa(department, number)
+	fall, spring = get_semesters(department, number)
 	course = {}
 	course["department"] = department
 	course["number"] = number
 	course["title"] = title
 	course["credit"] = credit
 	course["description"] = description
+	course["avg_gpa"] = gpa
+	course["fall"] = fall
+	course["spring"] = spring
 	return course
 
 def get_course_info(info):
@@ -53,6 +58,66 @@ def get_course_info(info):
 	credit = credit[:-2]
 
 	return (department, number, title, credit)
+
+def get_gpa(department, number):
+	course = department+number
+	r = requests.get("https://easy-a.net/universities/1/courses.json")
+	data = r.json()
+	avg = 0
+	for item in data:
+		if item['text'] == course:
+			id = item['id']
+			r = requests.get("https://easy-a.net/universities/1/courses/" + str(id) + ".json")
+			data = r.json()
+			semesters = data['semesters']
+			sum = 0
+			if len(semesters) >= 3:
+				length = 3
+			else:
+				length = len(semesters)
+			for i in range(length):
+				gpa = semesters[i]["avg_gpa"]
+				sum += gpa
+			avg = round(sum/length, 3)
+	return avg
+
+def get_semesters(department, number):
+	url = "https://courses.illinois.edu/schedule/terms/" + department + "/" + number
+	soup = request_page(url)
+	sems = soup.find_all("li")[11:]
+	f_count = 0
+	s_count = 0
+	fall = True
+	spring = True
+	total = 8	# (fa13, sp14, fa14, sp15, fa15, sp16, fa16, sp17)
+	# print(department, number)
+	if len(sems) > 6:
+		for li in sems:
+			a = li.find_all("a")[0]
+			temp = a.text.strip()
+			sem = temp.split(' ')[0]
+			year = temp.split(' ')[1]
+			if '-' in year:
+				year = year.split('-')[1]
+			if int(year) >= 2013:
+				if temp != "Spring 2013" and temp != "Summer 2013":
+					# print(temp)
+					if sem == "Fall":
+						f_count += 1
+					if sem == "Spring":
+						s_count += 1
+		f_ratio = f_count/total
+		s_ratio = s_count/total
+		if f_ratio >= 0.75:
+			fall = True
+			spring = False
+		if s_ratio >= 0.75:
+			fall = False
+			spring = True
+		else:
+			fall = True
+			sring = True
+	return fall, spring
 
 def download_photo(img_url, filename):
 	urllib.urlretrieve(img_url, "pics/" + filename)

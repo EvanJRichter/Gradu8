@@ -105,6 +105,8 @@ module.exports = function(router) {
   classesRoute.post(function(req, res) {
     var number = req.body.number;
     var department = req.body.department;
+    var title = req.body.title;
+    var description = req.body.description;
     var fall = req.body.fall;
     var spring = req.body.spring;
     var credit = req.body.credit;
@@ -114,6 +116,8 @@ module.exports = function(router) {
     var _class = new Class({
       number: number,
       department: department,
+      title: title,
+      description: description,
       fall: fall,
       spring: spring,
       credit: credit,
@@ -176,6 +180,8 @@ module.exports = function(router) {
     var id = req.params.id;
     var number = req.body.number;
     var department = req.body.department;
+    var title = req.body.title;
+    var description = req.body.description;
     var fall = req.body.fall;
     var spring = req.body.spring;
     var credit = req.body.credit;
@@ -194,6 +200,8 @@ module.exports = function(router) {
           Class.findOneAndUpdate(id, {
             number: number,
             department: department,
+            title: title,
+            description: description,
             fall: fall,
             spring: spring,
             credit: credit,

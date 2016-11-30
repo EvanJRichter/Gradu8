@@ -1,4 +1,4 @@
-var app = angular.module('mp4', ['ngRoute', 'gradu8Controllers', 'gradu8Services']);
+var app = angular.module('gradu8', ['ngRoute', 'gradu8Controllers', 'gradu8Services']);
 
 app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.

@@ -12,7 +12,7 @@ gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth'  , functi
 
 }]);
 
-gradu8Controllers.controller('EditProfileController', ['$scope', 'Users', function($scope, Users) {
+gradu8Controllers.controller('CreateProfileController', ['$scope', 'Users', function($scope, Users) {
 
 }]);
 

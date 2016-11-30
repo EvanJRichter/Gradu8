@@ -1,8 +1,14 @@
 var gradu8Controllers = angular.module('gradu8Controllers', []);
 
-gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth'  , function($scope, CommonData, srvAuth) {
+gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$location', function($scope, CommonData, srvAuth, $location) {
   $scope.fb_login = function() {
-    FB.login( function() {}, { scope: 'email,public_profile' } );
+    FB.login(function(response) {
+      if (response.authResponse) {
+        $location.path( "/create_profile" );
+      } else {
+        console.log('User cancelled login or did not fully authorize.');
+      }
+    }, { scope: 'email,public_profile' });
   };
 
   $scope.logout = function(){

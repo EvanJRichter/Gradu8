@@ -88,7 +88,7 @@ gradu8Services.factory('srvAuth', function($http, $window, $rootScope) {
     };
 });
 
-mp4Services.factory('Users', function($http, $window) {
+gradu8Services.factory('Users', function($http, $window) {
   var baseUrl = "http://localhost:3001"
 
   var getUserFBHandler = function(fbId) {
@@ -173,7 +173,7 @@ mp4Services.factory('Users', function($http, $window) {
 });
 
 
-mp4Services.factory('Classes', function($http, $window) {
+gradu8Services.factory('Classes', function($http, $window) {
   var baseUrl = "http://localhost:3001"
   var getClassHandler = function(classId){
       return $http.get(baseUrl + '/api/classes/' + classId);
@@ -200,7 +200,7 @@ mp4Services.factory('Classes', function($http, $window) {
 
 
 
-mp4Services.factory('Labels', function($http, $window) {
+gradu8Services.factory('Labels', function($http, $window) {
   var baseUrl = "http://localhost:3001"
   var getLabelHandler = function(labelId){
       return $http.get(baseUrl + '/api/labels/' + labelId);

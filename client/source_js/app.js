@@ -87,7 +87,7 @@ app.run(['$rootScope', '$window', 'srvAuth', '$location', function($rootScope, $
         $location.path( "/" );
       }
     }
-    //else if($location.url();){}
+    console.log($location.url());
   });
 }]);
 

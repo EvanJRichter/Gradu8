@@ -3,9 +3,9 @@ import pymongo # pip install pymongo
 from bson import json_util
 from pymongo import MongoClient
 
-SERVER = 'ds147377.mlab.com'
-PORT = 47377
-DBNAME = 'gradu8'
+SERVER = 'ds111748.mlab.com'
+PORT = 11748
+DBNAME = 'gradua8'
 USERNAME = 'admin'
 PASS = 'test'
 

@@ -17,6 +17,8 @@ require('mongoose-double')(mongoose);
 var ClassSchema = new mongoose.Schema({
   number: String,
   department: String,
+  title: String,
+  description: String,
   fall: Boolean,
   spring: Boolean,
   credit: Number,

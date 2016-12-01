@@ -79,6 +79,7 @@ gradu8Controllers.controller('CreateProfileController', ['$scope', 'Users', func
     // Users.putUserProfile($scope.user).success(function(data) {
     //   $window.location.href = '#/add_classes';
     // });
+    // TODO get the real user with the ID from the POST user
     console.log("Creating user profile");
     console.log($scope.user);
   };

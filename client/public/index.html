@@ -17,8 +17,12 @@
 </head>
 
 <body ng-app="gradu8">
-    <div ng-view></div>
-    <div id="fb-root"></div>
+  <div ng-controller="HeaderController">
+    <div ng-include="templateUrl"></div>
+  </div>
+
+  <div ng-view></div>
+  <div id="fb-root"></div>
 
     <!-- Scripts -->
     <script

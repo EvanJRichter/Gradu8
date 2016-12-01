@@ -23,12 +23,10 @@ gradu8Services.factory('Llamas', function($http, $window) {
 
 gradu8Services.factory('srvAuth', function($http, $window, $rootScope) {
     var watchLoginChangeLogic = function() {
-      console.log("Watchin da change")
       var _self = this;
       FB.Event.subscribe('auth.authResponseChange', function(res) {
         if (res.status === 'connected') {
             console.log("connected")
-
             /*
             The user is already logged,
             is possible retrieve his personal info
@@ -44,7 +42,6 @@ gradu8Services.factory('srvAuth', function($http, $window, $rootScope) {
         }
         else {
             console.log("notconnected")
-
             /*
             The user is not logged to the app, or into Facebook:
             destroy the session on the server.
@@ -159,7 +156,7 @@ gradu8Services.factory('Users', function($http, $window) {
   };
 
   return {
-    getFBUser: getFBUserHandler,
+    getFBUser: getUserFBHandler,
     getUser: getUserHandler,
     addUser: addUserHandler,
     putUserProfile: putUserProfileHandler,

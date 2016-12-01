@@ -1,5 +1,6 @@
 // User {
-// _id
+// facebookId
+// university
 // name
 // major
 // minor
@@ -11,21 +12,18 @@
 //
 // }
 
-// Load required packages
 var mongoose = require('mongoose');
 
-// Define our beer schema
 var UserSchema   = new mongoose.Schema({
-  facebookId: String,
-  name: String,
-  major: {type: String, default: "Undecided"},
-  minor: {type: String, default: ""},
-  totalSemesters: Number,
-  currSemester: Number,
-  public: {type: Boolean, default: false},
-  labels: [String],
-  classes: [[String]]
+  facebookId: { type : String, required : true },
+  university: { type : mongoose.Schema.Types.ObjectId, ref : 'School' },
+  major: { type : String, default : "Unassigned" },
+  minor: { type: String },
+  totalSemesters: { type: Number },
+  currSemester: { type : Number },
+  public: { type: Boolean, default : false },
+  labels: [ { type : mongoose.Schema.Types.ObjectId, ref : 'Label' } ],
+  classes: [ { type : mongoose.Schema.Types.ObjectId, ref : 'Class' } ]
 });
 
-// Export the Mongoose model
 module.exports = mongoose.model('User', UserSchema);

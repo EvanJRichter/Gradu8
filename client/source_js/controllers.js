@@ -1,5 +1,18 @@
 var gradu8Controllers = angular.module('gradu8Controllers', []);
 
+gradu8Controllers.controller('HeaderController', ['$scope', '$location', function($scope, $location) {
+    $scope.$on('$locationChangeSuccess', function(/* EDIT: remove params for jshint */) {
+        var path = $location.path();
+        //EDIT: cope with other path
+        if (path === '/') {
+          $scope.templateUrl = "partials/landing_navbar.html";
+        }
+        else {
+          $scope.templateUrl = "partials/login_navbar.html";
+        }
+    });
+}]);
+
 gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$location', 'Users', function($scope, srvAuth, $location, Users) {
   $scope.fb_login = function() {
     FB.login(function(response) {

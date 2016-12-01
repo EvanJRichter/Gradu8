@@ -81,13 +81,13 @@ app.run(['$rootScope', '$window', 'srvAuth', '$location', function($rootScope, $
   }(document));
 
   $rootScope.$on("$routeChangeStart", function(event, next, current) {
-    console.log($rootScope.user)
     if ($rootScope.user.id == undefined) {
       // no logged user, we should be going to #login
       if ( next.templateUrl != "partials/intro.html" ) {
         $location.path( "/" );
       }
     }
+    console.log($location.url());
   });
 }]);
 

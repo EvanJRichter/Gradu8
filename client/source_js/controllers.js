@@ -37,6 +37,38 @@ gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$locati
 }]);
 
 gradu8Controllers.controller('CreateProfileController', ['$scope', 'Users', function($scope, Users) {
+  $scope.universityOptions = [
+    { 'id' : 'uiuc', 'label' : 'University of Illinois at Urbana Champaign' }
+  ];
+  $scope.majorOptions = [
+    { 'id' : 'ud', 'label' : 'Undeclared' },
+    { 'id' : 'cs', 'label' : 'Computer Science' },
+    { 'id' : 'ce', 'label' : 'Computer Engineering' },
+    { 'id' : 'ee', 'label' : 'Electrical Engineering' }
+  ];
+  $scope.minorOptions = [
+    { 'id' : 'ad', 'label' : 'Art & Design' },
+    { 'id' : 'ba', 'label' : 'Business Administration' },
+  ];
+  $scope.totalSemesters = 8;
+  $scope.currSemester = 1;
+
+  $scope.user = {
+    university: undefined,
+    major: undefined,
+    minor: undefined,
+    totalSemesters: 8,
+    currSemester: 1,
+    classes: []
+  };
+
+  $scope.createProfile = function(){
+    // Users.putUserProfile($scope.user).success(function(data) {
+    //   $window.location.href = '#/add_classes';
+    // });
+    console.log("Creating user profile");
+    console.log($scope.user);
+  };
 
 }]);
 

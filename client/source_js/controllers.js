@@ -28,7 +28,7 @@ gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$locati
             } else {
               user = userdata.data[0]
               if (user.major === "Unassigned"){
-                srvAuth.setUserFacebookId(response.id); 
+                srvAuth.setUserFacebookId(response.id);
                 srvAuth.setUserMongoId(user._id);
                 $location.path( "/create_profile" );
               }
@@ -112,8 +112,28 @@ gradu8Controllers.controller('AddClassesController', ['$scope', 'Users', 'Classe
   // $scope.Classes.getPublicClasses().success(function(data) {
   //   $scope.classes = data.data;
   // });
-  $scope.unassignedClasses = [];
 
+  $scope.labels = [
+    {"_id" : 1, "name" : "Unassigned" , "color" : "#ccc" },
+    {"_id" : 1, "name" : "Major" , "color" : "#f00" },
+    {"_id" : 2, "name" : "Minor" , "color" : "#0f0" },
+    {"_id" : 3, "name" : "Elective" , "color" : "#00f" }
+  ];
+  // $scope.Labels.getPublicLabels().success(function(data) {
+  //   $scope.labels = data.data;
+  // });
+  $scope.unassignedLabel = $scope.labels.find(findUnassignedLabel);
+  var index = $scope.labels.indexOf($scope.unassignedLabel);
+  if (index > -1) {
+    $scope.labels.splice(index, 1);
+  }
+  function findUnassignedLabel(label) {
+    return label.name === 'Unassigned';
+  }
+
+  $scope.unassignedClasses = [];
+  $scope.assignedClasses = [];
+  
   $scope.classFilter = function(_class) {
       var regex = new RegExp($scope.classSelected, 'i');
       return regex.test(_class.title) || regex.test(_class.department + _class.number) || regex.test(_class.department + " " + _class.number); // test on both field

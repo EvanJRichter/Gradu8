@@ -20,7 +20,7 @@
   <div class="form-group">
     <label class="control-label col-sm-2">Minor:</label>
     <div class="col-sm-10">
-      <select ng-model="user.minor" class="form-control" ng-options="item.label for item in minorOptions">
+      <select ng-model="user.minor" class="form-control" ng-options="item.label as item.label for item in minorOptions">
       </select>
     </div>
   </div>

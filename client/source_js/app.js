@@ -18,8 +18,8 @@ app.config(['$routeProvider', function($routeProvider) {
   }).
   when('/calendar', {
     templateUrl: 'partials/calendar.html',
-    controller: 'CalendarController',
-    data: { authorization: true}
+    controller: 'CalendarController'//,
+    //data: { authorization: true} //temporary removal for working
   }).
   when('/edit_profile', {
     templateUrl: 'partials/edit_profile.html',

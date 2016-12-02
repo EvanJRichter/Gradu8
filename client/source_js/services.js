@@ -96,7 +96,7 @@ gradu8Services.factory('Users', function($http, $window) {
     return $http.get(baseUrl + '/api/users/' + userId);
   };
   var addUserHandler = function(fbId) {
-    return $http.post(baseUrl + '/api/users/', {facebookId: facebookId});
+    return $http.post(baseUrl + '/api/users/', {facebookId: fbId});
   };
   var putUserProfileHandler = function(userObj) {
     return $http.put(baseUrl + '/api/users/' + userObj._id , userObj);

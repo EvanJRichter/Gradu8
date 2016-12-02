@@ -18,23 +18,34 @@ gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$locati
     FB.login(function(response) {
       if (response.authResponse) {
         FB.api('/me', function(response) {
-         Users.getFBUser(response.userID).success(function(userdata){
-          if (userdata.major === "Unassigned"){
-            $location.path( "/create_profile" );
-          }
-          else if (userdata.classes.length == 0){
-            $location.path( "/add_classes" );
-          }
-          else {
-            $location.path( "/calendar" );
-          }
-         }).error(function(response){
-          if(response.message === "User Not Found"){
-            Users.addUser(response.userID).success(function(){
-              $location.path( "/create_profile" );
-            });
-          }
-        });
+          Users.getFBUser(response.id).success(function(userdata){
+            console.log("USERDATA:", userdata.data);
+            console.log("USERDATA:", userdata.data.length);
+            if (userdata.data.length == 0){
+              console.log(response);
+              Users.addUser(response.id).success(function(){
+                $location.path( "/create_profile" );
+              }); //TODO: Add failure case for adding user, and for if user length > 1
+            } else {
+              user = userdata.data[0]
+              if (user.major === "Unassigned"){
+                $location.path( "/create_profile" );
+              }
+              else if (user.classes.length == 0){
+                $location.path( "/add_classes" );
+              }
+              else {
+                $location.path( "/calendar" );
+              }
+            }
+          });
+        //  .error(function(response){ //Add failure case for get fb user failing
+        //   if(response.message === "User Not Found"){
+        //     Users.addUser(response.id).success(function(){
+        //       $location.path( "/create_profile" );
+        //     });
+        //   }
+        // });
        });
       } else {
         console.log('User cancelled login or did not fully authorize.');

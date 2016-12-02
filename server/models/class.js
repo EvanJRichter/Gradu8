@@ -11,7 +11,7 @@
 // }
 
 var mongoose = require('mongoose');
-require('mongoose-double')(mongoose);
+//require('mongoose-double')(mongoose);
 
 var ClassSchema = new mongoose.Schema({
   number: { type : Number, required : true },
@@ -22,7 +22,8 @@ var ClassSchema = new mongoose.Schema({
   spring: Boolean,
   credits: { type : Number, required : true },
   prereqs: [ { type : mongoose.Schema.Types.ObjectId, ref : 'Class' } ],
-  average_gpa: mongoose.Schema.Types.Double,
+  //average_gpa: mongoose.Schema.Types.Double,
+  average_gpa: Number,
   public: {type: Boolean, default: true }
 });
 

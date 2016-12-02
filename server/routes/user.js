@@ -201,7 +201,6 @@ module.exports = function(router) {
         else {
           User.findOneAndUpdate(id, {
             facebookId: facebookId,
-            name: name,
             major: major,
             minor: minor,
             public: _public,
@@ -212,7 +211,16 @@ module.exports = function(router) {
           }, {new: true}, function(err, result) {
             if (err) {
               res.setHeader('Content-Type', 'application/json');
-              return res.status(404).send({message: "User not updated", data: []});
+              return res.status(404).send({message: "User not updated", data: [{
+            facebookId: facebookId,
+            major: major,
+            minor: minor,
+            public: _public,
+            totalSemesters: totalSemesters,
+            currSemester: currSemester,
+            labels: labels,
+            classes: classes
+          }, err]});
             }
             else {
               res.setHeader('Content-Type', 'application/json');

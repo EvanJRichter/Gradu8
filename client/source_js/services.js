@@ -22,6 +22,10 @@ gradu8Services.factory('Llamas', function($http, $window) {
 });
 
 gradu8Services.factory('srvAuth', function($http, $window, $rootScope) {
+    var user = {
+      mongoId: 0,
+      facebookId: 0
+    };
     var watchLoginChangeLogic = function() {
       var _self = this;
       FB.Event.subscribe('auth.authResponseChange', function(res) {
@@ -31,7 +35,7 @@ gradu8Services.factory('srvAuth', function($http, $window, $rootScope) {
             The user is already logged,
             is possible retrieve his personal info
             */
-            _self.getUserInfo();
+            _self.setUserInfo();
             console.log(res.authResponse);
             /*
             This is also the point where you should create a
@@ -50,7 +54,7 @@ gradu8Services.factory('srvAuth', function($http, $window, $rootScope) {
       });
     };
 
-    var getUserInfoLogic = function() {
+    var setUserInfoLogic = function() {
       var _self = this;
       FB.api('/me', function(res) {
         $rootScope.$apply(function() {
@@ -69,17 +73,28 @@ gradu8Services.factory('srvAuth', function($http, $window, $rootScope) {
     };
 
     var testAPILogic = function() {
-        console.log('Welcome!  Fetching your information.... ');
-        FB.api('/me', function(response) {
-          console.log('Successful login for: ' + response.name);
-          document.getElementById('status').innerHTML =
-            'Thanks for logging in, ' + response.name + '!';
-        });
-      }
-
+      console.log('Welcome!  Fetching your information.... ');
+      FB.api('/me', function(response) {
+        console.log('Successful login for: ' + response.name);
+        document.getElementById('status').innerHTML =
+          'Thanks for logging in, ' + response.name + '!';
+      });
+    };
+    var getUserLogic = function(){
+      return user;
+    }
+    var setUserMongoIdLogic = function(mongoId){
+      user.mongoId = mongoId;
+    }
+    var setUserFacebookIdLogic = function(facebookId){
+      user.facebookId = facebookId;
+    }
     return {
         watchLoginChange: watchLoginChangeLogic,
-        getUserInfo : getUserInfoLogic,
+        setUserInfo : setUserInfoLogic,
+        getUser : getUserLogic,
+        setUserMongoId : setUserMongoIdLogic,
+        setUserFacebookId : setUserFacebookIdLogic,
         logout : logoutLogic,
         testAPI: testAPILogic
     };
@@ -99,6 +114,7 @@ gradu8Services.factory('Users', function($http, $window) {
     return $http.post(baseUrl + '/api/users/', {facebookId: fbId});
   };
   var putUserProfileHandler = function(userObj) {
+    console.log(userObj);
     return $http.put(baseUrl + '/api/users/' + userObj._id , userObj);
   };
   var getUserClassesHandler = function(fbId) {

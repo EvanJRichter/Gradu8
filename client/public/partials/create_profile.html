@@ -12,7 +12,7 @@
   <div class="form-group">
     <label class="control-label col-sm-2">Major:</label>
     <div class="col-sm-10">
-      <select ng-model="user.major" class="form-control" ng-options="item.label for item in majorOptions" required>
+      <select ng-model="user.major" class="form-control" ng-options="item.label as item.label for item in majorOptions" required>
       </select>
     </div>
   </div>

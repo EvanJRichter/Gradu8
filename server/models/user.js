@@ -16,7 +16,8 @@ var mongoose = require('mongoose');
 
 var UserSchema   = new mongoose.Schema({
   facebookId: { type : String, required : true },
-  university: { type : mongoose.Schema.Types.ObjectId, ref : 'School' },
+  //university: { type : mongoose.Schema.Types.ObjectId, ref : 'School' },
+  university: { type : String },
   major: { type : String, default : "Unassigned" },
   minor: { type: String },
   totalSemesters: { type: Number },

@@ -19,16 +19,17 @@ gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$locati
       if (response.authResponse) {
         FB.api('/me', function(response) {
           Users.getFBUser(response.id).success(function(userdata){
-            console.log("USERDATA:", userdata.data);
-            console.log("USERDATA:", userdata.data.length);
             if (userdata.data.length == 0){
-              console.log(response);
-              Users.addUser(response.id).success(function(){
+              srvAuth.setUserFacebookId(response.id);
+              Users.addUser(response.id).success(function(userdata){
+                srvAuth.setUserMongoId(userdata.data._id);
                 $location.path( "/create_profile" );
               }); //TODO: Add failure case for adding user, and for if user length > 1
             } else {
               user = userdata.data[0]
               if (user.major === "Unassigned"){
+                srvAuth.setUserFacebookId(response.id); 
+                srvAuth.setUserMongoId(user._id);
                 $location.path( "/create_profile" );
               }
               else if (user.classes.length == 0){
@@ -56,11 +57,12 @@ gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$locati
   $scope.logout = function(){
     srvAuth.logout();
     $scope.displayText = "Logged out"
+    $location.path( "/");
   };
 
 }]);
 
-gradu8Controllers.controller('CreateProfileController', ['$scope', 'Users', function($scope, Users) {
+gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 'Users', 'srvAuth', function($scope, $location, Users, srvAuth) {
   $scope.universityOptions = [
     { 'id' : 'uiuc', 'label' : 'University of Illinois at Urbana Champaign' }
   ];
@@ -83,18 +85,21 @@ gradu8Controllers.controller('CreateProfileController', ['$scope', 'Users', func
     minor: undefined,
     totalSemesters: 8,
     currSemester: 1,
-    classes: []
+    classes: [],
+    facebookId: 0,
+    _id: 0
   };
 
   $scope.createProfile = function(){
-    // Users.putUserProfile($scope.user).success(function(data) {
-    //   $window.location.href = '#/add_classes';
-    // });
-    // TODO get the real user with the ID from the POST user
-    console.log("Creating user profile");
-    console.log($scope.user);
+    user = srvAuth.getUser();
+    $scope.user.facebookId = user.facebookId;
+    $scope.user._id = user.mongoId;
+    Users.putUserProfile($scope.user).success(function(data) {
+      console.log("Created user profile");
+      console.log(data);
+      $location.path( "/add_classes" );
+    });
   };
-
 }]);
 
 gradu8Controllers.controller('AddClassesController', ['$scope', 'Users', 'Classes', 'Labels', function($scope, Users, Classes, Labels) {

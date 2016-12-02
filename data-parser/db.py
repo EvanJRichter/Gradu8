@@ -14,13 +14,20 @@ def connectDB():
 	db = connection[DBNAME]
 	db.authenticate(USERNAME, PASS)
 	classes = db.classes
-	return (connection, db, classes)
+	majors = db.majors
+	minors = db.minors
+	return (connection, db, classes, majors, minors)
 
 class DatabaseConnection:
 
 	def __init__(self):
-		self.connection, self.db, self.classes = connectDB()
+		self.connection, self.db, self.classes, self.majors, self.minors = connectDB()
 
-	def insertDB(self, value):
+	def insert_course_DB(self, value):
 		self.db.classes.insert(value)
-		# print '\nNumber of posts after first insert', self.db.artwork.find().count()
+
+	def insert_major_DB(self, value):
+		self.db.major.insert(value)
+
+	def insert_minor_DB(self, value):
+		self.db.minor.insert(value)

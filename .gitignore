@@ -1,0 +1,10 @@
+.DS_Store
+
+client/.sass-cache/
+client/node_modules/
+client/npm-debug.log
+client/public/css/
+client/public/js/
+client/public/lib/
+
+*.pyc

@@ -1,7 +1,17 @@
-<div class="list">
-	<ul>
-		<li ng-repeat="llama in llamas">
-			<h3>{{llama.name}}</h3>
-		</li>
-	</ul>
+<div class="container">
+	<div class="row">
+  <div class="col-md-5">
+
+		<div class="form-group">
+	    <label class="control-label">Add classes:</label>
+	    <div>
+				<input type="text" class="form-control" ng-model="classSelected"
+				typeahead="class.department + '' + class.number + ' ' + class.title
+				for class in classes | filter:{title:$viewValue}">
+			</div>
+	  </div>
+
+	</div>
+  <div class="col-md-6">Bye</div>
+</div>
 </div>

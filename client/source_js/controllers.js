@@ -87,6 +87,15 @@ gradu8Controllers.controller('CreateProfileController', ['$scope', 'Users', func
 }]);
 
 gradu8Controllers.controller('AddClassesController', ['$scope', 'Users', 'Classes', 'Labels', function($scope, Users, Classes, Labels) {
+  $scope.classes = [
+    {"id" : 1, "department" : "CS" , "number" : 125 , "title" : "Intro to Computer Science" },
+    {"id" : 2,"department" : "CE" , "number" : 101 , "title" : "Intro to Computer Engineering" },
+    {"id" : 3, "department" : "CS" , "number" : 225 , "title" : "Data Structures" },
+    {"id" : 4, "department" : "TGMT" , "number" : 460 , "title" : "Shit show"}
+  ];
+  // $scope.Classes.getPublicClasses().success(function(data) {
+  //   $scope.classes = data.data;
+  // });
 
 }]);
 

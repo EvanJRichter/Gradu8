@@ -103,6 +103,36 @@ gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 
 }]);
 
 gradu8Controllers.controller('AddClassesController', ['$scope', 'Users', 'Classes', 'Labels', function($scope, Users, Classes, Labels) {
+  $scope.classes = [
+    {"id" : 1, "department" : "CS" , "number" : 125 , "title" : "Intro to Computer Science" },
+    {"id" : 2,"department" : "CE" , "number" : 101 , "title" : "Intro to Computer Engineering" },
+    {"id" : 3, "department" : "CS" , "number" : 225 , "title" : "Data Structures" },
+    {"id" : 4, "department" : "TGMT" , "number" : 460 , "title" : "Shit show"}
+  ];
+  // $scope.Classes.getPublicClasses().success(function(data) {
+  //   $scope.classes = data.data;
+  // });
+  $scope.unassignedClasses = [];
+
+  $scope.classFilter = function(_class) {
+      var regex = new RegExp($scope.classSelected, 'i');
+      return regex.test(_class.title) || regex.test(_class.department + _class.number) || regex.test(_class.department + " " + _class.number); // test on both field
+  };
+
+  $scope.addClass = function($item, $model, $label) {
+    var index = $scope.unassignedClasses.indexOf($item);
+    if (index < 0) {
+      $scope.unassignedClasses.push($item);
+    }
+    $scope.classSelected = "";
+  };
+
+  $scope.removeClass = function(_class) {
+    var index = $scope.unassignedClasses.indexOf(_class);
+    if (index > -1) {
+      $scope.unassignedClasses.splice(index, 1);
+    }
+  };
 
 }]);
 

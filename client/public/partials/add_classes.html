@@ -20,9 +20,11 @@
 					{{unassignedLabel.name}} classes
 				</div> <!-- ./ Header -->
 				<!-- Container -->
-				<div class="class-container class-container-unassigned">
+				<div class="class-container class-container-unassigned" data-drop="true" ng-model='unassignedLabel.classes' jqyoui-droppable="{multiple:true}">
 					<div class="row">
-						<div class="col-md-4 col" ng-repeat="item in unassignedClasses" ng-model='unassignedClasses'>
+						<div class="col-md-4 col" ng-repeat="item in unassignedLabel.classes" ng-model='unassignedLabel.classes'
+						ng-show="item.title" data-drag="true"
+						data-jqyoui-options="{revert: 'invalid'}" jqyoui-draggable="{index: {{$index}}, animate:true}">
 
 							<div class="class-box">
 								{{item.department + " " + item.number}}
@@ -38,17 +40,19 @@
 
 	  <div class="col-md-6 assigned-classes">
 			<!-- Other labeled classes -->
-			<div class="form-group" ng-repeat="label in labels">
+			<div class="form-group">
 				<!-- Header -->
 				<div class="class-container-header">
-					<i class="fa fa-circle" aria-hidden="true" style="color: {{label.color}}"></i>
-					{{label.name}} classes
+					<i class="fa fa-circle" aria-hidden="true" style="color: {{assignedLabel.color}}"></i>
+					{{assignedLabel.name}} classes
 				</div> <!-- ./ Header -->
 
 				<!-- Container -->
-				<div class="class-container">
+				<div class="class-container" data-drop="true" ng-model='assignedLabel.classes' jqyoui-droppable="{multiple:true}">
 					<div class="row">
-						<div class="col-md-4 col" ng-repeat="item in label.classes" ng-model='item'>
+						<div class="col-md-4 col" ng-repeat="item in assignedLabel.classes" ng-model='assignedLabel.classes'
+						ng-show="item.title" data-drag="true"
+						data-jqyoui-options="{revert: 'invalid'}" jqyoui-draggable="{index: {{$index}}, animate:true}">
 
 							<div class="class-box">
 								{{item.department + " " + item.number}}
@@ -67,18 +71,26 @@
 
 
 
-<div data-drop="true" ng-model='list1' jqyoui-droppable="{multiple:true}" class="class-container-header">
-	<div ng-repeat="label in list1" ng-show="label.title" data-drag="true"
-	data-jqyoui-options="{revert: 'invalid'}" ng-model="list1"
-	jqyoui-draggable="{index: {{$index}}, animate:true}"  class="btn btn-primary">
-		{{label.title}}
+<div class="row">
+	<div>
+		<div data-drop="true" ng-model='list1' jqyoui-droppable="{multiple:true}" class="class-container-header">
+			<div ng-repeat="label in list1" ng-show="label.title" data-drag="true"
+			data-jqyoui-options="{revert: 'invalid'}" ng-model="list1"
+			jqyoui-draggable="{index: {{$index}}, animate:true}"  class="btn btn-primary">
+				{{label.title}}
+			</div>
+		</div>
 	</div>
 </div>
 
-<div data-drop="true" ng-model='list2' jqyoui-droppable="{multiple:true}" class="class-container-header">
-	<div ng-repeat="label in list2" ng-show="label.title" data-drag="true"
-	data-jqyoui-options="{revert: 'invalid'}" ng-model="list2"
-	jqyoui-draggable="{index: {{$index}}, animate:true}"  class="btn btn-primary">
-		{{label.title}}
+<div class="row">
+	<div>
+		<div data-drop="true" ng-model='list2' jqyoui-droppable="{multiple:true}" class="class-container-header">
+			<div ng-repeat="label in list2" ng-show="label.title" data-drag="true"
+			data-jqyoui-options="{revert: 'invalid'}" ng-model="list2"
+			jqyoui-draggable="{index: {{$index}}, animate:true}"  class="btn btn-primary">
+				{{label.title}}
+			</div>
+		</div>
 	</div>
 </div>

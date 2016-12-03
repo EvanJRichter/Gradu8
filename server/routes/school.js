@@ -6,8 +6,8 @@ var db = mongoose.connection;
 
 module.exports = function(router) {
 
-  var schoolsRoute = router.route('/school');
-  var schoolRoute = router.route('/school/:id');
+  var schoolsRoute = router.route('/schools');
+  var schoolRoute = router.route('/schools/:id');
 
   // ENDPOINT: users
   schoolsRoute.get(function(req, res) {
@@ -68,8 +68,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Schools not found", data: []});
           }
           else {
-            console.log(result);
-            if (!result) {
+            if (result.length == 0) {
               return res.status(404).send({message: "Schools Not Found", data: []});
             }
             else {
@@ -90,7 +89,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Schools not found", data: []});
           }
           else {
-            if (!result) {
+            if (result.length == 0) {
               return res.status(404).send({message: "Schools Not Found", data: []});
             }
             else {

@@ -28,7 +28,7 @@ gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$locati
             } else {
               user = userdata.data[0]
               if (user.major === "Unassigned"){
-                srvAuth.setUserFacebookId(response.id); 
+                srvAuth.setUserFacebookId(response.id);
                 srvAuth.setUserMongoId(user._id);
                 $location.path( "/create_profile" );
               }
@@ -62,20 +62,32 @@ gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$locati
 
 }]);
 
-gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 'Users', 'srvAuth', function($scope, $location, Users, srvAuth) {
-  $scope.universityOptions = [
-    { 'id' : 'uiuc', 'label' : 'University of Illinois at Urbana Champaign' }
-  ];
-  $scope.majorOptions = [
-    { 'id' : 'ud', 'label' : 'Undeclared' },
-    { 'id' : 'cs', 'label' : 'Computer Science' },
-    { 'id' : 'ce', 'label' : 'Computer Engineering' },
-    { 'id' : 'ee', 'label' : 'Electrical Engineering' }
-  ];
-  $scope.minorOptions = [
-    { 'id' : 'ad', 'label' : 'Art & Design' },
-    { 'id' : 'ba', 'label' : 'Business Administration' },
-  ];
+gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 'Users', 'srvAuth', 'Universities', 'Majors', 'Minors', function($scope, $location, Users, srvAuth, Universities, Majors, Minors) {
+  // $scope.universityOptions = [
+  //   { 'id' : 'uiuc', 'label' : 'University of Illinois at Urbana Champaign' }
+  // ];
+  Universities.getAllSchools().success(function(data) {
+    $scope.universityOptions = data.data;
+    console.log('universities: ', data.data); // "UIUC"
+  });
+  // $scope.majorOptions = [
+  //   { 'id' : 'ud', 'label' : 'Undeclared' },
+  //   { 'id' : 'cs', 'label' : 'Computer Science' },
+  //   { 'id' : 'ce', 'label' : 'Computer Engineering' },
+  //   { 'id' : 'ee', 'label' : 'Electrical Engineering' }
+  // ];
+  Majors.getAllMajors().success(function(data) {
+    $scope.majorOptions = data.data;
+    // console.log('majors: ', data.data);
+  });
+  // $scope.minorOptions = [
+  //   { 'id' : 'ad', 'label' : 'Art & Design' },
+  //   { 'id' : 'ba', 'label' : 'Business Administration' },
+  // ];
+  Minors.getAllMinors().success(function(data) {
+    $scope.minorOptions = data.data;
+    // console.log('minors: ', data.data);
+  });
   $scope.totalSemesters = 8;
   $scope.currSemester = 1;
 
@@ -103,15 +115,16 @@ gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 
 }]);
 
 gradu8Controllers.controller('AddClassesController', ['$scope', 'Users', 'Classes', 'Labels', function($scope, Users, Classes, Labels) {
-  $scope.classes = [
-    {"id" : 1, "department" : "CS" , "number" : 125 , "title" : "Intro to Computer Science" },
-    {"id" : 2,"department" : "CE" , "number" : 101 , "title" : "Intro to Computer Engineering" },
-    {"id" : 3, "department" : "CS" , "number" : 225 , "title" : "Data Structures" },
-    {"id" : 4, "department" : "TGMT" , "number" : 460 , "title" : "Shit show"}
-  ];
-  // $scope.Classes.getPublicClasses().success(function(data) {
-  //   $scope.classes = data.data;
-  // });
+  // $scope.classes = [
+  //   {"id" : 1, "department" : "CS" , "number" : 125 , "title" : "Intro to Computer Science" },
+  //   {"id" : 2,"department" : "CE" , "number" : 101 , "title" : "Intro to Computer Engineering" },
+  //   {"id" : 3, "department" : "CS" , "number" : 225 , "title" : "Data Structures" },
+  //   {"id" : 4, "department" : "TGMT" , "number" : 460 , "title" : "Shit show"}
+  // ];
+  Classes.getPublicClasses().success(function(data) {
+    $scope.classes = data.data;
+    console.log(data.data);
+  });
   $scope.unassignedClasses = [];
 
   $scope.classFilter = function(_class) {

@@ -68,7 +68,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Majors not found", data: []});
           }
           else {
-            if (!result) {
+            if (result.length == 0) {
               return res.status(404).send({message: "Majors Not Found", data: []});
             }
             else {
@@ -89,7 +89,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Majors not found", data: []});
           }
           else {
-            if (!result) {
+            if (result.length == 0) {
               return res.status(404).send({message: "Majors Not Found", data: []});
             }
             else {
@@ -146,7 +146,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Major Not Found", data: []});
       }
       else {
-        if (!result) {
+        if (result.length == 0) {
           return res.status(404).send({message: "Major Not Found", data: []});
         }
         else {
@@ -167,7 +167,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Major Not Found", data: []});
       }
       else {
-        if (!result) {
+        if (result.length == 0) {
           return res.status(404).send({message: "Major Not Found", data: []});
         }
         else {
@@ -196,7 +196,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Major Not Found", data: []});
       }
       else {
-        if (!result) {
+        if (result.length == 0) {
           return res.status(404).send({message: "Major Not Found", data: []});
         }
         else {

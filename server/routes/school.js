@@ -150,7 +150,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "School Not Found", data: []});
       }
       else {
-        if (!result) {
+        if (result.length == 0) {
           return res.status(404).send({message: "School Not Found", data: []});
         }
         else {
@@ -173,7 +173,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "School Not Found", data: []});
       }
       else {
-        if (!result) {
+        if (result.length == 0) {
           return res.status(404).send({message: "School Not Found", data: []});
         }
         else {
@@ -202,7 +202,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "School Not Found", data: []});
       }
       else {
-        if (!result) {
+        if (result.length == 0) {
           return res.status(404).send({message: "School Not Found", data: []});
         }
         else {

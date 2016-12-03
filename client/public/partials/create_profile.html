@@ -4,7 +4,7 @@
   <div class="form-group">
     <label class="control-label col-sm-2">University:</label>
     <div class="col-sm-10">
-      <select ng-model="user.university" class="form-control" ng-options="item.label for item in universityOptions" required>
+      <select ng-model="user.university" class="form-control" ng-options="item.name for item in universityOptions" required>
       </select>
     </div>
   </div>
@@ -12,7 +12,7 @@
   <div class="form-group">
     <label class="control-label col-sm-2">Major:</label>
     <div class="col-sm-10">
-      <select ng-model="user.major" class="form-control" ng-options="item.label as item.label for item in majorOptions" required>
+      <select ng-model="user.major" class="form-control" ng-options="item.name as item.name for item in majorOptions" required>
       </select>
     </div>
   </div>
@@ -20,7 +20,7 @@
   <div class="form-group">
     <label class="control-label col-sm-2">Minor:</label>
     <div class="col-sm-10">
-      <select ng-model="user.minor" class="form-control" ng-options="item.label as item.label for item in minorOptions">
+      <select ng-model="user.minor" class="form-control" ng-options="item.name as item.name for item in minorOptions">
       </select>
     </div>
   </div>

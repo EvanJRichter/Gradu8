@@ -68,8 +68,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Classes not found", data: []});
           }
           else {
-            console.log(result);
-            if (!result) {
+            if (result.length == 0) {
               return res.status(404).send({message: "Classes Not Found", data: []});
             }
             else {
@@ -90,7 +89,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Classes not found", data: []});
           }
           else {
-            if (!result) {
+            if (result.length == 0) {
               return res.status(404).send({message: "Classes Not Found", data: []});
             }
             else {
@@ -131,7 +130,6 @@ module.exports = function(router) {
         return res.status(500).send({message: "Class not found", data: []});
       }
       else {
-        // console.log(result);
         if (result.length == 0) {
           _class.save(function(err, result) {
             if (err) {
@@ -165,7 +163,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Class Not Found", data: []});
       }
       else {
-        if (!result) {
+        if (result.length == 0) {
           return res.status(404).send({message: "Class Not Found", data: []});
         }
         else {
@@ -193,7 +191,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Class Not Found", data: []});
       }
       else {
-        if (!result) {
+        if (result.length == 0) {
           return res.status(404).send({message: "Class Not Found", data: []});
         }
         else {
@@ -230,7 +228,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Class Not Found", data: []});
       }
       else {
-        if (!result) {
+        if (result.length == 0) {
           return res.status(404).send({message: "Class Not Found", data: []});
         }
         else {

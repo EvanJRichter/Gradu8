@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import urllib
 import json
+import math
 
 def fetch_all_classes():
 	url = "http://catalog.illinois.edu/courses-of-instruction/"
@@ -15,6 +16,7 @@ def fetch_all_classes():
 		if link:
 			links.append(link['href'])
 			parsed += fetch_department_classes(link['href'])
+			# parsed += fetch_department_classes('/courses-of-instruction/ansc/')
 	return parsed
 
 def fetch_department_classes(url):
@@ -23,25 +25,40 @@ def fetch_department_classes(url):
 	courses = soup.find_all("div", {"class": "courseblock"})
 	parsed = []
 	for course in courses:
-		parsed.append(prepare_info(course))
+		c = prepare_info(course)
+		for i in c:
+			parsed.append(i)
 	return parsed
 
 def prepare_info(course):
 	info = course.find("a", {"class": "schedlink"}).text.split()
 	description = course.find("p", {"class": "courseblockdesc"}).text
-	department, number, title, credit = get_course_info(info)
+	department, number, title, credit, credit_range = get_course_info(info)
 	gpa = get_gpa(department, number)
 	fall, spring = get_semesters(department, number)
 	course = {}
-	course["department"] = department
-	course["number"] = number
-	course["title"] = title
-	course["credit"] = credit
-	course["description"] = description
-	course["avg_gpa"] = gpa
-	course["fall"] = fall
-	course["spring"] = spring
-	return course
+	courses = []
+	low = credit_range[0]
+	if len(credit_range)==2:
+		high = credit_range[1]
+	else:
+		high = credit_range[0]
+	while low <= high:
+		course["department"] = department
+		course["number"] = number
+		if low==1:
+			course["title"] = title + ' - ' + str(low) + ' credit'
+		else:
+			course["title"] = title + ' - ' + str(low) + ' credits'
+		course["credit"] = low
+		low += 1
+		course["description"] = description
+		course["average_gpa"] = gpa
+		course["fall"] = fall
+		course["spring"] = spring
+		course["public"] = True
+		courses.append(course)
+	return courses
 
 def get_course_info(info):
 	department = info[0]
@@ -53,11 +70,28 @@ def get_course_info(info):
 		i += 1
 	title = title[:-1]
 	credit = ""
+	credit_range = []
 	for word in info[i+1:]:
+		if is_int(word) or is_float(word):
+			w = float(word)
+			credit_range.append(math.floor(w))
 		credit += word + " "
 	credit = credit[:-2]
+	return (department, number, title, credit, credit_range)
 
-	return (department, number, title, credit)
+def is_float(input):
+  try:
+    num = float(input)
+  except ValueError:
+    return False
+  return True
+
+def is_int(input):
+  try:
+    num = int(input)
+  except ValueError:
+    return False
+  return True
 
 def get_gpa(department, number):
 	course = department+number
@@ -90,7 +124,6 @@ def get_semesters(department, number):
 	fall = True
 	spring = True
 	total = 8	# (fa13, sp14, fa14, sp15, fa15, sp16, fa16, sp17)
-	# print(department, number)
 	if len(sems) > 6:
 		for li in sems:
 			a = li.find_all("a")[0]
@@ -101,7 +134,6 @@ def get_semesters(department, number):
 				year = year.split('-')[1]
 			if int(year) >= 2013:
 				if temp != "Spring 2013" and temp != "Summer 2013":
-					# print(temp)
 					if sem == "Fall":
 						f_count += 1
 					if sem == "Spring":
@@ -154,7 +186,6 @@ def fetch_minors():
 	parsed = []
 	for li in lists:
 		link = li.find("a", href=True)
-		print link
 		if link:
 			minor = {}
 			minor["name"] = link.text

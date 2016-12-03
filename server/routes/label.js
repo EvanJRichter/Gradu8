@@ -68,7 +68,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Labels not found", data: []});
           }
           else {
-            if (result.length == 0) {
+            if (result === null) {
               return res.status(404).send({message: "Labels Not Found", data: []});
             }
             else {
@@ -89,7 +89,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Labels not found", data: []});
           }
           else {
-            if (result.length == 0) {
+            if (result === null) {
               return res.status(404).send({message: "Labels Not Found", data: []});
             }
             else {
@@ -119,7 +119,7 @@ module.exports = function(router) {
       }
       else {
         console.log(result);
-        if (result.length == 0) {
+        if (result === null) {
           label.save(function(err, result) {
             if (err) {
               res.setHeader('Content-Type', 'application/json');
@@ -152,7 +152,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Label Not Found", data: []});
       }
       else {
-        if (result.length == 0) {
+        if (result === null) {
           return res.status(404).send({message: "Label Not Found", data: []});
         }
         else {
@@ -175,7 +175,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Label Not Found", data: []});
       }
       else {
-        if (result.length == 0) {
+        if (result === null) {
           return res.status(404).send({message: "Label Not Found", data: []});
         }
         else {
@@ -206,7 +206,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Label Not Found", data: []});
       }
       else {
-        if (result.length == 0) {
+        if (result === null) {
           return res.status(404).send({message: "Label Not Found", data: []});
         }
         else {

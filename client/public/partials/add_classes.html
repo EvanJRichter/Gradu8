@@ -1,6 +1,6 @@
 <div class="container">
 	<div class="row">
-	  <div class="col-md-5">
+	  <div class="col-md-6">
 			<!-- Search box -->
 			<div class="form-group add-classes">
 		    <label class="control-label">Add classes:</label>
@@ -28,7 +28,7 @@
 
 							<div class="class-box">
 								{{item.department + " " + item.number}}
-								<i ng-click="removeClass(item)" class="fa fa-times" aria-hidden="true"></i>
+								<i ng-click="removeClass(item, unassignedLabel.classes)" class="fa fa-times pull-right" aria-hidden="true"></i>
 							</div>
 
 						</div>
@@ -40,23 +40,25 @@
 
 	  <div class="col-md-6 assigned-classes">
 			<!-- Other labeled classes -->
-			<div class="form-group">
+			<div class="form-group" ng-repeat="label in labels">
 				<!-- Header -->
 				<div class="class-container-header">
-					<i class="fa fa-circle" aria-hidden="true" style="color: {{assignedLabel.color}}"></i>
-					{{assignedLabel.name}} classes
+					<i class="fa fa-circle" aria-hidden="true" style="color: {{label.color}}"></i>
+					{{label.name}} classes
+					<i class="fa fa-chevron-down pull-right" aria-hidden="true" ng-show="label.expanded" ng-click="label.expanded=false"></i>
+					<i class="fa fa-chevron-right pull-right" aria-hidden="true" ng-hide="label.expanded" ng-click="label.expanded=true"></i>
 				</div> <!-- ./ Header -->
 
 				<!-- Container -->
-				<div class="class-container" data-drop="true" ng-model='assignedLabel.classes' jqyoui-droppable="{multiple:true}">
+				<div class="class-container" data-drop="true" ng-model='label.classes' jqyoui-droppable="{multiple:true}" ng-show="label.expanded">
 					<div class="row">
-						<div class="col-md-4 col" ng-repeat="item in assignedLabel.classes" ng-model='assignedLabel.classes'
+						<div class="col-md-4 col" ng-repeat="item in label.classes" ng-model='label.classes'
 						ng-show="item.title" data-drag="true"
 						data-jqyoui-options="{revert: 'invalid'}" jqyoui-draggable="{index: {{$index}}, animate:true}">
 
-							<div class="class-box">
+							<div class="class-box" style="background-color: {{label.color}}">
 								{{item.department + " " + item.number}}
-								<i ng-click="removeClass(item)" class="fa fa-times" aria-hidden="true"></i>
+								<i ng-click="removeClass(item, label.classes)" class="fa fa-times pull-right" aria-hidden="true"></i>
 							</div>
 
 						</div>
@@ -67,30 +69,12 @@
 
 
 	</div>
-</div>
 
+	<div class="row">
+		<div class="center-block">
+			<button class="btn btn-default">Create calendar</button>
 
-
-<div class="row">
-	<div>
-		<div data-drop="true" ng-model='list1' jqyoui-droppable="{multiple:true}" class="class-container-header">
-			<div ng-repeat="label in list1" ng-show="label.title" data-drag="true"
-			data-jqyoui-options="{revert: 'invalid'}" ng-model="list1"
-			jqyoui-draggable="{index: {{$index}}, animate:true}"  class="btn btn-primary">
-				{{label.title}}
-			</div>
 		</div>
 	</div>
-</div>
 
-<div class="row">
-	<div>
-		<div data-drop="true" ng-model='list2' jqyoui-droppable="{multiple:true}" class="class-container-header">
-			<div ng-repeat="label in list2" ng-show="label.title" data-drag="true"
-			data-jqyoui-options="{revert: 'invalid'}" ng-model="list2"
-			jqyoui-draggable="{index: {{$index}}, animate:true}"  class="btn btn-primary">
-				{{label.title}}
-			</div>
-		</div>
-	</div>
 </div>

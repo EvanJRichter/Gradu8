@@ -107,33 +107,34 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$window', 'User
     {"id" : 1, "department" : "CS" , "number" : 125 , "title" : "Intro to Computer Science" },
     {"id" : 2,"department" : "CE" , "number" : 101 , "title" : "Intro to Computer Engineering" },
     {"id" : 3, "department" : "CS" , "number" : 225 , "title" : "Data Structures" },
-    {"id" : 4, "department" : "TGMT" , "number" : 460 , "title" : "Shit show"}
+    {"id" : 4, "department" : "TGMT" , "number" : 460 , "title" : "Shit show"},
+    {"id" : 4, "department" : "TGMT" , "number" : 4601 , "title" : "Shit show"},
+    {"id" : 4, "department" : "TGMT" , "number" : 4602 , "title" : "Shit show"},
+    {"id" : 4, "department" : "TGMT" , "number" : 4602 , "title" : "Shit show"}
   ];
   // $scope.Classes.getPublicClasses().success(function(data) {
   //   $scope.classes = data.data;
   // });
 
-  $scope.unassignedLabel = {"_id" : 1, "name" : "Unassigned" , "color" : "#ccc", "classes" : []};
-  $scope.assignedLabel = {"_id" : 2, "name" : "Assigned" , "color" : "red",  "classes" : []};
+  $scope.labels = [
+    {"_id" : 1, "name" : "Unassigned" , "color" : "#ccc"},
+    {"_id" : 1, "name" : "Major" , "color" : "#f00" },
+    {"_id" : 2, "name" : "Minor" , "color" : "#0f0" },
+    {"_id" : 3, "name" : "Elective" , "color" : "#00f" }
+  ];
+  // $scope.Labels.getPublicLabels().success(function(data) {
+  //   $scope.labels = data.data;
+  // });
+  for (i = 0; i < $scope.labels.length; i++) {
+    $scope.labels[i]["classes"] = [];
+    $scope.labels[i]["expanded"] = true;
+  }
 
-//   $scope.labels = [
-//     {"_id" : 1, "name" : "Unassigned" , "color" : "#ccc"},
-//     {"_id" : 1, "name" : "Major" , "color" : "#f00" },
-//     {"_id" : 2, "name" : "Minor" , "color" : "#0f0" },
-//     {"_id" : 3, "name" : "Elective" , "color" : "#00f" }
-//   ];
-//   // $scope.Labels.getPublicLabels().success(function(data) {
-//   //   $scope.labels = data.data;
-//   // });
-//   for (i = 0; i < $scope.labels.length; i++) {
-//     $scope.labels[i]["classes"] = [];
-//   }
-//
-//   $scope.unassignedLabel = $scope.labels.find(findUnassignedLabel);
-//   var index = $scope.labels.indexOf($scope.unassignedLabel);
-//   if (index > -1) {
-//     $scope.labels.splice(index, 1);
-//   }
+  $scope.unassignedLabel = $scope.labels.find(findUnassignedLabel);
+  var index = $scope.labels.indexOf($scope.unassignedLabel);
+  if (index > -1) {
+    $scope.labels.splice(index, 1);
+  }
 
   $scope.classFilter = function(_class) {
       var regex = new RegExp($scope.classSelected, 'i');
@@ -148,10 +149,10 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$window', 'User
     $scope.classSelected = "";
   };
 
-  $scope.removeClass = function(_class) {
-    var index = $scope.unassignedLabel.classes.indexOf(_class);
+  $scope.removeClass = function(_class, array) {
+    var index = array.indexOf(_class);
     if (index > -1) {
-      $scope.unassignedLabel.classes.splice(index, 1);
+      array.splice(index, 1);
     }
   };
 

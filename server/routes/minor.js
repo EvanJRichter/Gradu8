@@ -6,8 +6,8 @@ var db = mongoose.connection;
 
 module.exports = function(router) {
 
-  var minorsRoute = router.route('/minor');
-  var minorRoute = router.route('/minor/:id');
+  var minorsRoute = router.route('/minors');
+  var minorRoute = router.route('/minors/:id');
 
   // ENDPOINT: users
   minorsRoute.get(function(req, res) {
@@ -19,7 +19,7 @@ module.exports = function(router) {
     var count = eval("("+req.query.count+")");
     if (count) {
       if (where) {
-        minor.find({})
+        Minor.find({})
         .where(where)
         .sort(sort)
         .select(select)

@@ -6,8 +6,8 @@ var db = mongoose.connection;
 
 module.exports = function(router) {
 
-  var majorsRoute = router.route('/major');
-  var majorRoute = router.route('/major/:id');
+  var majorsRoute = router.route('/majors');
+  var majorRoute = router.route('/majors/:id');
 
   // ENDPOINT: users
   majorsRoute.get(function(req, res) {
@@ -68,7 +68,6 @@ module.exports = function(router) {
             return res.status(500).send({message: "Majors not found", data: []});
           }
           else {
-            console.log(result);
             if (!result) {
               return res.status(404).send({message: "Majors Not Found", data: []});
             }

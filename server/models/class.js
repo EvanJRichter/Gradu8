@@ -11,7 +11,6 @@
 // }
 
 var mongoose = require('mongoose');
-//require('mongoose-double')(mongoose);
 
 var ClassSchema = new mongoose.Schema({
   number: { type : Number, required : true },

@@ -3,7 +3,7 @@ import requests
 import urllib
 import json
 
-def fetch_department():
+def fetch_all_classes():
 	url = "http://catalog.illinois.edu/courses-of-instruction/"
 	soup = request_page(url)
 	main = soup.find("div", {"id": "atozindex"})
@@ -14,10 +14,10 @@ def fetch_department():
 		link = li.find("a", href=True)
 		if link:
 			links.append(link['href'])
-			parsed += fetch_classes(link['href'])
+			parsed += fetch_department_classes(link['href'])
 	return parsed
 
-def fetch_classes(url):
+def fetch_department_classes(url):
 	url = "http://catalog.illinois.edu" + url
 	soup = request_page(url)
 	courses = soup.find_all("div", {"class": "courseblock"})
@@ -119,8 +119,47 @@ def get_semesters(department, number):
 			sring = True
 	return fall, spring
 
-def download_photo(img_url, filename):
-	urllib.urlretrieve(img_url, "pics/" + filename)
+def fetch_majors():
+	url = "https://admissions.illinois.edu/Discover/Academics/majors_alpha"
+	soup = request_page(url)
+	main = soup.find("section", {"id": "major-list"})
+	lists = main.find_all("li")
+	majors = []
+	parsed = []
+	for li in lists:
+		major = create_major(li)
+		if major:
+			majors.append(major)
+	return majors
+
+def create_major(li):
+	link = li.find("a", href=True)
+	if link:
+		major = {}
+		text = link.text
+		name = text.split("-")[:-1]
+		name = ('-').join(name)
+		major["name"] = name.strip()
+		major["college"] = text.split("-")[-1].strip()
+		return major
+	else:
+		return None
+
+def fetch_minors():
+	url = "http://catalog.illinois.edu/undergraduate/minors/"
+	soup = request_page(url)
+	main = soup.find("div", {"id": "textcontainer"})
+	lists = main.find_all("li")
+	minors = []
+	parsed = []
+	for li in lists:
+		link = li.find("a", href=True)
+		print link
+		if link:
+			minor = {}
+			minor["name"] = link.text
+			minors.append(minor)
+	return minors
 
 def request_page(url):
 	r  = requests.get(url)

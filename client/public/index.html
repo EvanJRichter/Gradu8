@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <title>MP4 Starter</title>
-
+    <title>Gradu8</title>
     <!-- Stylesheets -->
     <link rel="stylesheet" href="./css/styles.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-
     <!-- Angular Scripts -->
     <!-- NOTE: removing the ".min." can help debugging in the console-->
     <script src="./lib/angular/angular.js"></script>
@@ -18,27 +16,22 @@
     <script src="./js/services.js"></script>
 </head>
 
-<body ng-app="mp4">
+<body ng-app="gradu8">
+  <div ng-controller="HeaderController">
+    <div ng-include="templateUrl"></div>
+  </div>
 
-    <div class="row text-center">
-        <a class="button" href="#/intro">Intro</a>
-    	<a class="button" href="#/settings">Settings</a>
-    	<a class="button" href="#/llamalist">Llama List</a>
-        <a class="button" href="#/firstview">First View</a>
-        <a class="button" href="#/secondview">Second View</a>
-    </div>
-
-    <div ng-view></div>
-    <div id="fb-root"></div>
+  <div ng-view></div>
+  <div id="fb-root"></div>
 
     <!-- Scripts -->
-
-    <script src="./lib/jquery/dist/jquery.min.js"></script>
-    <script src="./lib/foundation-sites/dist/foundation.min.js"></script>
-    <script src="./js/script.js"></script>
-    <script>
-        $(document).foundation();
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous">
     </script>
+    <script src="./js/script.js"></script>
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.0.js"></script>
     <script src="http://localhost:35729/livereload.js"></script>
 
 </body>

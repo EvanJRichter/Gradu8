@@ -3,7 +3,7 @@
 // }
 
 var mongoose = require('mongoose');
-require('mongoose-double')(mongoose);
+// require('mongoose-double')(mongoose);
 
 var MinorSchema = new mongoose.Schema({
   name: { type : String, required : true }

@@ -102,7 +102,7 @@ gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 
   };
 }]);
 
-gradu8Controllers.controller('AddClassesController', ['$scope', 'Users', 'Classes', 'Labels', function($scope, Users, Classes, Labels) {
+gradu8Controllers.controller('AddClassesController', ['$scope', '$window', 'Users', 'Classes', 'Labels', function($scope, $window, Users, Classes, Labels) {
   $scope.classes = [
     {"id" : 1, "department" : "CS" , "number" : 125 , "title" : "Intro to Computer Science" },
     {"id" : 2,"department" : "CE" , "number" : 101 , "title" : "Intro to Computer Engineering" },
@@ -114,7 +114,7 @@ gradu8Controllers.controller('AddClassesController', ['$scope', 'Users', 'Classe
   // });
 
   $scope.labels = [
-    {"_id" : 1, "name" : "Unassigned" , "color" : "#ccc" },
+    {"_id" : 1, "name" : "Unassigned" , "color" : "#ccc"},
     {"_id" : 1, "name" : "Major" , "color" : "#f00" },
     {"_id" : 2, "name" : "Minor" , "color" : "#0f0" },
     {"_id" : 3, "name" : "Elective" , "color" : "#00f" }
@@ -122,6 +122,10 @@ gradu8Controllers.controller('AddClassesController', ['$scope', 'Users', 'Classe
   // $scope.Labels.getPublicLabels().success(function(data) {
   //   $scope.labels = data.data;
   // });
+  for (i = 0; i < $scope.labels.length; i++) {
+    $scope.labels[i]["classes"] = [];
+  }
+
   $scope.unassignedLabel = $scope.labels.find(findUnassignedLabel);
   var index = $scope.labels.indexOf($scope.unassignedLabel);
   if (index > -1) {
@@ -131,9 +135,9 @@ gradu8Controllers.controller('AddClassesController', ['$scope', 'Users', 'Classe
     return label.name === 'Unassigned';
   }
 
-  $scope.unassignedClasses = [];
-  $scope.assignedClasses = [];
-  
+  $scope.unassignedClasses = []; // chagge $scope.unassignedLabel.classes
+
+
   $scope.classFilter = function(_class) {
       var regex = new RegExp($scope.classSelected, 'i');
       return regex.test(_class.title) || regex.test(_class.department + _class.number) || regex.test(_class.department + " " + _class.number); // test on both field
@@ -153,6 +157,15 @@ gradu8Controllers.controller('AddClassesController', ['$scope', 'Users', 'Classe
       $scope.unassignedClasses.splice(index, 1);
     }
   };
+
+  $scope.list1 = [
+    {title: 'AngularJS - Drag Me'},
+    {title: 'Node'},
+    {title: 'Moongose'}
+  ];
+  $scope.list2 = [
+      {title: 'Github'},
+  ];
 
 }]);
 

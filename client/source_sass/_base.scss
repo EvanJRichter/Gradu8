@@ -5,13 +5,22 @@
     cursor: pointer;
 }
 
+body {
+  font-family: 'Open Sans', sans-serif !important;
+  font-size: 16px !important;
+  color: #777 !important;
+}
+
 .img-logo {
   height: 20px;
 }
 
 // Add Classes
 .add-classes {
-  margin-bottom: 100px;
+  height: 40vh;
+}
+.unassigned-classes {
+  height: 40vh;
 }
 .col {
   padding: 5px !important;
@@ -25,20 +34,30 @@
   padding: 8px 23px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
   box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
-  -webkit-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+.class-container-unassigned {
+  height: 100% !important;
 }
 .class-box {
   padding: 10px;
-  background-color: #eee;
-  border: 1px solid #ccc;
+  background-color: #f8f8f8;
+  border: 1px solid #e6e6e6;
   border-radius: 4px;
   min-height: 40px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
   box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
 }
-.class-box .glyphicon {
+.class-box .fa-times {
   float: right;
   font-size: 10px;
   color: #333;
+}
+.class-container-header{
+  font-weight: bold;
+  background-color: #f8f8f8;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
 }

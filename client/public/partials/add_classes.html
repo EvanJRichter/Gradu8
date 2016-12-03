@@ -1,33 +1,58 @@
 <div class="container">
 	<div class="row">
-  <div class="col-md-5">
+	  <div class="col-md-5">
 
-		<div class="form-group add-classes">
-	    <label class="control-label">Add classes:</label>
-	    <div>
-				<input type="text" class="form-control" ng-model="classSelected"
-				typeahead="class.department + class.number + ' ' + class.title
-				for class in classes | filter: classFilter"
-				typeahead-on-select="addClass($item, $model, $label)">
-			</div>
-	  </div>
+			<!-- Search box -->
+			<div class="form-group add-classes">
+		    <label class="control-label">Add classes:</label>
+		    <div>
+					<input type="text" class="form-control" ng-model="classSelected"
+					typeahead="class.department + class.number + ' ' + class.title
+					for class in classes | filter: classFilter"
+					typeahead-on-select="addClass($item, $model, $label)">
+				</div>
+		  </div>
 
-		<div class="form-group">
-	    <label class="control-label">Unassgined classes:</label>
-			<div class="class-container">
-				<div class="row">
-					<div class="col-md-4 col" ng-repeat="class in unassignedClasses">
-						<div class="class-box">
-							{{class.department + " " + class.number}}
-							<span ng-click="removeClass(class)"
-							class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+			<!-- Unassigned classes -->
+			<div class="form-group unassigned-classes">
+				<!-- Header -->
+				<div class="class-container-header">
+					<i class="fa fa-circle" aria-hidden="true" style="color: {{unassignedLabel.color}}"></i>
+					{{unassignedLabel.name}} classes
+				</div> <!-- ./ Header -->
+				<!-- Container -->
+				<div class="class-container class-container-unassigned">
+					<div class="row">
+						<div class="col-md-4 col" ng-repeat="class in unassignedClasses">
+							<div class="class-box" data-drag="true" jqyoui-draggable>
+								{{class.department + " " + class.number}}
+								<i ng-click="removeClass(class)" class="fa fa-times" aria-hidden="true"></i>
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>
+				</div> <!-- ./ Container -->
+			</div> <!-- ./ Unassigned classes -->
+
 		</div>
 
+	  <div class="col-md-6">
+			<!-- Other labeled classes -->
+			<div class="form-group" ng-repeat="label in labels">
+				<!-- Header -->
+				<div class="class-container-header">
+					<i class="fa fa-circle" aria-hidden="true" style="color: {{label.color}}"></i>
+					{{label.name}} classes
+				</div> <!-- ./ Header -->
+
+				<!-- Container -->
+				<div class="class-container">
+					<div class="row">
+						Hi
+					</div>
+				</div> <!-- ./ Container -->
+			</div> <!-- ./ Other labeled classes -->
+		</div>
+
+
 	</div>
-  <div class="col-md-6">Bye</div>
-</div>
 </div>

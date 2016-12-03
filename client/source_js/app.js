@@ -1,33 +1,33 @@
-var app = angular.module('mp4', ['ngRoute', 'gradu8Controllers', 'gradu8Services']);
+var app = angular.module('gradu8', ['ngRoute', 'gradu8Controllers', 'gradu8Services', 'ui.bootstrap']);
 
 app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.
-    when('/introview', {
-    templateUrl: 'partials/intro.html',
-    controller: 'IntroController'
+    when('/', {
+    templateUrl: 'partials/landing.html',
+    controller: 'LandingController'
   }).
-  when('/firstview', {
-    templateUrl: 'partials/firstview.html',
-    controller: 'FirstController',
+  when('/create_profile', {
+    templateUrl: 'partials/create_profile.html',
+    controller: 'CreateProfileController',
     data: { authorization: true}
   }).
-  when('/secondview', {
-    templateUrl: 'partials/secondview.html',
-    controller: 'SecondController',
+  when('/add_classes', {
+    templateUrl: 'partials/add_classes.html',
+    controller: 'AddClassesController',
     data: { authorization: true}
   }).
-  when('/settings', {
-    templateUrl: 'partials/settings.html',
-    controller: 'SettingsController',
+  when('/calendar', {
+    templateUrl: 'partials/calendar.html',
+    controller: 'CalendarController',
     data: { authorization: true}
   }).
-  when('/llamalist', {
-    templateUrl: 'partials/llamalist.html',
-    controller: 'LlamaListController',
+  when('/edit_profile', {
+    templateUrl: 'partials/edit_profile.html',
+    controller: 'EditProfileController',
     data: { authorization: true}
   }).
   otherwise({
-    redirectTo: '/introview'
+    redirectTo: '/'
   });
 }]);
 
@@ -51,7 +51,7 @@ app.run(['$rootScope', '$window', 'srvAuth', '$location', function($rootScope, $
       /* Set if you want to check the authentication status at the start up of the app */
       status: true,
 
-      /* Enable cookies to allow the server to access the session     */  
+      /* Enable cookies to allow the server to access the session     */
       cookie: true,
 
       /* Parse XFBML */
@@ -81,12 +81,20 @@ app.run(['$rootScope', '$window', 'srvAuth', '$location', function($rootScope, $
   }(document));
 
   $rootScope.$on("$routeChangeStart", function(event, next, current) {
-    console.log($rootScope.user)
     if ($rootScope.user.id == undefined) {
       // no logged user, we should be going to #login
       if ( next.templateUrl != "partials/intro.html" ) {
-        $location.path( "/introview" );
+        $location.path( "/" );
       }
-    }         
+    }
+    console.log($location.url());
   });
 }]);
+
+app.directive("fb:login-button", function($rootScope) {
+    return function (scope, iElement, iAttrs) {
+        if (FB) {
+            FB.XFBML.parse(iElement[0]);
+        }
+    };
+});

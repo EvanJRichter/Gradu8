@@ -195,12 +195,21 @@ gradu8Services.factory('Classes', function($http, $window) {
   var getPublicClassesHandler = function() {
     var whereUrl = 'where={"public": true}';
     var selectUrl = 'select={number:1,department:1,title:1}';
-    return $http.get(baseUrl + '/api/classes/?' + whereUrl + '&' + selectUrl);
+    // return $http.get(baseUrl + '/api/classes/?' + whereUrl + '&' + selectUrl);
+    return $http.get(baseUrl + '/api/classes');
   };
 
-  var addClassHandler = function() { return;  };
-  var updateClassHandler = function() { return;  };
-  var deleteClassHandler = function() { return;  };
+  var addClassHandler = function() {
+    return;
+  };
+
+  var updateClassHandler = function() {
+    return;
+  };
+
+  var deleteClassHandler = function() {
+    return;
+  };
 
   return {
     getClass: getClassHandler, //both
@@ -210,7 +219,6 @@ gradu8Services.factory('Classes', function($http, $window) {
     deleteClass: deleteClassHandler//private
   };
 });
-
 
 
 gradu8Services.factory('Labels', function($http, $window) {
@@ -251,5 +259,50 @@ gradu8Services.factory('Labels', function($http, $window) {
     addLabel: addLabelHandler, //private
     updateLabel: updateLabelHandler,//private
     deleteLabel: deleteLabelHandler//private
+  };
+});
+
+
+gradu8Services.factory('Majors', function($http, $window) {
+  var baseUrl = "http://localhost:3001"
+  var getAllMajorsHandler = function(majorId){
+      return $http.get(baseUrl + '/api/majors');
+  };
+  var getMajorHandler = function(majorId){
+      return $http.get(baseUrl + '/api/majors/' + majorId);
+  };
+  return {
+    getAllMajors: getAllMajorsHandler,
+    getMajor: getMajorHandler
+  };
+});
+
+
+gradu8Services.factory('Minors', function($http, $window) {
+  var baseUrl = "http://localhost:3001"
+  var getAllMinorsHandler = function(majorId){
+      return $http.get(baseUrl + '/api/minors');
+  };
+  var getMinorHandler = function(minorId){
+      return $http.get(baseUrl + '/api/minors/' + minorId);
+  };
+  return {
+    getAllMinors: getAllMinorsHandler,
+    getMinor: getMinorHandler
+  };
+});
+
+
+gradu8Services.factory('Universities', function($http, $window) {
+  var baseUrl = "http://localhost:3001"
+  var getAllSchoolsHandler = function(majorId){
+      return $http.get(baseUrl + '/api/schools');
+  };
+  var getSchoolHandler = function(majorId){
+      return $http.get(baseUrl + '/api/schools/' + majorId);
+  };
+  return {
+    getAllSchools: getAllSchoolsHandler,
+    getSchool: getSchoolHandler
   };
 });

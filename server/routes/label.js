@@ -68,8 +68,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Labels not found", data: []});
           }
           else {
-            console.log(result);
-            if (!result) {
+            if (result.length == 0) {
               return res.status(404).send({message: "Labels Not Found", data: []});
             }
             else {
@@ -90,7 +89,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Labels not found", data: []});
           }
           else {
-            if (!result) {
+            if (result.length == 0) {
               return res.status(404).send({message: "Labels Not Found", data: []});
             }
             else {
@@ -153,7 +152,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Label Not Found", data: []});
       }
       else {
-        if (!result) {
+        if (result.length == 0) {
           return res.status(404).send({message: "Label Not Found", data: []});
         }
         else {
@@ -176,7 +175,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Label Not Found", data: []});
       }
       else {
-        if (!result) {
+        if (result.length == 0) {
           return res.status(404).send({message: "Label Not Found", data: []});
         }
         else {
@@ -207,7 +206,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Label Not Found", data: []});
       }
       else {
-        if (!result) {
+        if (result.length == 0) {
           return res.status(404).send({message: "Label Not Found", data: []});
         }
         else {

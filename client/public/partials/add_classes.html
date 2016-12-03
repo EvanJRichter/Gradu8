@@ -1,33 +1,80 @@
 <div class="container">
 	<div class="row">
-  <div class="col-md-5">
+	  <div class="col-md-6">
+			<!-- Search box -->
+			<div class="form-group add-classes">
+		    <label class="control-label">Add classes:</label>
+		    <div>
+					<input type="text" class="form-control" ng-model="classSelected"
+					typeahead="class.department + class.number + ' ' + class.title
+					for class in classes | filter: classFilter"
+					typeahead-on-select="addClass($item, $model, $label)">
+				</div>
+		  </div>
 
-		<div class="form-group add-classes">
-	    <label class="control-label">Add classes:</label>
-	    <div>
-				<input type="text" class="form-control" ng-model="classSelected"
-				typeahead="class.department + class.number + ' ' + class.title
-				for class in classes | filter: classFilter"
-				typeahead-on-select="addClass($item, $model, $label)">
-			</div>
-	  </div>
+			<!-- Unassigned classes -->
+			<div class="form-group unassigned-classes">
+				<!-- Header -->
+				<div class="class-container-header">
+					<i class="fa fa-circle" aria-hidden="true" style="color: {{unassignedLabel.color}}"></i>
+					{{unassignedLabel.name}} classes
+				</div> <!-- ./ Header -->
+				<!-- Container -->
+				<div class="class-container class-container-unassigned" data-drop="true" ng-model='unassignedLabel.classes' jqyoui-droppable="{multiple:true}">
+					<div class="row">
+						<div class="col-md-4 col" ng-repeat="item in unassignedLabel.classes" ng-model='unassignedLabel.classes'
+						ng-show="item.title" data-drag="true"
+						data-jqyoui-options="{revert: 'invalid'}" jqyoui-draggable="{index: {{$index}}, animate:true}">
 
-		<div class="form-group">
-	    <label class="control-label">Unassgined classes:</label>
-			<div class="class-container">
-				<div class="row">
-					<div class="col-md-4 col" ng-repeat="class in unassignedClasses">
-						<div class="class-box">
-							{{class.department + " " + class.number}}
-							<span ng-click="removeClass(class)"
-							class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+							<div class="class-box">
+								{{item.department + " " + item.number}}
+								<i ng-click="removeClass(item, unassignedLabel.classes)" class="fa fa-times pull-right" aria-hidden="true"></i>
+							</div>
+
 						</div>
 					</div>
-				</div>
-			</div>
+				</div> <!-- ./ Container -->
+			</div> <!-- ./ Unassigned classes -->
+
 		</div>
 
+	  <div class="col-md-6 assigned-classes">
+			<!-- Other labeled classes -->
+			<div class="form-group" ng-repeat="label in labels">
+				<!-- Header -->
+				<div class="class-container-header">
+					<i class="fa fa-circle" aria-hidden="true" style="color: {{label.color}}"></i>
+					{{label.name}} classes
+					<i class="fa fa-chevron-down pull-right" aria-hidden="true" ng-show="label.expanded" ng-click="label.expanded=false"></i>
+					<i class="fa fa-chevron-right pull-right" aria-hidden="true" ng-hide="label.expanded" ng-click="label.expanded=true"></i>
+				</div> <!-- ./ Header -->
+
+				<!-- Container -->
+				<div class="class-container" data-drop="true" ng-model='label.classes' jqyoui-droppable="{multiple:true}" ng-show="label.expanded">
+					<div class="row">
+						<div class="col-md-4 col" ng-repeat="item in label.classes" ng-model='label.classes'
+						ng-show="item.title" data-drag="true"
+						data-jqyoui-options="{revert: 'invalid'}" jqyoui-draggable="{index: {{$index}}, animate:true}">
+
+							<div class="class-box" style="background-color: {{label.color}}">
+								{{item.department + " " + item.number}}
+								<i ng-click="removeClass(item, label.classes)" class="fa fa-times pull-right" aria-hidden="true"></i>
+							</div>
+
+						</div>
+					</div>
+				</div> <!-- ./ Container -->
+			</div> <!-- ./ Other labeled classes -->
+		</div>
+
+
 	</div>
-  <div class="col-md-6">Bye</div>
-</div>
+
+	<div class="row">
+		<div class="center-block">
+			<button class="btn btn-default">Create calendar</button>
+
+		</div>
+	</div>
+
 </div>

@@ -114,18 +114,39 @@ gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 
   };
 }]);
 
-gradu8Controllers.controller('AddClassesController', ['$scope', 'Users', 'Classes', 'Labels', function($scope, Users, Classes, Labels) {
-  // $scope.classes = [
-  //   {"id" : 1, "department" : "CS" , "number" : 125 , "title" : "Intro to Computer Science" },
-  //   {"id" : 2,"department" : "CE" , "number" : 101 , "title" : "Intro to Computer Engineering" },
-  //   {"id" : 3, "department" : "CS" , "number" : 225 , "title" : "Data Structures" },
-  //   {"id" : 4, "department" : "TGMT" , "number" : 460 , "title" : "Shit show"}
-  // ];
-  Classes.getPublicClasses().success(function(data) {
-    $scope.classes = data.data;
-    console.log(data.data);
-  });
-  $scope.unassignedClasses = [];
+gradu8Controllers.controller('AddClassesController', ['$scope', '$window', 'Users', 'Classes', 'Labels', function($scope, $window, Users, Classes, Labels) {
+  $scope.classes = [
+    {"id" : 1, "department" : "CS" , "number" : 125 , "title" : "Intro to Computer Science" },
+    {"id" : 2,"department" : "CE" , "number" : 101 , "title" : "Intro to Computer Engineering" },
+    {"id" : 3, "department" : "CS" , "number" : 225 , "title" : "Data Structures" },
+    {"id" : 4, "department" : "TGMT" , "number" : 460 , "title" : "Shit show"},
+    {"id" : 4, "department" : "TGMT" , "number" : 4601 , "title" : "Shit show"},
+    {"id" : 4, "department" : "TGMT" , "number" : 4602 , "title" : "Shit show"},
+    {"id" : 4, "department" : "TGMT" , "number" : 4602 , "title" : "Shit show"}
+  ];
+  // $scope.Classes.getPublicClasses().success(function(data) {
+  //   $scope.classes = data.data;
+  // });
+
+  $scope.labels = [
+    {"_id" : 1, "name" : "Unassigned" , "color" : "#ccc"},
+    {"_id" : 1, "name" : "Major" , "color" : "#f00" },
+    {"_id" : 2, "name" : "Minor" , "color" : "#0f0" },
+    {"_id" : 3, "name" : "Elective" , "color" : "#00f" }
+  ];
+  // $scope.Labels.getPublicLabels().success(function(data) {
+  //   $scope.labels = data.data;
+  // });
+  for (i = 0; i < $scope.labels.length; i++) {
+    $scope.labels[i]["classes"] = [];
+    $scope.labels[i]["expanded"] = true;
+  }
+
+  $scope.unassignedLabel = $scope.labels.find(findUnassignedLabel);
+  var index = $scope.labels.indexOf($scope.unassignedLabel);
+  if (index > -1) {
+    $scope.labels.splice(index, 1);
+  }
 
   $scope.classFilter = function(_class) {
       var regex = new RegExp($scope.classSelected, 'i');
@@ -133,19 +154,32 @@ gradu8Controllers.controller('AddClassesController', ['$scope', 'Users', 'Classe
   };
 
   $scope.addClass = function($item, $model, $label) {
-    var index = $scope.unassignedClasses.indexOf($item);
+    var index = $scope.unassignedLabel.classes.indexOf($item);
     if (index < 0) {
-      $scope.unassignedClasses.push($item);
+      $scope.unassignedLabel.classes.push($item);
     }
     $scope.classSelected = "";
   };
 
-  $scope.removeClass = function(_class) {
-    var index = $scope.unassignedClasses.indexOf(_class);
+  $scope.removeClass = function(_class, array) {
+    var index = array.indexOf(_class);
     if (index > -1) {
-      $scope.unassignedClasses.splice(index, 1);
+      array.splice(index, 1);
     }
   };
+
+  $scope.list1 = [
+    {title: 'AngularJS - Drag Me'},
+    {title: 'Node'},
+    {title: 'Moongose'}
+  ];
+  $scope.list2 = [
+      {title: 'Github'},
+  ];
+
+  function findUnassignedLabel(label) {
+    return label.name === 'Unassigned';
+  }
 
 }]);
 

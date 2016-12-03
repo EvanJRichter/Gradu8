@@ -1,4 +1,4 @@
-// GET/id, POST, PUT/id, GET (for calendar galleries?)
+// GET/id, PUT/id
 var secrets = require('../config/secrets');
 var User = require('../models/user');
 var mongoose = require('mongoose');
@@ -68,8 +68,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Users not found", data: []});
           }
           else {
-            console.log(result);
-            if (result.length == 0) {
+            if (result === null) {
               return res.status(404).send({message: "Users Not Found", data: []});
             }
             else {
@@ -90,7 +89,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Users not found", data: []});
           }
           else {
-            if (result.length == 0) {
+            if (result === null) {
               return res.status(404).send({message: "Users Not Found", data: []});
             }
             else {
@@ -125,36 +124,47 @@ module.exports = function(router) {
       classes: classes
     });
 
-    User.find({facebookId: facebookId}, function(err, result) {
+    user.save(function(err, result) {
       if (err) {
         res.setHeader('Content-Type', 'application/json');
-        return res.status(500).send({message: "User not found", data: []});
+        return res.status(500).send({message: "User not added", data: []});
       }
       else {
-        // console.log(result);
-        if (result.length == 0) {
-          user.save(function(err, result) {
-            if (err) {
-              res.setHeader('Content-Type', 'application/json');
-              return res.status(500).send({message: "User not added", data: []});
-            }
-            else {
-              res.setHeader('Content-Type', 'application/json');
-              return res.status(201).send({message: "User added", data: result});
-            }
-          });
-        }
-        else {
-          return res.status(201).send({message: "This User already exists", data: result});
-        }
+        res.setHeader('Content-Type', 'application/json');
+        return res.status(201).send({message: "User added", data: result});
       }
     });
+    // User.find({facebookId: facebookId}, function(err, result) {
+    //   if (err) {
+    //     res.setHeader('Content-Type', 'application/json');
+    //     return res.status(500).send({message: "User not found", data: []});
+    //   }
+    //   else {
+    //     // console.log(result);
+    //     if (result === null) {
+    //       user.save(function(err, result) {
+    //         if (err) {
+    //           res.setHeader('Content-Type', 'application/json');
+    //           return res.status(500).send({message: "User not added", data: []});
+    //         }
+    //         else {
+    //           res.setHeader('Content-Type', 'application/json');
+    //           return res.status(201).send({message: "User added", data: result});
+    //         }
+    //       });
+    //     }
+    //     else {
+    //       return res.status(201).send({message: "This User already exists", data: result});
+    //     }
+    //   }
+    // });
   });
 
   usersRoute.options(function(req, res) {
     res.writeHead(200);
     res.end();
   });
+
 
   // ENDPOINT: users/:id
   userRoute.get(function(req, res) {
@@ -165,8 +175,8 @@ module.exports = function(router) {
         return res.status(404).send({message: "User Not Found", data: []});
       }
       else {
-        if (result.length == 0) {
-          return res.status(404).send({message: "User Not Found", data: []});
+        if (result === null) {
+          return res.status(404).send({message: "User not Found", data: []});
         }
         else {
           res.setHeader('Content-Type', 'application/json');
@@ -174,6 +184,26 @@ module.exports = function(router) {
         }
       }
     });
+//     User.findOne({'_id': id }, function(err, data) {
+//       if (err) {
+//         res.status(404).send({
+//           message: 'User not found',
+//           data: []
+//         });
+//       }
+//       else if (data === null) {
+//         res.status(404).send({
+//           message: 'User not found',
+//           data: []
+//         });
+//       }
+//       else {
+//         res.status(200).send({
+//           message: 'OK',
+//           data: data
+//         });
+//       }
+//     });
   });
 
   // Adithya is the gr8est human being this side of the Mississippi
@@ -195,7 +225,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "User Not Found", data: []});
       }
       else {
-        if (result.length == 0) {
+        if (result = null) {
           return res.status(404).send({message: "User Not Found", data: []});
         }
         else {

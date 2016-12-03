@@ -68,7 +68,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Classes not found", data: []});
           }
           else {
-            if (result.length == 0) {
+            if (result === null) {
               return res.status(404).send({message: "Classes Not Found", data: []});
             }
             else {
@@ -89,7 +89,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Classes not found", data: []});
           }
           else {
-            if (result.length == 0) {
+            if (result === null) {
               return res.status(404).send({message: "Classes Not Found", data: []});
             }
             else {
@@ -123,30 +123,39 @@ module.exports = function(router) {
       average_gpa: average_gpa,
       public: _public
     });
-
-    Class.find({number:number, department:department}, function(err, result) {
+    _class.save(function(err, result) {
       if (err) {
         res.setHeader('Content-Type', 'application/json');
-        return res.status(500).send({message: "Class not found", data: []});
+        return res.status(500).send({message: "Class not added", data: []});
       }
       else {
-        if (result.length == 0) {
-          _class.save(function(err, result) {
-            if (err) {
-              res.setHeader('Content-Type', 'application/json');
-              return res.status(500).send({message: "Class not added", data: []});
-            }
-            else {
-              res.setHeader('Content-Type', 'application/json');
-              return res.status(201).send({message: "Class added", data: result});
-            }
-          });
-        }
-        else {
-          return res.status(201).send({message: "This class already exists", data: result});
-        }
+        res.setHeader('Content-Type', 'application/json');
+        return res.status(201).send({message: "Class added", data: result});
       }
     });
+    // Class.find({number:number, department:department}, function(err, result) {
+    //   if (err) {
+    //     res.setHeader('Content-Type', 'application/json');
+    //     return res.status(500).send({message: "Class not found", data: []});
+    //   }
+    //   else {
+    //     if (result === null) {
+    //       _class.save(function(err, result) {
+    //         if (err) {
+    //           res.setHeader('Content-Type', 'application/json');
+    //           return res.status(500).send({message: "Class not added", data: []});
+    //         }
+    //         else {
+    //           res.setHeader('Content-Type', 'application/json');
+    //           return res.status(201).send({message: "Class added", data: result});
+    //         }
+    //       });
+    //     }
+    //     else {
+    //       return res.status(201).send({message: "This class already exists", data: result});
+    //     }
+    //   }
+    // });
   });
 
   classesRoute.options(function(req, res) {
@@ -163,7 +172,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Class Not Found", data: []});
       }
       else {
-        if (result.length == 0) {
+        if (result === null) {
           return res.status(404).send({message: "Class Not Found", data: []});
         }
         else {
@@ -191,7 +200,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Class Not Found", data: []});
       }
       else {
-        if (result.length == 0) {
+        if (result === null) {
           return res.status(404).send({message: "Class Not Found", data: []});
         }
         else {
@@ -228,7 +237,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Class Not Found", data: []});
       }
       else {
-        if (result.length == 0) {
+        if (result === null) {
           return res.status(404).send({message: "Class Not Found", data: []});
         }
         else {

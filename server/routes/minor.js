@@ -68,7 +68,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Minors not found", data: []});
           }
           else {
-            if (result.length == 0) {
+            if (result === null) {
               return res.status(404).send({message: "Minors Not Found", data: []});
             }
             else {
@@ -89,7 +89,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Minors not found", data: []});
           }
           else {
-            if (result.length == 0) {
+            if (result === null) {
               return res.status(404).send({message: "Minors Not Found", data: []});
             }
             else {
@@ -107,29 +107,39 @@ module.exports = function(router) {
       name: name
     });
 
-    Minor.find({name: name}, function(err, result) {
+    minor.save(function(err, result) {
       if (err) {
         res.setHeader('Content-Type', 'application/json');
-        return res.status(500).send({message: "Minor not found", data: []});
+        return res.status(500).send({message: "Minor not added", data: []});
       }
       else {
-        if (result.length == 0) {
-          minor.save(function(err, result) {
-            if (err) {
-              res.setHeader('Content-Type', 'application/json');
-              return res.status(500).send({message: "Minor not added", data: []});
-            }
-            else {
-              res.setHeader('Content-Type', 'application/json');
-              return res.status(201).send({message: "Minor added", data: result});
-            }
-          });
-        }
-        else {
-          return res.status(201).send({message: "This Minor already exists", data: result});
-        }
+        res.setHeader('Content-Type', 'application/json');
+        return res.status(201).send({message: "Minor added", data: result});
       }
     });
+    // Minor.find({name: name}, function(err, result) {
+    //   if (err) {
+    //     res.setHeader('Content-Type', 'application/json');
+    //     return res.status(500).send({message: "Minor not found", data: []});
+    //   }
+    //   else {
+    //     if (result === null) {
+    //       minor.save(function(err, result) {
+    //         if (err) {
+    //           res.setHeader('Content-Type', 'application/json');
+    //           return res.status(500).send({message: "Minor not added", data: []});
+    //         }
+    //         else {
+    //           res.setHeader('Content-Type', 'application/json');
+    //           return res.status(201).send({message: "Minor added", data: result});
+    //         }
+    //       });
+    //     }
+    //     else {
+    //       return res.status(201).send({message: "This Minor already exists", data: result});
+    //     }
+    //   }
+    // });
   });
 
   minorsRoute.options(function(req, res) {
@@ -146,7 +156,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Minor Not Found", data: []});
       }
       else {
-        if (result.length == 0) {
+        if (result === null) {
           return res.status(404).send({message: "Minor Not Found", data: []});
         }
         else {
@@ -167,7 +177,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Minor Not Found", data: []});
       }
       else {
-        if (result.length == 0) {
+        if (result === null) {
           return res.status(404).send({message: "Minor Not Found", data: []});
         }
         else {
@@ -196,7 +206,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Minor Not Found", data: []});
       }
       else {
-        if (result.length == 0) {
+        if (result === null) {
           return res.status(404).send({message: "Minor Not Found", data: []});
         }
         else {

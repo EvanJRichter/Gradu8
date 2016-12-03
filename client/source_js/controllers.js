@@ -113,30 +113,27 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$window', 'User
   //   $scope.classes = data.data;
   // });
 
-  $scope.labels = [
-    {"_id" : 1, "name" : "Unassigned" , "color" : "#ccc"},
-    {"_id" : 1, "name" : "Major" , "color" : "#f00" },
-    {"_id" : 2, "name" : "Minor" , "color" : "#0f0" },
-    {"_id" : 3, "name" : "Elective" , "color" : "#00f" }
-  ];
-  // $scope.Labels.getPublicLabels().success(function(data) {
-  //   $scope.labels = data.data;
-  // });
-  for (i = 0; i < $scope.labels.length; i++) {
-    $scope.labels[i]["classes"] = [];
-  }
+  $scope.unassignedLabel = {"_id" : 1, "name" : "Unassigned" , "color" : "#ccc", "classes" : []};
+  $scope.assignedLabel = {"_id" : 2, "name" : "Assigned" , "color" : "red",  "classes" : []};
 
-  $scope.unassignedLabel = $scope.labels.find(findUnassignedLabel);
-  var index = $scope.labels.indexOf($scope.unassignedLabel);
-  if (index > -1) {
-    $scope.labels.splice(index, 1);
-  }
-  function findUnassignedLabel(label) {
-    return label.name === 'Unassigned';
-  }
-
-  $scope.unassignedClasses = []; // chagge $scope.unassignedLabel.classes
-
+//   $scope.labels = [
+//     {"_id" : 1, "name" : "Unassigned" , "color" : "#ccc"},
+//     {"_id" : 1, "name" : "Major" , "color" : "#f00" },
+//     {"_id" : 2, "name" : "Minor" , "color" : "#0f0" },
+//     {"_id" : 3, "name" : "Elective" , "color" : "#00f" }
+//   ];
+//   // $scope.Labels.getPublicLabels().success(function(data) {
+//   //   $scope.labels = data.data;
+//   // });
+//   for (i = 0; i < $scope.labels.length; i++) {
+//     $scope.labels[i]["classes"] = [];
+//   }
+//
+//   $scope.unassignedLabel = $scope.labels.find(findUnassignedLabel);
+//   var index = $scope.labels.indexOf($scope.unassignedLabel);
+//   if (index > -1) {
+//     $scope.labels.splice(index, 1);
+//   }
 
   $scope.classFilter = function(_class) {
       var regex = new RegExp($scope.classSelected, 'i');
@@ -144,17 +141,17 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$window', 'User
   };
 
   $scope.addClass = function($item, $model, $label) {
-    var index = $scope.unassignedClasses.indexOf($item);
+    var index = $scope.unassignedLabel.classes.indexOf($item);
     if (index < 0) {
-      $scope.unassignedClasses.push($item);
+      $scope.unassignedLabel.classes.push($item);
     }
     $scope.classSelected = "";
   };
 
   $scope.removeClass = function(_class) {
-    var index = $scope.unassignedClasses.indexOf(_class);
+    var index = $scope.unassignedLabel.classes.indexOf(_class);
     if (index > -1) {
-      $scope.unassignedClasses.splice(index, 1);
+      $scope.unassignedLabel.classes.splice(index, 1);
     }
   };
 
@@ -166,6 +163,10 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$window', 'User
   $scope.list2 = [
       {title: 'Github'},
   ];
+
+  function findUnassignedLabel(label) {
+    return label.name === 'Unassigned';
+  }
 
 }]);
 

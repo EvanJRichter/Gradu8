@@ -1,19 +1,43 @@
-
-<!--create container for semesters-->
 <div class="container">
   	<div class="row">
   		<div id="calendar">
   			<div id="assigned">
-				<div class="class-container" ng-repeat="i in semesterIndices">
-					{{i}}
+				<div class="class-container" ng-repeat="i in semesterIndices"  data-drop="true">
+					<div class="class-box" ng-repeat="class in classes[i] | limitTo: (1 - classes.length)" 
+					ng-style="{'background-color':getLabelById(class[1]).color}"> 
+						{{getClassById(class[0]).title}}
+					</div>
 				</div>
 			</div>
   			<div id="unassigned">
-				<div class="class-container">
-					blank space baby
+				<div class="class-container" >
+					<div class="class-box col-md-3" ng-repeat="class in classes[0]" 
+					ng-style="{'background-color':getLabelById(class[1]).color}" ng-model="classes[0]">
+						{{getClassById(class[0]).title}}
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
 
+
+<!--
+
+<div class="thumbnail" data-drop="true" ng-model='list3' 
+data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=list3])'}"  
+jqyoui-droppable="{multiple:true}">
+	      <div class="caption">
+	        <div class="btn btn-info btn-draggable" ng-repeat="item in list3" ng-show="item.title" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list3" jqyoui-draggable="{index: {{$index}},animate:true}">{{item.title}}</div>
+	      </div>
+	    </div>
+
+
+<div class="container form-inline" style="text-align: center;">
+  <div class="btn btn-droppable" ng-repeat="item in list5" data-drop="true" ng-model='list5' data-jqyoui-options="{accept:'.btn-draggable:not([ng-model=list5])'}"  jqyoui-droppable="{index: {{$index}}}">
+    <div class="btn btn-info btn-draggable" data-drag="{{item.drag}}" data-jqyoui-options="{revert: 'invalid'}" ng-model="list5" jqyoui-draggable="{index: {{$index}},placeholder:true,animate:true}" ng-hide="!item.title">{{item.title}}</div>
+  </div>
+</div>
+
+
+	-->

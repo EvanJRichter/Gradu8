@@ -36,6 +36,8 @@ gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$locati
 
 
               user = userdata.data[0]
+              console.log('logged in user: ', user);
+              Users.setPassedUser(user);
               console.log("getfbuser response: ", user.major);
               console.log("getfbuser response: ", user.classes.length);
               if (user.major === "Unassigned"){
@@ -97,13 +99,14 @@ gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 
   };
 
   $scope.createProfile = function(){
-    console.log("user srv", user);
     user = srvAuth.getUser();
+    console.log("user srv", user);
     $scope.user.facebookId = user.facebookId;
     $scope.user._id = user.mongoId;
     Users.putUserProfile($scope.user).success(function(data) {
-      console.log("Created user profile");
+      console.log("Created user profile", data.data);
       console.log(data);
+      Users.setPassedUser(data.data)
       $location.path( "/add_classes" );
     });
   };
@@ -252,6 +255,41 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'Users', 'Classes'
 
 }]);
 
-gradu8Controllers.controller('EditProfileController', ['$scope', 'Users', function($scope, Users) {
+gradu8Controllers.controller('EditProfileController', ['$scope', '$location', 'Users', 'srvAuth',  'Universities', 'Majors', 'Minors', function($scope, $location, Users, srvAuth, Universities, Majors, Minors) {
+  Universities.getAllSchools().success(function(data) {
+    $scope.universityOptions = data.data;
+  });
+  Majors.getAllMajors().success(function(data) {
+    $scope.majorOptions = data.data;
+  });
+  Minors.getAllMinors().success(function(data) {
+    $scope.minorOptions = data.data;
+  });
+  // $scope.totalSemesters = 8;
+  // $scope.currSemester = 1;
+  //
+  // $scope.user = {
+  //   university: undefined,
+  //   major: undefined,
+  //   minor: undefined,
+  //   totalSemesters: 8,
+  //   currSemester: 1,
+  //   classes: [],
+  //   facebookId: 0,
+  //   _id: 0
+  // };
+  $scope.user = Users.getPassedUser();
+  console.log($scope.user);
 
-}]);
+  $scope.editProfile = function(){
+    // user = srvAuth.getUser();
+    // console.log("user srv", user);
+    // $scope.user.facebookId = user.facebookId;
+    // $scope.user._id = user.mongoId;
+    Users.putUserProfile($scope.user).success(function(data) {
+      console.log("Updated user profile");
+      console.log(data);
+      Users.setPassedUser(data.data);
+      $location.path( "/add_classes" );
+    });
+  };}]);

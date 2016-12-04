@@ -102,7 +102,14 @@ gradu8Services.factory('srvAuth', function($http, $window, $rootScope) {
 
 gradu8Services.factory('Users', function($http, $window) {
   var baseUrl = "http://localhost:3001"
+  var user;
 
+  var getPassedUserHandler = function() {
+    return user;
+  };
+  var setPassedUserHandler = function(userObj) {
+    user = userObj;
+  };
   var getUserFBHandler = function(fbId) {
     var whereUrl = 'where={"facebookId":"'+ fbId +'"}';
     return $http.get(baseUrl + '/api/users/?' + whereUrl);
@@ -115,7 +122,7 @@ gradu8Services.factory('Users', function($http, $window) {
   };
   var putUserProfileHandler = function(userObj) {
     console.log("put services", userObj);
-    return $http.put(baseUrl + '/api/users/' + userObj._id , userObj);
+    return $http.put(baseUrl + '/api/users/' + userObj._id , {user: userObj});
   };
   var getUserClassesHandler = function(fbId) {
     var whereUrl = 'where={"facebookId":"'+ fbId +'"}';
@@ -133,7 +140,7 @@ gradu8Services.factory('Users', function($http, $window) {
         userObj.classess = classes;
       }
 
-      $http.put(baseUrl + '/api/users/' + userObj._id, userObj);
+      $http.put(baseUrl + '/api/users/' + userObj._id, {user: userObj});
     });
   };
   var deleteUserClassHandler = function(fbId, _class) {
@@ -144,7 +151,7 @@ gradu8Services.factory('Users', function($http, $window) {
       if (index > -1) {
         userObj.classes.splice(index, 1);
       }
-      $http.put(baseUrl + '/api/users/' + userObj._id, userObj);
+      $http.put(baseUrl + '/api/users/' + userObj._id, {user: userObj});
     });
   };
 
@@ -160,7 +167,7 @@ gradu8Services.factory('Users', function($http, $window) {
       var userObj = data.data;
       // TODO check somewhere that classes make sense?
       userObj.labels.push(labels);
-      $http.put(baseUrl + '/api/users/' + userObj._id, userObj);
+      $http.put(baseUrl + '/api/users/' + userObj._id, {user: userObj});
     });
   };
 
@@ -172,11 +179,13 @@ gradu8Services.factory('Users', function($http, $window) {
       if (index > -1) {
         userObj.labels.splice(index, 1);
       }
-      $http.put(baseUrl + '/api/users/' + userObj._id, userObj);
+      $http.put(baseUrl + '/api/users/' + userObj._id, {user: userObj});
     });
   };
 
   return {
+    getPassedUser: getPassedUserHandler,
+    setPassedUser: setPassedUserHandler,
     getFBUser: getUserFBHandler,
     getUser: getUserHandler,
     addUser: addUserHandler,

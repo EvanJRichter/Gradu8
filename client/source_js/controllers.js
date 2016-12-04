@@ -181,8 +181,11 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$window', 'User
 
 }]);
 
-gradu8Controllers.controller('CalendarController', ['$scope', 'Users', 'Classes', 'Labels', function($scope, Users, Classes, Labels) {
+gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth' 'Users', 'Classes', 'Labels', function($scope, srvAuth, Users, Classes, Labels) {
   //get users to get classes, current semester, total semesters
+  Users.getUser(srvAuth.getUser().mongoId).success(function(response){
+    console.log(response);
+  });
   //get classes to match class ids
   //get labels to match label ids
 

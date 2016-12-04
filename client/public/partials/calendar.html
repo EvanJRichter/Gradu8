@@ -1,12 +1,19 @@
-<div class="list">
-  Second Controller
-  <form>
 
-    <div class="text-center">
-      <button ng-click="getData()" class="button tiny info">Get Data</button>
-    </div>
-
-    {{data}}
-
-  </form>
+<!--create container for semesters-->
+<div class="container">
+  	<div class="row">
+  		<div id="calendar">
+  			<div id="assigned">
+				<div class="class-container" ng-repeat="i in semesterIndices">
+					{{i}}
+				</div>
+			</div>
+  			<div id="unassigned">
+				<div class="class-container">
+					blank space baby
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
+

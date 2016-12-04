@@ -73,3 +73,33 @@ input.form-control{
   padding-top: 5px;
   color: #333;
 }
+
+/*wrapping calendar */
+html, body{
+    height: 100%;
+}
+#calendar {
+  width:100%;
+  height:80vh; /*change this at some point to be more bootstrappy*/
+}
+
+#calendar #assigned{
+  display: table;
+  table-layout: fixed;
+  width:100%;
+  height: 70%;
+}
+#calendar #assigned div {
+    display: table-cell;
+}
+
+#calendar #unassigned{
+  height: 30%;
+}
+
+#calendar .class-box {
+
+}
+
+
+

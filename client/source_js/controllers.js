@@ -194,6 +194,7 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
 
 gradu8Controllers.controller('CalendarController', ['$scope', 'Users', 'Classes', 'Labels', function($scope, Users, Classes, Labels) {
   //get users to get classes, current semester, total semesters
+
   //get classes to match class ids
   //get labels to match label ids
 
@@ -212,22 +213,19 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'Users', 'Classes'
   ];
 
   $scope.classesFromUser = [[1, 1, 0], [1, 2, 0], [2, 1, 0], [1, 1, 0], [1, 1, 0], [2, 2, 1], [2, 2, 2], [2, 2, 3], [3, 3, 2], [3, 3, 3],[2, 1, 7], [2, 2, 8]];
-  $scope.semesters = 8;
+  $scope.numsemesters = 8;
   $scope.currentSemsester = 1;
-  $scope.classes = [];
+  $scope.semesters = [];
 
-  $scope.semesterIndices = [];
-  for (var i = 1; i <= $scope.semesters; i++) {
-     $scope.semesterIndices.push(i);
-  }
-  for (var i = 0; i <= $scope.semesters; i++) {
-    var sem = []
+  for (var i = 0; i <= $scope.numsemesters; i++) {
+    var sem = {};
+    sem.classes = [];
     for (var c = 0; c < $scope.classesFromUser.length; c++){
       if ($scope.classesFromUser[c][2] == i){
-        sem.push($scope.classesFromUser[c]);
+        sem.classes.push($scope.classesFromUser[c]);
       }
     }
-    $scope.classes.push(sem); ///working on getting classes into calendar view
+    $scope.semesters.push(sem); ///working on getting classes into calendar view
   }
 
 
@@ -249,6 +247,15 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'Users', 'Classes'
     });
     return ret;
   };
+
+  $scope.list1 = [
+    {title: 'AngularJS - Drag Me'},
+    {title: 'Node'},
+    {title: 'Moongose'}
+  ];
+  $scope.list2 = [
+      {title: 'Github'},
+  ];
 
 }]);
 

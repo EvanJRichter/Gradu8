@@ -83,6 +83,10 @@ html, body{
   height:80vh; /*change this at some point to be more bootstrappy*/
 }
 
+#calendar .class-container{
+  padding: 8px 10px;
+}
+
 #calendar #assigned{
   display: table;
   table-layout: fixed;
@@ -90,15 +94,18 @@ html, body{
   height: 70%;
 }
 #calendar #assigned div {
-    display: table-cell;
+  display: table-cell;
 }
 
 #calendar #unassigned{
   height: 30%;
 }
 
-#calendar .class-box {
-
+#calendar .class-container .class-box {
+  display: block !important;
+  margin-bottom: 4px;
+  margin-left: 2px;
+  margin-right: 2px;
 }
 
 

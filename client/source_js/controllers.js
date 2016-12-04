@@ -200,7 +200,7 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'Users', 'Classes'
     {"_id" : 3, "name" : "Elective" , "color" : "#00f" }
   ];
 
-  $scope.classesFromUser = [[1, 1, 0], [2, 2, 1], [2, 2, 2], [2, 2, 3], [3, 3, 2], [3, 3, 3],[2, 1, 7], [2, 2, 8]];
+  $scope.classesFromUser = [[1, 1, 0], [1, 2, 0], [2, 1, 0], [1, 1, 0], [1, 1, 0], [2, 2, 1], [2, 2, 2], [2, 2, 3], [3, 3, 2], [3, 3, 3],[2, 1, 7], [2, 2, 8]];
   $scope.semesters = 8;
   $scope.currentSemsester = 1;
   $scope.classes = [];
@@ -221,18 +221,22 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'Users', 'Classes'
 
 
   $scope.getLabelById = function(labelId){
+    var ret = null;
     $scope.labelsData.forEach(function(label) {
       if (label._id === labelId){
-        return label;
+        ret = label;
       }
     });
+    return ret;
   };
   $scope.getClassById = function(classId){
+    var ret = null;
     $scope.classesData.forEach(function(_class) {
       if (_class._id === classId){
-        return _class;
+        ret = _class;
       }
     });
+    return ret;
   };
 
 }]);

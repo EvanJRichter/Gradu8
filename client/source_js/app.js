@@ -18,7 +18,7 @@ app.config(['$routeProvider', function($routeProvider) {
   }).
   when('/calendar', {
     templateUrl: 'partials/calendar.html',
-    controller: 'CalendarController'//,
+    controller: 'CalendarController',
     data: { authorization: true}
   }).
   when('/edit_profile', {

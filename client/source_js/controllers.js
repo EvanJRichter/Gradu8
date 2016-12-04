@@ -27,8 +27,9 @@ gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$locati
             console.log("getfbuser length: ", userdata.data.length);
             if (userdata.data.length == 0){
               srvAuth.setUserFacebookId(response.id);
-              Users.addUser(response.id).success(function(userdata){
-                srvAuth.setUserMongoId(userdata.data._id);
+              Users.addUser(response.id).success(function(userdata2){
+                console.log("created user succesfully", userdata2)
+                srvAuth.setUserMongoId(userdata2.data._id);
                 $location.path( "/create_profile" );
               }); //TODO: Add failure case for adding user, and for if user length > 1
             } else {
@@ -96,6 +97,7 @@ gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 
   };
 
   $scope.createProfile = function(){
+    console.log("user srv", user);
     user = srvAuth.getUser();
     $scope.user.facebookId = user.facebookId;
     $scope.user._id = user.mongoId;
@@ -253,12 +255,3 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'Users', 'Classes'
 gradu8Controllers.controller('EditProfileController', ['$scope', 'Users', function($scope, Users) {
 
 }]);
-
-
-
-
-
-
-
-
-

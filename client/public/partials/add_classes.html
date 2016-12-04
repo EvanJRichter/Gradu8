@@ -17,7 +17,7 @@
 				<!-- Header -->
 				<div class="class-container-header">
 					<i class="fa fa-circle" aria-hidden="true" style="color: {{unassignedLabel.color}}"></i>
-					{{unassignedLabel.name}} classes
+					{{unassignedLabel.name}}
 				</div> <!-- ./ Header -->
 				<!-- Container -->
 				<div class="class-container class-container-unassigned" data-drop="true" ng-model='unassignedLabel.classes' jqyoui-droppable="{multiple:true}">
@@ -44,7 +44,7 @@
 				<!-- Header -->
 				<div class="class-container-header">
 					<i class="fa fa-circle" aria-hidden="true" style="color: {{label.color}}"></i>
-					{{label.name}} classes
+					{{label.name}}
 					<i class="fa fa-chevron-down pull-right" aria-hidden="true" ng-show="label.expanded" ng-click="label.expanded=false"></i>
 					<i class="fa fa-chevron-right pull-right" aria-hidden="true" ng-hide="label.expanded" ng-click="label.expanded=true"></i>
 				</div> <!-- ./ Header -->
@@ -72,7 +72,7 @@
 
 	<div class="row">
 		<div class="center-block">
-			<button class="btn btn-default">Create calendar</button>
+			<button class="btn btn-default" ng-click="generateCalendar()">Create calendar</button>
 
 		</div>
 	</div>

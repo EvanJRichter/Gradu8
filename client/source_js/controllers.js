@@ -128,25 +128,22 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$window', 'User
   //   $scope.classes = data.data;
   // });
 
-  $scope.labels = [
-    {"_id" : 1, "name" : "Unassigned" , "color" : "#ccc"},
-    {"_id" : 1, "name" : "Major" , "color" : "#f00" },
-    {"_id" : 2, "name" : "Minor" , "color" : "#0f0" },
-    {"_id" : 3, "name" : "Elective" , "color" : "#00f" }
-  ];
-  // $scope.Labels.getPublicLabels().success(function(data) {
-  //   $scope.labels = data.data;
-  // });
-  for (i = 0; i < $scope.labels.length; i++) {
-    $scope.labels[i]["classes"] = [];
-    $scope.labels[i]["expanded"] = true;
-  }
+  Labels.getPublicLabels().success(function(data) {
+    $scope.labels = data.data;
 
-  $scope.unassignedLabel = $scope.labels.find(findUnassignedLabel);
-  var index = $scope.labels.indexOf($scope.unassignedLabel);
-  if (index > -1) {
-    $scope.labels.splice(index, 1);
-  }
+    for (i = 0; i < $scope.labels.length; i++) {
+      $scope.labels[i]["classes"] = [];
+      if (i < 4) $scope.labels[i]["expanded"] = true;
+      else $scope.labels[i]["expanded"] = false;
+    }
+
+    $scope.unassignedLabel = $scope.labels.find(findUnassignedLabel);
+    var index = $scope.labels.indexOf($scope.unassignedLabel);
+    if (index > -1) {
+      $scope.labels.splice(index, 1);
+    }
+
+  });
 
   $scope.classFilter = function(_class) {
       var regex = new RegExp($scope.classSelected, 'i');
@@ -168,17 +165,18 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$window', 'User
     }
   };
 
-  $scope.list1 = [
-    {title: 'AngularJS - Drag Me'},
-    {title: 'Node'},
-    {title: 'Moongose'}
-  ];
-  $scope.list2 = [
-      {title: 'Github'},
-  ];
+  $scope.generateCalendar = function() {
+    $scope.labels.push($scope.unassignedLabel);
+    // var userClasses = [];
+    // for (i = 0; i < $scope.labels.length; i++) {
+    //   $scope.labels.id
+    //   $scope.labels.classes
+    // }
+
+  };
 
   function findUnassignedLabel(label) {
-    return label.name === 'Unassigned';
+    return label.name === 'Unassigned Classes';
   }
 
 }]);

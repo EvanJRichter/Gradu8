@@ -111,17 +111,10 @@ gradu8Services.factory('Users', function($http, $window) {
     return $http.get(baseUrl + '/api/users/' + userId);
   };
   var addUserHandler = function(fbId) {
-    return getUserFBHandler(fbId).success(function(data){
-      if (data.data.length == 0){
-        return $http.post(baseUrl + '/api/users/', {facebookId: fbId});
-      }
-      else {
-        return getUserFBHandler(fbId);
-      }
-    });
+    return $http.post(baseUrl + '/api/users/', {facebookId: fbId});
   };
   var putUserProfileHandler = function(userObj) {
-    console.log(userObj);
+    console.log("put services", userObj);
     return $http.put(baseUrl + '/api/users/' + userObj._id , userObj);
   };
   var getUserClassesHandler = function(fbId) {

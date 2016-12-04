@@ -103,7 +103,7 @@ module.exports = function(router) {
 
   usersRoute.post(function(req, res) {
     var facebookId = req.body.facebookId;
-    var name = req.body.name;
+    var university = req.body.university;
     var major = req.body.major;
     var minor = req.body.minor;
     var _public = req.body.public;
@@ -114,7 +114,7 @@ module.exports = function(router) {
 
     var user = new User({
       facebookId: facebookId,
-      name: name,
+      university: university,
       major: major,
       minor: minor,
       public: _public,
@@ -124,40 +124,40 @@ module.exports = function(router) {
       classes: classes
     });
 
-    user.save(function(err, result) {
-      if (err) {
-        res.setHeader('Content-Type', 'application/json');
-        return res.status(500).send({message: "User not added", data: []});
-      }
-      else {
-        res.setHeader('Content-Type', 'application/json');
-        return res.status(201).send({message: "User added", data: result});
-      }
-    });
-    // User.find({facebookId: facebookId}, function(err, result) {
+    // user.save(function(err, result) {
     //   if (err) {
     //     res.setHeader('Content-Type', 'application/json');
-    //     return res.status(500).send({message: "User not found", data: []});
+    //     return res.status(500).send({message: "User not added", data: []});
     //   }
     //   else {
-    //     // console.log(result);
-    //     if (result === null) {
-    //       user.save(function(err, result) {
-    //         if (err) {
-    //           res.setHeader('Content-Type', 'application/json');
-    //           return res.status(500).send({message: "User not added", data: []});
-    //         }
-    //         else {
-    //           res.setHeader('Content-Type', 'application/json');
-    //           return res.status(201).send({message: "User added", data: result});
-    //         }
-    //       });
-    //     }
-    //     else {
-    //       return res.status(201).send({message: "This User already exists", data: result});
-    //     }
+    //     res.setHeader('Content-Type', 'application/json');
+    //     return res.status(201).send({message: "User added", data: result});
     //   }
     // });
+    User.find({facebookId: facebookId}, function(err, result) {
+      if (err) {
+       res.setHeader('Content-Type', 'application/json');
+       return res.status(500).send({message: "Email not found", data: []});
+     }
+     else {
+       // console.log(result);
+       if (result.length == 0) {
+         user.save(function(err, result) {
+           if (err) {
+             res.setHeader('Content-Type', 'application/json');
+             return res.status(500).send({message: "User not added", data: []});
+           }
+           else {
+             res.setHeader('Content-Type', 'application/json');
+             return res.status(201).send({message: "User added", data: result});
+           }
+         });
+       }
+       else {
+         return res.status(201).send({message: "This email already exists", data: result});
+       }
+     }
+    });
   });
 
   usersRoute.options(function(req, res) {
@@ -209,16 +209,17 @@ module.exports = function(router) {
   // Adithya is the gr8est human being this side of the Mississippi
 
   userRoute.put(function(req, res) {
-    var id = req.params.id;
-    var facebookId = req.body.facebookId;
-    var name = req.body.name;
-    var major = req.body.major;
-    var minor = req.body.minor;
-    var _public = req.body.public;
-    var totalSemesters = req.body.totalSemesters;
-    var currSemester = req.body.currSemester;
-    var labels = req.body.labels;
-    var classes = req.body.classes;
+    var user = req.body.user;
+    var id = user._id;
+    var facebookId = user.facebookId;
+    var university = user.university;
+    var major = user.major;
+    var minor = user.minor;
+    var _public = user.public;
+    var totalSemesters = user.totalSemesters;
+    var currSemester = user.currSemester;
+    var labels = user.labels;
+    var classes = user.classes;
     User.findById(id, function(err, result) {
       if (err) {
         res.setHeader('Content-Type', 'application/json');
@@ -231,6 +232,7 @@ module.exports = function(router) {
         else {
           User.findOneAndUpdate(id, {
             facebookId: facebookId,
+            university: university,
             major: major,
             minor: minor,
             public: _public,
@@ -241,16 +243,7 @@ module.exports = function(router) {
           }, {new: true}, function(err, result) {
             if (err) {
               res.setHeader('Content-Type', 'application/json');
-              return res.status(404).send({message: "User not updated", data: [{
-            facebookId: facebookId,
-            major: major,
-            minor: minor,
-            public: _public,
-            totalSemesters: totalSemesters,
-            currSemester: currSemester,
-            labels: labels,
-            classes: classes
-          }, err]});
+              return res.status(404).send({message: "User not updated", data: []});
             }
             else {
               res.setHeader('Content-Type', 'application/json');

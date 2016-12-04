@@ -11,12 +11,12 @@ def fetch_all_classes():
 	lists = main.find_all("li")
 	links = []
 	parsed = []
+	# parsed += fetch_department_classes('/courses-of-instruction/ansc/')
 	for li in lists:
 		link = li.find("a", href=True)
 		if link:
 			links.append(link['href'])
 			parsed += fetch_department_classes(link['href'])
-			# parsed += fetch_department_classes('/courses-of-instruction/ansc/')
 	return parsed
 
 def fetch_department_classes(url):
@@ -36,7 +36,6 @@ def prepare_info(course):
 	department, number, title, credit, credit_range = get_course_info(info)
 	gpa = get_gpa(department, number)
 	fall, spring = get_semesters(department, number)
-	course = {}
 	courses = []
 	low = credit_range[0]
 	if len(credit_range)==2:
@@ -44,6 +43,7 @@ def prepare_info(course):
 	else:
 		high = credit_range[0]
 	while low <= high:
+		course = {}
 		course["department"] = department
 		course["number"] = number
 		if low==1:

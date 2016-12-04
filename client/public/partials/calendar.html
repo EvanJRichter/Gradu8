@@ -1,12 +1,22 @@
-<div class="list">
-  Second Controller
-  <form>
-
-    <div class="text-center">
-      <button ng-click="getData()" class="button tiny info">Get Data</button>
-    </div>
-
-    {{data}}
-
-  </form>
+<div class="container">
+  	<div class="row">
+  		<div id="calendar">
+  			<div id="assigned">
+				<div class="class-container" ng-repeat="i in semesterIndices"  data-drop="true">
+					<div class="class-box" ng-repeat="class in classes[i] | limitTo: (1 - classes.length)" 
+					ng-style="{'background-color':getLabelById(class[1]).color}"> 
+						{{getClassById(class[0]).title}}
+					</div>
+				</div>
+			</div>
+  			<div id="unassigned">
+				<div class="class-container" >
+					<div class="class-box col-md-3" ng-repeat="class in classes[0]" 
+					ng-style="{'background-color':getLabelById(class[1]).color}" ng-model="classes[0]">
+						{{getClassById(class[0]).title}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

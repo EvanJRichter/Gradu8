@@ -182,9 +182,74 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$window', 'User
 }]);
 
 gradu8Controllers.controller('CalendarController', ['$scope', 'Users', 'Classes', 'Labels', function($scope, Users, Classes, Labels) {
+  //get users to get classes, current semester, total semesters
+  //get classes to match class ids
+  //get labels to match label ids
+
+  //dummy data
+  $scope.classesData = [
+    {"_id" : 1, "department" : "CS" , "number" : 125 , "title" : "Intro to Computer Science" },
+    {"_id" : 2, "department" : "CE" , "number" : 101 , "title" : "Intro to Computer Engineering" },
+    {"_id" : 3, "department" : "CS" , "number" : 225 , "title" : "Data Structures" },
+    {"_id" : 4, "department" : "TGMT" , "number" : 460 , "title" : "Shit show"}
+  ];
+
+  $scope.labelsData = [
+    {"_id" : 1, "name" : "Major" , "color" : "#f00" },
+    {"_id" : 2, "name" : "Minor" , "color" : "#0f0" },
+    {"_id" : 3, "name" : "Elective" , "color" : "#00f" }
+  ];
+
+  $scope.classesFromUser = [[1, 1, 0], [1, 2, 0], [2, 1, 0], [1, 1, 0], [1, 1, 0], [2, 2, 1], [2, 2, 2], [2, 2, 3], [3, 3, 2], [3, 3, 3],[2, 1, 7], [2, 2, 8]];
+  $scope.semesters = 8;
+  $scope.currentSemsester = 1;
+  $scope.classes = [];
+
+  $scope.semesterIndices = [];
+  for (var i = 1; i <= $scope.semesters; i++) {
+     $scope.semesterIndices.push(i);
+  }
+  for (var i = 0; i <= $scope.semesters; i++) {
+    var sem = []
+    for (var c = 0; c < $scope.classesFromUser.length; c++){
+      if ($scope.classesFromUser[c][2] == i){
+        sem.push($scope.classesFromUser[c]);
+      }
+    }
+    $scope.classes.push(sem); ///working on getting classes into calendar view
+  }
+
+
+  $scope.getLabelById = function(labelId){
+    var ret = null;
+    $scope.labelsData.forEach(function(label) {
+      if (label._id === labelId){
+        ret = label;
+      }
+    });
+    return ret;
+  };
+  $scope.getClassById = function(classId){
+    var ret = null;
+    $scope.classesData.forEach(function(_class) {
+      if (_class._id === classId){
+        ret = _class;
+      }
+    });
+    return ret;
+  };
 
 }]);
 
 gradu8Controllers.controller('EditProfileController', ['$scope', 'Users', function($scope, Users) {
 
 }]);
+
+
+
+
+
+
+
+
+

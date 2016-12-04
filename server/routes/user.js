@@ -124,40 +124,37 @@ module.exports = function(router) {
       classes: classes
     });
 
-    user.save(function(err, result) {
-      if (err) {
-        res.setHeader('Content-Type', 'application/json');
-        return res.status(500).send({message: "User not added", data: []});
-      }
-      else {
-        res.setHeader('Content-Type', 'application/json');
-        return res.status(201).send({message: "User added", data: result});
-      }
-    });
-    // User.find({facebookId: facebookId}, function(err, result) {
+    // user.save(function(err, result) {
     //   if (err) {
     //     res.setHeader('Content-Type', 'application/json');
-    //     return res.status(500).send({message: "User not found", data: []});
+    //     return res.status(500).send({message: "User not added", data: []});
     //   }
     //   else {
-    //     // console.log(result);
-    //     if (result === null) {
-    //       user.save(function(err, result) {
-    //         if (err) {
-    //           res.setHeader('Content-Type', 'application/json');
-    //           return res.status(500).send({message: "User not added", data: []});
-    //         }
-    //         else {
-    //           res.setHeader('Content-Type', 'application/json');
-    //           return res.status(201).send({message: "User added", data: result});
-    //         }
-    //       });
-    //     }
-    //     else {
-    //       return res.status(201).send({message: "This User already exists", data: result});
-    //     }
+    //     res.setHeader('Content-Type', 'application/json');
+    //     return res.status(201).send({message: "User added", data: result});
     //   }
     // });
+    User.find({facebookId: facebookId}, function(err, result) {
+      if (err) {
+        res.setHeader('Content-Type', 'application/json');
+        return res.status(500).send({message: "User not found", data: []});
+      }
+      else if (result === null) {
+        user.save(function(err, result) {
+          if (err) {
+            res.setHeader('Content-Type', 'application/json');
+            return res.status(500).send({message: "User not added", data: []});
+          }
+          else {
+            res.setHeader('Content-Type', 'application/json');
+            return res.status(201).send({message: "User added", data: result});
+          }
+        });
+      }
+      else {
+        return res.status(201).send({message: "This User already exists", data: result});
+      }
+    });
   });
 
   usersRoute.options(function(req, res) {

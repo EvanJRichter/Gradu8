@@ -68,7 +68,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Majors not found", data: []});
           }
           else {
-            if (result.length == 0) {
+            if (result === null) {
               return res.status(404).send({message: "Majors Not Found", data: []});
             }
             else {
@@ -89,7 +89,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Majors not found", data: []});
           }
           else {
-            if (result.length == 0) {
+            if (result === null) {
               return res.status(404).send({message: "Majors Not Found", data: []});
             }
             else {
@@ -106,30 +106,39 @@ module.exports = function(router) {
     var major = new Major({
       name: name
     });
-
-    Major.find({name: name}, function(err, result) {
+    major.save(function(err, result) {
       if (err) {
         res.setHeader('Content-Type', 'application/json');
-        return res.status(500).send({message: "Major not found", data: []});
+        return res.status(500).send({message: "Major not added", data: []});
       }
       else {
-        if (result.length == 0) {
-          major.save(function(err, result) {
-            if (err) {
-              res.setHeader('Content-Type', 'application/json');
-              return res.status(500).send({message: "Major not added", data: []});
-            }
-            else {
-              res.setHeader('Content-Type', 'application/json');
-              return res.status(201).send({message: "Major added", data: result});
-            }
-          });
-        }
-        else {
-          return res.status(201).send({message: "This Major already exists", data: result});
-        }
+        res.setHeader('Content-Type', 'application/json');
+        return res.status(201).send({message: "Major added", data: result});
       }
     });
+    // Major.find({name: name}, function(err, result) {
+    //   if (err) {
+    //     res.setHeader('Content-Type', 'application/json');
+    //     return res.status(500).send({message: "Major not found", data: []});
+    //   }
+    //   else {
+    //     if (result === null) {
+    //       major.save(function(err, result) {
+    //         if (err) {
+    //           res.setHeader('Content-Type', 'application/json');
+    //           return res.status(500).send({message: "Major not added", data: []});
+    //         }
+    //         else {
+    //           res.setHeader('Content-Type', 'application/json');
+    //           return res.status(201).send({message: "Major added", data: result});
+    //         }
+    //       });
+    //     }
+    //     else {
+    //       return res.status(201).send({message: "This Major already exists", data: result});
+    //     }
+    //   }
+    // });
   });
 
   majorsRoute.options(function(req, res) {
@@ -146,7 +155,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Major Not Found", data: []});
       }
       else {
-        if (result.length == 0) {
+        if (result === null) {
           return res.status(404).send({message: "Major Not Found", data: []});
         }
         else {
@@ -167,7 +176,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Major Not Found", data: []});
       }
       else {
-        if (result.length == 0) {
+        if (result === null) {
           return res.status(404).send({message: "Major Not Found", data: []});
         }
         else {
@@ -196,7 +205,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "Major Not Found", data: []});
       }
       else {
-        if (result.length == 0) {
+        if (result === null) {
           return res.status(404).send({message: "Major Not Found", data: []});
         }
         else {

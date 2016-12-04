@@ -68,7 +68,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Schools not found", data: []});
           }
           else {
-            if (result.length == 0) {
+            if (result === null) {
               return res.status(404).send({message: "Schools Not Found", data: []});
             }
             else {
@@ -89,7 +89,7 @@ module.exports = function(router) {
             return res.status(500).send({message: "Schools not found", data: []});
           }
           else {
-            if (result.length == 0) {
+            if (result === null) {
               return res.status(404).send({message: "Schools Not Found", data: []});
             }
             else {
@@ -111,29 +111,39 @@ module.exports = function(router) {
       minors: minors
     });
 
-    School.find({name: name}, function(err, result) {
+    school.save(function(err, result) {
       if (err) {
         res.setHeader('Content-Type', 'application/json');
-        return res.status(500).send({message: "School not found", data: []});
+        return res.status(500).send({message: "School not added", data: []});
       }
       else {
-        if (result.length == 0) {
-          school.save(function(err, result) {
-            if (err) {
-              res.setHeader('Content-Type', 'application/json');
-              return res.status(500).send({message: "School not added", data: []});
-            }
-            else {
-              res.setHeader('Content-Type', 'application/json');
-              return res.status(201).send({message: "School added", data: result});
-            }
-          });
-        }
-        else {
-          return res.status(201).send({message: "This School already exists", data: result});
-        }
+        res.setHeader('Content-Type', 'application/json');
+        return res.status(201).send({message: "School added", data: result});
       }
     });
+    // School.find({name: name}, function(err, result) {
+    //   if (err) {
+    //     res.setHeader('Content-Type', 'application/json');
+    //     return res.status(500).send({message: "School not found", data: []});
+    //   }
+    //   else {
+    //     if (result === null) {
+    //       school.save(function(err, result) {
+    //         if (err) {
+    //           res.setHeader('Content-Type', 'application/json');
+    //           return res.status(500).send({message: "School not added", data: []});
+    //         }
+    //         else {
+    //           res.setHeader('Content-Type', 'application/json');
+    //           return res.status(201).send({message: "School added", data: result});
+    //         }
+    //       });
+    //     }
+    //     else {
+    //       return res.status(201).send({message: "This School already exists", data: result});
+    //     }
+    //   }
+    // });
   });
 
   schoolsRoute.options(function(req, res) {
@@ -150,7 +160,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "School Not Found", data: []});
       }
       else {
-        if (result.length == 0) {
+        if (result === null) {
           return res.status(404).send({message: "School Not Found", data: []});
         }
         else {
@@ -173,7 +183,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "School Not Found", data: []});
       }
       else {
-        if (result.length == 0) {
+        if (result === null) {
           return res.status(404).send({message: "School Not Found", data: []});
         }
         else {
@@ -202,7 +212,7 @@ module.exports = function(router) {
         return res.status(404).send({message: "School Not Found", data: []});
       }
       else {
-        if (result.length == 0) {
+        if (result === null) {
           return res.status(404).send({message: "School Not Found", data: []});
         }
         else {

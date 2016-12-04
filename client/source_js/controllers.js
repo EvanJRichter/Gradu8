@@ -105,7 +105,6 @@ gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 
     $scope.user._id = user.mongoId;
     Users.putUserProfile($scope.user).success(function(data) {
       console.log("Created user profile", data.data);
-      console.log(data);
       Users.setPassedUser(data.data)
       $location.path( "/add_classes" );
     });
@@ -282,14 +281,10 @@ gradu8Controllers.controller('EditProfileController', ['$scope', '$location', 'U
   console.log($scope.user);
 
   $scope.editProfile = function(){
-    // user = srvAuth.getUser();
-    // console.log("user srv", user);
-    // $scope.user.facebookId = user.facebookId;
-    // $scope.user._id = user.mongoId;
     Users.putUserProfile($scope.user).success(function(data) {
-      console.log("Updated user profile");
-      console.log(data);
+      console.log("Updated user profile", data);
       Users.setPassedUser(data.data);
       $location.path( "/add_classes" );
     });
-  };}]);
+  };
+}]);

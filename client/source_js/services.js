@@ -111,7 +111,14 @@ gradu8Services.factory('Users', function($http, $window) {
     return $http.get(baseUrl + '/api/users/' + userId);
   };
   var addUserHandler = function(fbId) {
-    return $http.post(baseUrl + '/api/users/', {facebookId: fbId});
+    return getUserFBHandler(fbId).success(function(data){
+      if (data.data.length == 0){
+        return $http.post(baseUrl + '/api/users/', {facebookId: fbId});
+      }
+      else {
+        return getUserFBHandler(fbId);
+      }
+    });
   };
   var putUserProfileHandler = function(userObj) {
     console.log(userObj);
@@ -122,12 +129,17 @@ gradu8Services.factory('Users', function($http, $window) {
     var selectUrl = 'select={classes:1}';
     return $http.get(baseUrl + '/api/users/?' + whereUrl + '&' + selectUrl);
   };
-  var addUserClassesHandler = function(fbId, classes) {
-    var whereUrl = 'where={"facebookId":"'+ fbId +'"}';
-    return $http.get(baseUrl + '/api/users/?' + whereUrl).success(function(data) {
+  var addUserClassesHandler = function(userId, classes) {
+    // var whereUrl = 'where={"facebookId":"'+ fbId +'"}';
+    return $http.get(baseUrl + '/api/users/' + userId).success(function(data) {
       var userObj = data.data;
-      // TODO check somewhere that classes make sense?
-      userObj.classes.push(classes);
+      if (userObj.classes){
+        userObj.classes.push(classes);
+      }
+      else {
+        userObj.classess = classes;
+      }
+
       $http.put(baseUrl + '/api/users/' + userObj._id, userObj);
     });
   };

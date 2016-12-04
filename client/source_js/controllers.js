@@ -16,9 +16,15 @@ gradu8Controllers.controller('HeaderController', ['$scope', '$location', functio
 gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$location', 'Users', function($scope, srvAuth, $location, Users) {
   $scope.fb_login = function() {
     FB.login(function(response) {
+      console.log("fb login: ", response);
+
       if (response.authResponse) {
         FB.api('/me', function(response) {
+          console.log("fb me: ", response);
+
           Users.getFBUser(response.id).success(function(userdata){
+            console.log("getfbuser response: ", userdata);
+            console.log("getfbuser length: ", userdata.data.length);
             if (userdata.data.length == 0){
               srvAuth.setUserFacebookId(response.id);
               Users.addUser(response.id).success(function(userdata){
@@ -26,7 +32,11 @@ gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$locati
                 $location.path( "/create_profile" );
               }); //TODO: Add failure case for adding user, and for if user length > 1
             } else {
+
+
               user = userdata.data[0]
+              console.log("getfbuser response: ", user.major);
+              console.log("getfbuser response: ", user.classes.length);
               if (user.major === "Unassigned"){
                 srvAuth.setUserFacebookId(response.id);
                 srvAuth.setUserMongoId(user._id);
@@ -62,31 +72,14 @@ gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$locati
 
 }]);
 
-gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 'Users', 'srvAuth', 'Universities', 'Majors', 'Minors', function($scope, $location, Users, srvAuth, Universities, Majors, Minors) {
-  // $scope.universityOptions = [
-  //   { 'id' : 'uiuc', 'label' : 'University of Illinois at Urbana Champaign' }
-  // ];
+gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 'Users', 'srvAuth',  'Universities', 'Majors', 'Minors', function($scope, $location, Users, srvAuth, Universities, Majors, Minors) {
   Universities.getAllSchools().success(function(data) {
-    $scope.universityOptions = data.data;
-    console.log('universities: ', data.data); // "UIUC"
-  });
-  // $scope.majorOptions = [
-  //   { 'id' : 'ud', 'label' : 'Undeclared' },
-  //   { 'id' : 'cs', 'label' : 'Computer Science' },
-  //   { 'id' : 'ce', 'label' : 'Computer Engineering' },
-  //   { 'id' : 'ee', 'label' : 'Electrical Engineering' }
-  // ];
+    $scope.universityOptions = data.data;  });
   Majors.getAllMajors().success(function(data) {
     $scope.majorOptions = data.data;
-    // console.log('majors: ', data.data);
   });
-  // $scope.minorOptions = [
-  //   { 'id' : 'ad', 'label' : 'Art & Design' },
-  //   { 'id' : 'ba', 'label' : 'Business Administration' },
-  // ];
   Minors.getAllMinors().success(function(data) {
     $scope.minorOptions = data.data;
-    // console.log('minors: ', data.data);
   });
   $scope.totalSemesters = 8;
   $scope.currSemester = 1;
@@ -114,15 +107,15 @@ gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 
   };
 }]);
 
-gradu8Controllers.controller('AddClassesController', ['$scope', '$window', 'Users', 'Classes', 'Labels', function($scope, $window, Users, Classes, Labels) {
+gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$window', 'Users', 'srvAuth', 'Classes', 'Labels', function($scope, $location, $window, Users, srvAuth, Classes, Labels) {
   $scope.classes = [
-    {"id" : 1, "department" : "CS" , "number" : 125 , "title" : "Intro to Computer Science" },
-    {"id" : 2,"department" : "CE" , "number" : 101 , "title" : "Intro to Computer Engineering" },
-    {"id" : 3, "department" : "CS" , "number" : 225 , "title" : "Data Structures" },
-    {"id" : 4, "department" : "TGMT" , "number" : 460 , "title" : "Shit show"},
-    {"id" : 4, "department" : "TGMT" , "number" : 4601 , "title" : "Shit show"},
-    {"id" : 4, "department" : "TGMT" , "number" : 4602 , "title" : "Shit show"},
-    {"id" : 4, "department" : "TGMT" , "number" : 4602 , "title" : "Shit show"}
+    {"_id" : 1, "department" : "CS" , "number" : 125 , "title" : "Intro to Computer Science" },
+    {"_id" : 2,"department" : "CE" , "number" : 101 , "title" : "Intro to Computer Engineering" },
+    {"_id" : 3, "department" : "CS" , "number" : 225 , "title" : "Data Structures" },
+    {"_id" : 4, "department" : "TGMT" , "number" : 460 , "title" : "Shit show"},
+    {"_id" : 5, "department" : "TGMT" , "number" : 4601 , "title" : "Shit show"},
+    {"_id" : 6, "department" : "TGMT" , "number" : 4602 , "title" : "Shit show"},
+    {"_id" : 7, "department" : "TGMT" , "number" : 4602 , "title" : "Shit show"}
   ];
   // $scope.Classes.getPublicClasses().success(function(data) {
   //   $scope.classes = data.data;
@@ -167,11 +160,27 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$window', 'User
 
   $scope.generateCalendar = function() {
     $scope.labels.push($scope.unassignedLabel);
-    // var userClasses = [];
-    // for (i = 0; i < $scope.labels.length; i++) {
-    //   $scope.labels.id
-    //   $scope.labels.classes
-    // }
+    var userClasses = [];
+    var semester = 0;
+
+    for (i = 0 ; i < $scope.labels.length ; i++) {
+      var labelId = $scope.labels[i]._id;
+      for (j = 0 ; j < $scope.labels[i].classes.length ; j++) {
+        var _class = {
+          classId : $scope.labels[i].classes[j]._id,
+          labelId : $scope.labels[i]._id,
+          semester : 0
+        }
+        userClasses.push(_class);
+      }
+    }
+
+    user = srvAuth.getUser();
+    Users.addUserClasses(user.userId, userClasses).success(function(data) {
+      console.log("Added Classes to user");
+      console.log(data);
+      $location.path( "/calendar" );
+    });
 
   };
 

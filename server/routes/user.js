@@ -230,7 +230,7 @@ module.exports = function(router) {
           return res.status(404).send({message: "User Not Found", data: []});
         }
         else {
-          User.findOneAndUpdate(id, {
+          var updated_user = {
             facebookId: facebookId,
             university: university,
             major: major,
@@ -240,7 +240,8 @@ module.exports = function(router) {
             currSemester: currSemester,
             labels: labels,
             classes: classes
-          }, {new: true}, function(err, result) {
+          };
+          User.findByIdAndUpdate(id, updated_user, {new: true}, function(err, result) {
             if (err) {
               res.setHeader('Content-Type', 'application/json');
               return res.status(404).send({message: "User not updated", data: []});

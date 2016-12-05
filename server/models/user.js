@@ -23,11 +23,12 @@ var UserSchema   = new mongoose.Schema({
   currSemester: { type : Number, default: 1 },
   public: { type: Boolean, default : false },
   labels: [ { type : mongoose.Schema.Types.ObjectId, ref : 'Label' } ],
-  classes: [ {
-    classId: { type : mongoose.Schema.Types.ObjectId, ref : 'Class' , required : true },
-    labelId: { type : mongoose.Schema.Types.ObjectId, ref : 'Label' , required : true },
-    semester: { type : Number, default : 0 }
-  } ]
+  classes: []
+//   classes: [ {
+//     classId: { type : mongoose.Schema.Types.ObjectId, ref : 'Class' , required : true },
+//     labelId: { type : mongoose.Schema.Types.ObjectId, ref : 'Label' , required : true },
+//     semester: { type : Number, default : 0 }
+//   } ]
 });
 
 module.exports = mongoose.model('User', UserSchema);

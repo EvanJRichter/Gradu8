@@ -40,7 +40,7 @@ gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$locati
               Users.setPassedUser(user);
               console.log("getfbuser response: ", user.major);
               console.log("getfbuser response: ", user.classes.length);
-              if (user.major === "Unassigned"){
+              if (user.major === "Unassigned" || !user.major) {
                 srvAuth.setUserFacebookId(response.id);
                 srvAuth.setUserMongoId(user._id);
                 $location.path( "/create_profile" );
@@ -113,16 +113,17 @@ gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 
 
 gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$window', 'Users', 'srvAuth', 'Classes', 'Labels', function($scope, $location, $window, Users, srvAuth, Classes, Labels) {
   $scope.classes = [
-    {"_id" : 1, "department" : "CS" , "number" : 125 , "title" : "Intro to Computer Science" },
-    {"_id" : 2,"department" : "CE" , "number" : 101 , "title" : "Intro to Computer Engineering" },
-    {"_id" : 3, "department" : "CS" , "number" : 225 , "title" : "Data Structures" },
-    {"_id" : 4, "department" : "TGMT" , "number" : 460 , "title" : "Shit show"},
-    {"_id" : 5, "department" : "TGMT" , "number" : 4601 , "title" : "Shit show"},
-    {"_id" : 6, "department" : "TGMT" , "number" : 4602 , "title" : "Shit show"},
-    {"_id" : 7, "department" : "TGMT" , "number" : 4602 , "title" : "Shit show"}
+    {"_id" : '5844b3f373864a26bf76f202', "department" : "CS" , "number" : 125 , "title" : "Intro to Computer Science - 4 credits" },
+    {"_id" : '5844b3f373864a26bf76f20c', "department" : "CS" , "number" : 225 , "title" : "Data Structures - 4 credits" },
+    {"_id" : '5844b3f273864a26bf76f1ff', "department" : "CE" , "number" : 101 , "title" : "Intro Computing: Engrg & Sci - 3 credits" },
+    {"_id" : '5844b72773864a26bf771b45', "department" : "TGMT" , "number" : 366 , "title" : "Product Design and Development - 3 credits"},
+    {"_id" : '5844b72773864a26bf771b46', "department" : "TGMT" , "number" : 367 , "title" : "Mgmt of Innov and Technology - 3 credits"},
+    {"_id" : '5844b72773864a26bf771b47', "department" : "TGMT" , "number" : 460 , "title" : "Business Process Modeling - 3 credits"},
+    {"_id" : '5844b72773864a26bf771b48', "department" : "TGMT" , "number" : 461 , "title" : "Tech, Eng, & Mgt Final Project - 2 credits"}
   ];
-  // $scope.Classes.getPublicClasses().success(function(data) {
+  // Classes.getPublicClasses().success(function(data) {
   //   $scope.classes = data.data;
+  //   console.log($scope.classes);
   // });
 
   Labels.getPublicLabels().success(function(data) {
@@ -170,19 +171,21 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
     for (i = 0 ; i < $scope.labels.length ; i++) {
       var labelId = $scope.labels[i]._id;
       for (j = 0 ; j < $scope.labels[i].classes.length ; j++) {
+        // var _class = [$scope.labels[i].classes[j]._id, $scope.labels[i]._id, 0];
         var _class = {
           classId : $scope.labels[i].classes[j]._id,
           labelId : $scope.labels[i]._id,
           semester : 0
-        }
+        };
         userClasses.push(_class);
+        // only add labels to user if private label
       }
     }
 
     user = srvAuth.getUser();
-    Users.addUserClasses(user.userId, userClasses).success(function(data) {
-      console.log("Added Classes to user");
-      console.log(data);
+    Users.addUserClasses(user.mongoId, userClasses).success(function(data) {
+      console.log("Added Classes to user", data);
+      Users.setPassedUser(data.data)
       $location.path( "/calendar" );
     });
 
@@ -194,11 +197,17 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
 
 }]);
 
-gradu8Controllers.controller('CalendarController', ['$scope', 'Users', 'Classes', 'Labels', function($scope, Users, Classes, Labels) {
+gradu8Controllers.controller('CalendarController', ['$scope', 'Users', 'Classes', 'Labels', 'srvAuth', function($scope, Users, Classes, Labels, srvAuth) {
   //get users to get classes, current semester, total semesters
 
   //get classes to match class ids
   //get labels to match label ids
+
+  console.log('passed user', Users.getPassedUser());
+  user = srvAuth.getUser();
+  Users.getUser(user.mongoId).success(function(data){
+    console.log(data);
+  });
 
   //dummy data
   $scope.classesData = [
@@ -285,7 +294,6 @@ gradu8Controllers.controller('EditProfileController', ['$scope', '$location', 'U
   //   _id: 0
   // };
   $scope.user = Users.getPassedUser();
-  console.log($scope.user);
 
   $scope.editProfile = function(){
     Users.putUserProfile($scope.user).success(function(data) {

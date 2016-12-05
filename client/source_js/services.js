@@ -130,16 +130,14 @@ gradu8Services.factory('Users', function($http, $window) {
     return $http.get(baseUrl + '/api/users/?' + whereUrl + '&' + selectUrl);
   };
   var addUserClassesHandler = function(userId, classes) {
-    // var whereUrl = 'where={"facebookId":"'+ fbId +'"}';
     return $http.get(baseUrl + '/api/users/' + userId).success(function(data) {
       var userObj = data.data;
       if (userObj.classes){
         userObj.classes.push(classes);
       }
       else {
-        userObj.classess = classes;
+        userObj.classes = classes;
       }
-
       $http.put(baseUrl + '/api/users/' + userObj._id, {user: userObj});
     });
   };
@@ -208,9 +206,7 @@ gradu8Services.factory('Classes', function($http, $window) {
 
   var getPublicClassesHandler = function() {
     var whereUrl = 'where={"public": true}';
-    var selectUrl = 'select={number:1,department:1,title:1}';
-    // return $http.get(baseUrl + '/api/classes/?' + whereUrl + '&' + selectUrl);
-    return $http.get(baseUrl + '/api/classes');
+    return $http.get(baseUrl + '/api/classes/?' + whereUrl);
   };
 
   var addClassHandler = function() {

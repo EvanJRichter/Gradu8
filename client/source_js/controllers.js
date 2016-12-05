@@ -29,9 +29,12 @@ gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$locati
             } else {
               user = userdata.data[0]
               Users.setPassedUser(user);
+<<<<<<< HEAD
               console.log("getfbuser response: ", user.major);
               console.log("getfbuser response: ", user.classes.length);
 
+=======
+>>>>>>> c97d1bfbd8887806426383d7ec3c8822fb3d4e03
               //for redundancy
               srvAuth.setUserFacebookId(response.id);
               srvAuth.setUserMongoId(user._id);
@@ -196,7 +199,7 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth', 'Users'
   });
   //get classes to match class ids
   //get labels to match label ids
-
+  
   //dummy data
   $scope.classesData = [
     {"_id" : 1, "department" : "CS" , "number" : 125 , "title" : "Intro to Computer Science" },

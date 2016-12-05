@@ -83,6 +83,12 @@ gradu8Services.factory('srvAuth', function($http, $window, $rootScope) {
     var getUserLogic = function(){
       return user;
     }
+    var getUserMongoIdLogic = function(){
+      return user.mongoId;
+    }
+    var getUserFacebookIdLogic = function(){
+      return user.facebookId;
+    }
     var setUserMongoIdLogic = function(mongoId){
       user.mongoId = mongoId;
     }
@@ -93,6 +99,8 @@ gradu8Services.factory('srvAuth', function($http, $window, $rootScope) {
         watchLoginChange: watchLoginChangeLogic,
         setUserInfo : setUserInfoLogic,
         getUser : getUserLogic,
+        getUserMongoId : getUserMongoIdLogic,
+        getUserFacebookId : getUserFacebookIdLogic,
         setUserMongoId : setUserMongoIdLogic,
         setUserFacebookId : setUserFacebookIdLogic,
         logout : logoutLogic,
@@ -140,7 +148,9 @@ gradu8Services.factory('Users', function($http, $window) {
         userObj.classess = classes;
       }
 
-      $http.put(baseUrl + '/api/users/' + userObj._id, {user: userObj});
+      $http.put(baseUrl + '/api/users/' + userObj._id, {user: userObj}).success(function(response){
+        console.log("added classes: ", response);
+      });
     });
   };
   var deleteUserClassHandler = function(fbId, _class) {

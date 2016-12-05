@@ -193,6 +193,7 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
 
 gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth', 'Users', 'Classes', 'Labels', function($scope, srvAuth, Users, Classes, Labels) {
   //get users to get classes, current semester, total semesters
+  console.log(srvAuth.getUser())
   Users.getUser(srvAuth.getUser().mongoId).success(function(response){
     console.log(response);
   });

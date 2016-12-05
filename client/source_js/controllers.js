@@ -174,7 +174,6 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
     }
 
     user = srvAuth.getUser();
-    console.log("CALENDAR CREATING", user);
     Users.addUserClasses(user.mongoId, userClasses).success(function(data) {
       console.log("Added Classes to user");
       console.log(data);
@@ -214,21 +213,22 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth', 'Users'
 
   $scope.classesFromUser = [[1, 1, 0], [1, 2, 0], [2, 1, 0], [1, 1, 0], [1, 1, 0], [2, 2, 1], [2, 2, 2], [2, 2, 3], [3, 3, 2], [3, 3, 3],[2, 1, 7], [2, 2, 8]];
   $scope.numsemesters = 8;
-  $scope.currentSemsester = 1;
+  $scope.currentSemester = 1;
   $scope.semesters = [];
 
-  for (var i = 0; i <= $scope.numsemesters; i++) {
-    var sem = {};
-    sem.classes = [];
-    for (var c = 0; c < $scope.classesFromUser.length; c++){
-      if ($scope.classesFromUser[c][2] == i){
-        sem.classes.push($scope.classesFromUser[c]);
-      }
-    }
-    $scope.semesters.push(sem); ///working on getting classes into calendar view
-  }
-
-
+  //----- Real Data ----- //
+  //get users to get classes, current semester, total semesters
+  Users.getUser(srvAuth.getUserMongoId()).success(function(response){
+    $scope.classesFromUser = response.data.classes;
+    $scope.numsemesters =  response.data.totalSemesters;
+    $scope.currentSemester =  response.data.currSemester;
+    updateSemesters();
+    //get classes to match class ids
+    updateClasses();
+    //get labels to match label ids
+    updateLabels();
+  });
+  
   $scope.getLabelById = function(labelId){
     var ret = null;
     $scope.labelsData.forEach(function(label) {
@@ -248,14 +248,38 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth', 'Users'
     return ret;
   };
 
-  $scope.list1 = [
-    {title: 'AngularJS - Drag Me'},
-    {title: 'Node'},
-    {title: 'Moongose'}
-  ];
-  $scope.list2 = [
-      {title: 'Github'},
-  ];
+  var updateSemesters = function(){
+    $scope.semesters = [];
+    for (var i = 0; i <= $scope.numsemesters; i++) {
+      var sem = {};
+      sem.classes = [];
+      for (var c = 0; c < $scope.classesFromUser.length; c++){
+        if ($scope.classesFromUser[c][2] == i){
+          sem.classes.push($scope.classesFromUser[c]);
+        }
+      }
+      $scope.semesters.push(sem); ///working on getting classes into calendar view
+    }
+  };
+
+  var updateClasses = function(){
+    $scope.classesData = [];
+    console.log($scope.classesFromUser);
+    for (var i = 0; i <= $scope.classesFromUser.length; i++) {
+      Classes.getClass($scope.classesFromUser[i].classId).success(function(response){
+         $scope.classesData.push(response.data);
+      });
+    }
+  };
+
+  var updateLabels = function(){
+    $scope.labelsData = [];
+    for (var i = 0; i <= $scope.classesFromUser.length; i++) {
+      Labels.getLabel($scope.classesFromUser[i].labelId).success(function(response){
+         $scope.labelsData.push(response.data);
+      });
+    }
+  };
 
 }]);
 

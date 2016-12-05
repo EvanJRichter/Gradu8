@@ -30,13 +30,11 @@ gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$locati
 
 
               user = userdata.data[0]
-<<<<<<< e86b2abc1cfb82b535a1f1d00c0b182c05c78953
               console.log('logged in user: ', user);
               Users.setPassedUser(user);
               console.log("getfbuser response: ", user.major);
               console.log("getfbuser response: ", user.classes.length);
-=======
->>>>>>> temp
+
               if (user.major === "Unassigned"){
                 srvAuth.setUserFacebookId(response.id);
                 srvAuth.setUserMongoId(user._id);

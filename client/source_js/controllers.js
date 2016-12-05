@@ -27,17 +27,16 @@ gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$locati
                 $location.path( "/create_profile" );
               }); //TODO: Add failure case for adding user, and for if user length > 1
             } else {
-
-
               user = userdata.data[0]
-              console.log('logged in user: ', user);
               Users.setPassedUser(user);
               console.log("getfbuser response: ", user.major);
               console.log("getfbuser response: ", user.classes.length);
 
+              //for redundancy
+              srvAuth.setUserFacebookId(response.id);
+              srvAuth.setUserMongoId(user._id);
               if (user.major === "Unassigned"){
-                srvAuth.setUserFacebookId(response.id);
-                srvAuth.setUserMongoId(user._id);
+
                 $location.path( "/create_profile" );
               }
               else if (user.classes.length == 0){
@@ -175,7 +174,8 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
     }
 
     user = srvAuth.getUser();
-    Users.addUserClasses(user.userId, userClasses).success(function(data) {
+    console.log("CALENDAR CREATING", user);
+    Users.addUserClasses(user.mongoId, userClasses).success(function(data) {
       console.log("Added Classes to user");
       console.log(data);
       $location.path( "/calendar" );

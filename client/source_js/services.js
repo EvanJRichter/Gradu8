@@ -81,18 +81,32 @@ gradu8Services.factory('srvAuth', function($http, $window, $rootScope) {
       });
     };
     var getUserLogic = function(){
+      console.log("getting user ", user);
+
       return user;
     }
+    var getUserMongoIdLogic = function(){
+      return user.mongoId;
+    }
+    var getUserFacebookIdLogic = function(){
+      return user.facebookId;
+    }
     var setUserMongoIdLogic = function(mongoId){
+      console.log("setting user mongo", mongoId);
+
       user.mongoId = mongoId;
     }
     var setUserFacebookIdLogic = function(facebookId){
+      console.log("setting user fb", facebookId);
+
       user.facebookId = facebookId;
     }
     return {
         watchLoginChange: watchLoginChangeLogic,
         setUserInfo : setUserInfoLogic,
         getUser : getUserLogic,
+        getUserMongoId : getUserMongoIdLogic,
+        getUserFacebookId : getUserFacebookIdLogic,
         setUserMongoId : setUserMongoIdLogic,
         setUserFacebookId : setUserFacebookIdLogic,
         logout : logoutLogic,

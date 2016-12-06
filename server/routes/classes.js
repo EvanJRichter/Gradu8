@@ -16,6 +16,7 @@ module.exports = function(router) {
     var skip = eval("("+req.query.skip+")");
     var limit = eval("("+req.query.limit+")");
     var count = eval("("+req.query.count+")");
+    var distinct = eval("("+req.query.distinct+")");
     if (count) {
       if (where) {
         Class.find({})
@@ -24,6 +25,7 @@ module.exports = function(router) {
         .select(select)
         .skip(skip)
         .limit(limit)
+        .distinct(distinct)
         .count(function(err, count) {
           if (err) {
             res.setHeader('Content-Type', 'application/json');
@@ -41,6 +43,7 @@ module.exports = function(router) {
         .select(select)
         .skip(skip)
         .limit(limit)
+        .distinct(distinct)
         .count(function(err, count) {
           if (err) {
             res.setHeader('Content-Type', 'application/json');
@@ -61,6 +64,7 @@ module.exports = function(router) {
         .select(select)
         .skip(skip)
         .limit(limit)
+        .distinct(distinct)
         .exec(function(err, result) {
           if (err) {
             res.setHeader('Content-Type', 'application/json');
@@ -82,6 +86,7 @@ module.exports = function(router) {
         .select(select)
         .skip(skip)
         .limit(limit)
+        .distinct(distinct)
         .exec(function(err, result) {
           if (err) {
             res.setHeader('Content-Type', 'application/json');

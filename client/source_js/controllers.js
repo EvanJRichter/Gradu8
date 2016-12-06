@@ -103,19 +103,24 @@ gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 
 }]);
 
 gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$window', 'Users', 'srvAuth', 'Classes', 'Labels', function($scope, $location, $window, Users, srvAuth, Classes, Labels) {
-  $scope.classes = [
-    {"_id" : '5844b3f373864a26bf76f202', "department" : "CS" , "number" : 125 , "title" : "Intro to Computer Science - 4 credits" },
-    {"_id" : '5844b3f373864a26bf76f20c', "department" : "CS" , "number" : 225 , "title" : "Data Structures - 4 credits" },
-    {"_id" : '5844b3f273864a26bf76f1ff', "department" : "CE" , "number" : 101 , "title" : "Intro Computing: Engrg & Sci - 3 credits" },
-    {"_id" : '5844b72773864a26bf771b45', "department" : "TGMT" , "number" : 366 , "title" : "Product Design and Development - 3 credits"},
-    {"_id" : '5844b72773864a26bf771b46', "department" : "TGMT" , "number" : 367 , "title" : "Mgmt of Innov and Technology - 3 credits"},
-    {"_id" : '5844b72773864a26bf771b47', "department" : "TGMT" , "number" : 460 , "title" : "Business Process Modeling - 3 credits"},
-    {"_id" : '5844b72773864a26bf771b48', "department" : "TGMT" , "number" : 461 , "title" : "Tech, Eng, & Mgt Final Project - 2 credits"}
-  ];
-  // Classes.getPublicClasses().success(function(data) {
-  //   $scope.classes = data.data;
-  //   console.log($scope.classes);
-  // });
+  $scope.viewClassSearch = false;
+
+  Classes.getDepartments().success(function(data) {
+    $scope.departments = data.data;
+  });
+
+  $scope.selectedDepartment = function($item, $model, $label) {
+    var department = $item;
+    Classes.getDepartmentClasses(department).success(function(data) {
+      $scope.viewClassSearch = true;
+      $scope.departmentClasses = data.data;
+    });
+    // var index = $scope.unassignedLabel.classes.indexOf($item);
+    // if (index < 0) {
+    //   $scope.unassignedLabel.classes.push($item);
+    // }
+    // $scope.classSelected = "";
+  };
 
   Users.getUser(srvAuth.getUserMongoId()).success(function(response){
     var user = response.data;

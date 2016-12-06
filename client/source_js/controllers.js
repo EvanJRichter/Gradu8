@@ -96,7 +96,7 @@ gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 
     console.log("user srv", user);
     $scope.user.facebookId = user.facebookId;
     $scope.user._id = user.mongoId;
-    Users.putUserProfile($scope.user).success(function(data) {
+    Users.putUser($scope.user).success(function(data) {
       console.log("Created user profile", data.data);
       Users.setPassedUser(data.data)
       $location.path( "/add_classes" );
@@ -324,7 +324,7 @@ gradu8Controllers.controller('EditProfileController', ['$scope', '$location', '$
     if ($scope.user.major) $scope.user.major = $scope.user.major._id;
     if ($scope.user.minor) $scope.user.minor = $scope.user.minor._id;
     console.log("posting editted user", $scope.user);
-    Users.putUserProfile($scope.user).success(function(data) {
+    Users.putUser($scope.user).success(function(data) {
       console.log("Updated user profile", data);
       $location.path( "/calendar" );
     });

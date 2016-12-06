@@ -110,14 +110,6 @@ gradu8Services.factory('srvAuth', function($http, $window, $rootScope) {
 
 gradu8Services.factory('Users', function($http, $window) {
   var baseUrl = "http://localhost:3001"
-  var user;
-
-  var getPassedUserHandler = function() {
-    return user;
-  };
-  var setPassedUserHandler = function(userObj) {
-    user = userObj;
-  };
   var getUserFBHandler = function(fbId) {
     var whereUrl = 'where={"facebookId":"'+ fbId +'"}';
     return $http.get(baseUrl + '/api/users/?' + whereUrl);
@@ -128,7 +120,7 @@ gradu8Services.factory('Users', function($http, $window) {
   var addUserHandler = function(fbId) {
     return $http.post(baseUrl + '/api/users/', {facebookId: fbId});
   };
-  var putUserProfileHandler = function(userObj) {
+  var putUserObjHandler = function(userObj) {
     console.log("put services", userObj);
     return $http.put(baseUrl + '/api/users/' + userObj._id , userObj);
   };
@@ -149,7 +141,6 @@ gradu8Services.factory('Users', function($http, $window) {
     });
     return promise;
   };
-
   var deleteUserClassHandler = function(fbId, _class) {
     var whereUrl = 'where={"facebookId":"'+ fbId +'"}';
     return $http.get(baseUrl + '/api/users/?' + whereUrl).success(function(data) {
@@ -161,13 +152,11 @@ gradu8Services.factory('Users', function($http, $window) {
       $http.put(baseUrl + '/api/users/' + userObj._id, userObj);
     });
   };
-
   var getUserLabelsHandler = function(fbId) {
     var whereUrl = 'where={"facebookId":"'+ fbId +'"}';
     var selectUrl = 'select={labels:1}';
     return $http.get(baseUrl + '/api/users/?' + whereUrl + '&' + selectUrl);
   };
-
   var addUserLabelsHandler = function(fbId, labels) {
     var whereUrl = 'where={"facebookId":"'+ fbId +'"}';
     return $http.get(baseUrl + '/api/users/?' + whereUrl).success(function(data) {
@@ -177,7 +166,6 @@ gradu8Services.factory('Users', function($http, $window) {
       $http.put(baseUrl + '/api/users/' + userObj._id, userObj);
     });
   };
-
   var deleteUserLabelHandler = function(fbId, label) {
     var whereUrl = 'where={"facebookId":"'+ fbId +'"}';
     return $http.get(baseUrl + '/api/users/?' + whereUrl).success(function(data) {
@@ -191,12 +179,10 @@ gradu8Services.factory('Users', function($http, $window) {
   };
 
   return {
-    getPassedUser: getPassedUserHandler,
-    setPassedUser: setPassedUserHandler,
     getFBUser: getUserFBHandler,
     getUser: getUserHandler,
     addUser: addUserHandler,
-    putUserProfile: putUserProfileHandler,
+    putUser: putUserHandler,
     getUserClasses: getUserClassesHandler,
     addUserClasses: addUserClassesHandler,
     deleteUserClass: deleteUserClassHandler,

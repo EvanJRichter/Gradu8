@@ -290,7 +290,7 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth', 'Users'
 }]);
 
 gradu8Controllers.controller('EditProfileController', ['$scope', '$location', '$q', 'Users', 'srvAuth',  'Universities', 'Majors', 'Minors', function($scope, $location, $q, Users, srvAuth, Universities, Majors, Minors) {
-
+  $scope.loading = true;
   $q.all([
     Universities.getAllSchools(),
     Majors.getAllMajors(),
@@ -304,8 +304,6 @@ gradu8Controllers.controller('EditProfileController', ['$scope', '$location', '$
     $scope.user = matchIdObjects($scope.universityOptions, $scope.majorOptions, $scope.minorOptions, $scope.user);
     $scope.loading = false;
   });
-
-  $scope.loading = true;
 
   function matchIdObjects(universities, majors, minors, user) {
     user.university = searchById(universities, user.university);

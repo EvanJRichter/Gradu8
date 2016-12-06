@@ -27,16 +27,15 @@ gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$locati
                 $location.path( "/create_profile" );
               }); //TODO: Add failure case for adding user, and for if user length > 1
             } else {
-
-
               user = userdata.data[0]
-              console.log('logged in user: ', user);
               Users.setPassedUser(user);
               console.log("getfbuser response: ", user.major);
               console.log("getfbuser response: ", user.classes.length);
+
+              //for redundancy
+              srvAuth.setUserFacebookId(response.id);
+              srvAuth.setUserMongoId(user._id);
               if (user.major === "Unassigned" || !user.major) {
-                srvAuth.setUserFacebookId(response.id);
-                srvAuth.setUserMongoId(user._id);
                 $location.path( "/create_profile" );
               }
               else if (user.classes.length == 0){
@@ -192,19 +191,6 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
 }]);
 
 gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth', 'Users', 'Classes', 'Labels', function($scope, srvAuth, Users, Classes, Labels) {
-  //get users to get classes, current semester, total semesters
-  console.log(srvAuth.getUser())
-  Users.getUser(srvAuth.getUser().mongoId).success(function(response){
-    console.log(response);
-  });
-  //get classes to match class ids
-  //get labels to match label ids
-
-  console.log('passed user', Users.getPassedUser());
-  user = srvAuth.getUser();
-  Users.getUser(user.mongoId).success(function(data){
-    console.log(data);
-  });
 
   //dummy data
   $scope.classesData = [
@@ -222,20 +208,21 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth', 'Users'
 
   $scope.classesFromUser = [[1, 1, 0], [1, 2, 0], [2, 1, 0], [1, 1, 0], [1, 1, 0], [2, 2, 1], [2, 2, 2], [2, 2, 3], [3, 3, 2], [3, 3, 3],[2, 1, 7], [2, 2, 8]];
   $scope.numsemesters = 8;
-  $scope.currentSemsester = 1;
+  $scope.currentSemester = 1;
   $scope.semesters = [];
 
-  for (var i = 0; i <= $scope.numsemesters; i++) {
-    var sem = {};
-    sem.classes = [];
-    for (var c = 0; c < $scope.classesFromUser.length; c++){
-      if ($scope.classesFromUser[c][2] == i){
-        sem.classes.push($scope.classesFromUser[c]);
-      }
-    }
-    $scope.semesters.push(sem); ///working on getting classes into calendar view
-  }
-
+  //----- Real Data ----- //
+  //get users to get classes, current semester, total semesters
+  Users.getUser(srvAuth.getUserMongoId()).success(function(response){
+    $scope.classesFromUser = response.data.classes;
+    $scope.numsemesters =  response.data.totalSemesters;
+    $scope.currentSemester =  response.data.currSemester;
+    updateSemesters();
+    //get classes to match class ids
+    updateClasses();
+    //get labels to match label ids
+    updateLabels();
+  });
 
   $scope.getLabelById = function(labelId){
     var ret = null;
@@ -256,14 +243,38 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth', 'Users'
     return ret;
   };
 
-  $scope.list1 = [
-    {title: 'AngularJS - Drag Me'},
-    {title: 'Node'},
-    {title: 'Moongose'}
-  ];
-  $scope.list2 = [
-      {title: 'Github'},
-  ];
+  var updateSemesters = function(){
+    $scope.semesters = [];
+    for (var i = 0; i <= $scope.numsemesters; i++) {
+      var sem = {};
+      sem.classes = [];
+      for (var c = 0; c < $scope.classesFromUser.length; c++){
+        if ($scope.classesFromUser[c][2] == i){
+          sem.classes.push($scope.classesFromUser[c]);
+        }
+      }
+      $scope.semesters.push(sem); ///working on getting classes into calendar view
+    }
+  };
+
+  var updateClasses = function(){
+    $scope.classesData = [];
+    console.log($scope.classesFromUser);
+    for (var i = 0; i <= $scope.classesFromUser.length; i++) {
+      Classes.getClass($scope.classesFromUser[i].classId).success(function(response){
+         $scope.classesData.push(response.data);
+      });
+    }
+  };
+
+  var updateLabels = function(){
+    $scope.labelsData = [];
+    for (var i = 0; i <= $scope.classesFromUser.length; i++) {
+      Labels.getLabel($scope.classesFromUser[i].labelId).success(function(response){
+         $scope.labelsData.push(response.data);
+      });
+    }
+  };
 
 }]);
 

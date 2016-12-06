@@ -231,7 +231,7 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth', 'Users'
   //----- Real Data ----- //
   //get users to get classes, current semester, total semesters
   Users.getUser(srvAuth.getUserMongoId()).success(function(response){
-    $scope.classesFromUser = response.data.classes;
+    $scope.classesFromUser = response.data.classes[0];
     $scope.numsemesters =  response.data.totalSemesters;
     $scope.currentSemester =  response.data.currSemester;
     updateSemesters();
@@ -272,21 +272,25 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth', 'Users'
       }
       $scope.semesters.push(sem); ///working on getting classes into calendar view
     }
+    console.log("updated semesters", $scope.semesters);
   };
 
   var updateClasses = function(){
     $scope.classesData = [];
     console.log($scope.classesFromUser);
-    for (var i = 0; i <= $scope.classesFromUser.length; i++) {
+    for (var i = 0; i < $scope.classesFromUser.length; i++) {
       Classes.getClass($scope.classesFromUser[i].classId).success(function(response){
-         $scope.classesData.push(response.data);
+          $scope.classesData.push(response.data);
+          if (i == $scope.classesFromUser.length){
+            updateSemesters();
+          }
       });
     }
   };
 
   var updateLabels = function(){
     $scope.labelsData = [];
-    for (var i = 0; i <= $scope.classesFromUser.length; i++) {
+    for (var i = 0; i < $scope.classesFromUser.length; i++) {
       Labels.getLabel($scope.classesFromUser[i].labelId).success(function(response){
          $scope.labelsData.push(response.data);
       });

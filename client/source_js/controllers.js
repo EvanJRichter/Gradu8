@@ -119,6 +119,10 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
   //   console.log($scope.classes);
   // });
 
+  Users.getUser(srvAuth.getUserMongoId()).success(function(response){
+    var user = response.data;
+  });
+
   Labels.getPublicLabels().success(function(data) {
     $scope.labels = data.data;
 
@@ -175,8 +179,15 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
       }
     }
 
-    user = srvAuth.getUser();
-    Users.addUserClasses(user.mongoId, userClasses).success(function(data) {
+    console.log(user);
+    if (user.classes){
+      user.classes.concat(userClasses);
+    }
+    else {
+      user.classes = userClasses;
+    }
+    console.log(user);
+    Users.putUserProfile(user).success(function(data) {
       console.log("Added Classes to user", data);
       Users.setPassedUser(data.data)
       $location.path( "/calendar" );

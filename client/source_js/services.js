@@ -130,7 +130,7 @@ gradu8Services.factory('Users', function($http, $window) {
   };
   var putUserProfileHandler = function(userObj) {
     console.log("put services", userObj);
-    return $http.put(baseUrl + '/api/users/' + userObj._id , {user: userObj});
+    return $http.put(baseUrl + '/api/users/' + userObj._id , userObj);
   };
   var getUserClassesHandler = function(fbId) {
     var whereUrl = 'where={"facebookId":"'+ fbId +'"}';
@@ -146,7 +146,7 @@ gradu8Services.factory('Users', function($http, $window) {
       else {
         userObj.classes = classes;
       }
-      $http.put(baseUrl + '/api/users/' + userObj._id, {user: userObj}).success(function(response){
+      $http.put(baseUrl + '/api/users/' + userObj._id,  userObj).success(function(response){
         console.log("added classes: ", response);
       });
     });
@@ -159,7 +159,7 @@ gradu8Services.factory('Users', function($http, $window) {
       if (index > -1) {
         userObj.classes.splice(index, 1);
       }
-      $http.put(baseUrl + '/api/users/' + userObj._id, {user: userObj});
+      $http.put(baseUrl + '/api/users/' + userObj._id, userObj);
     });
   };
 
@@ -175,7 +175,7 @@ gradu8Services.factory('Users', function($http, $window) {
       var userObj = data.data;
       // TODO check somewhere that classes make sense?
       userObj.labels.push(labels);
-      $http.put(baseUrl + '/api/users/' + userObj._id, {user: userObj});
+      $http.put(baseUrl + '/api/users/' + userObj._id, userObj);
     });
   };
 
@@ -187,7 +187,7 @@ gradu8Services.factory('Users', function($http, $window) {
       if (index > -1) {
         userObj.labels.splice(index, 1);
       }
-      $http.put(baseUrl + '/api/users/' + userObj._id, {user: userObj});
+      $http.put(baseUrl + '/api/users/' + userObj._id, userObj);
     });
   };
 

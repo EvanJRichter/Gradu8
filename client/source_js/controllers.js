@@ -290,6 +290,7 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth', 'Users'
 }]);
 
 gradu8Controllers.controller('EditProfileController', ['$scope', '$location', 'Users', 'srvAuth',  'Universities', 'Majors', 'Minors', function($scope, $location, Users, srvAuth, Universities, Majors, Minors) {
+  $scope.loading = true;
   Universities.getAllSchools().success(function(data) {
     $scope.universityOptions = data.data;
   });
@@ -299,19 +300,14 @@ gradu8Controllers.controller('EditProfileController', ['$scope', '$location', 'U
   Minors.getAllMinors().success(function(data) {
     $scope.minorOptions = data.data;
   });
+  Users.getUser(srvAuth.getUserMongoId()).success(function(data){
+    $scope.user = data.data;
+    $scope.loading = false;
+    console.log("user loaded on edit page");
+  });
   // $scope.totalSemesters = 8;
   // $scope.currSemester = 1;
-  //
-  // $scope.user = {
-  //   university: undefined,
-  //   major: undefined,
-  //   minor: undefined,
-  //   totalSemesters: 8,
-  //   currSemester: 1,
-  //   classes: [],
-  //   facebookId: 0,
-  //   _id: 0
-  // };
+
   $scope.user = Users.getPassedUser();
 
   $scope.editProfile = function(){

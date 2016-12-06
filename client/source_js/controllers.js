@@ -125,13 +125,11 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
 
   Labels.getPublicLabels().success(function(data) {
     $scope.labels = data.data;
-
     for (i = 0; i < $scope.labels.length; i++) {
       $scope.labels[i]["classes"] = [];
       if (i < 4) $scope.labels[i]["expanded"] = true;
       else $scope.labels[i]["expanded"] = false;
     }
-
     $scope.unassignedLabel = $scope.labels.find(findUnassignedLabel);
     var index = $scope.labels.indexOf($scope.unassignedLabel);
     if (index > -1) {
@@ -161,39 +159,41 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
   };
 
   $scope.generateCalendar = function() {
-    $scope.labels.push($scope.unassignedLabel);
-    var userClasses = [];
-    var semester = 0;
-
-    for (i = 0 ; i < $scope.labels.length ; i++) {
-      var labelId = $scope.labels[i]._id;
-      for (j = 0 ; j < $scope.labels[i].classes.length ; j++) {
-        // var _class = [$scope.labels[i].classes[j]._id, $scope.labels[i]._id, 0];
-        var _class = {
-          classId : $scope.labels[i].classes[j]._id,
-          labelId : $scope.labels[i]._id,
-          semester : 0
-        };
-        userClasses.push(_class);
-        // only add labels to user if private label
-      }
-    }
-
-    console.log(user);
-    if (user.classes){
-      user.classes.concat(userClasses);
-    }
-    else {
-      user.classes = userClasses;
-    }
-    console.log(user);
-    Users.putUserProfile(user).success(function(data) {
+    var finalLabels = $scope.labels;
+    finalLabels.push($scope.unassignedLabel);
+    var userClasses = createClassesArray(finalLabels);
+    // var user = addUserClasses(user, userClasses);
+    var userId = srvAuth.getUserMongoId();
+    Users.addUserClasses(userId, userClasses).success(function(data) {
       console.log("Added Classes to user", data);
-      Users.setPassedUser(data.data)
       $location.path( "/calendar" );
     });
 
   };
+
+  function createClassesArray(labels) {
+    var userClasses = [];
+    for (i = 0 ; i < labels.length ; i++) {
+      var labelId = labels[i]._id;
+      for (j = 0 ; j < labels[i].classes.length ; j++) {
+        var _class = {
+          classId : labels[i].classes[j]._id,
+          labelId : labels[i]._id,
+          semester : 0
+        };
+        userClasses.push(_class);
+      }
+    }
+    return userClasses;
+  }
+
+  function addUserClasses(user, classes) {
+    if (user.classes)
+      user.classes.concat(userClasses);
+    else
+      user.classes = userClasses;
+    return user;
+  }
 
   function findUnassignedLabel(label) {
     return label.name === 'Unassigned Classes';

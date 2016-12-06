@@ -138,19 +138,18 @@ gradu8Services.factory('Users', function($http, $window) {
     return $http.get(baseUrl + '/api/users/?' + whereUrl + '&' + selectUrl);
   };
   var addUserClassesHandler = function(userId, classes) {
-    return $http.get(baseUrl + '/api/users/' + userId).success(function(data) {
+    var promise = $http.get(baseUrl + '/api/users/' + userId).success(function(data) {
       var userObj = data.data;
-      if (userObj.classes){
+      console.log("addUserClassesHandler, passed first get. User:", data);
+      if (userObj.classes)
         userObj.classes.push(classes);
-      }
-      else {
+      else
         userObj.classes = classes;
-      }
-      $http.put(baseUrl + '/api/users/' + userObj._id,  userObj).success(function(response){
-        console.log("added classes: ", response);
-      });
+      return $http.put(baseUrl + '/api/users/' + userObj._id,  userObj);
     });
+    return promise;
   };
+
   var deleteUserClassHandler = function(fbId, _class) {
     var whereUrl = 'where={"facebookId":"'+ fbId +'"}';
     return $http.get(baseUrl + '/api/users/?' + whereUrl).success(function(data) {

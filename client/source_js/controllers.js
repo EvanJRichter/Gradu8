@@ -289,32 +289,46 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth', 'Users'
 
 }]);
 
-gradu8Controllers.controller('EditProfileController', ['$scope', '$location', 'Users', 'srvAuth',  'Universities', 'Majors', 'Minors', function($scope, $location, Users, srvAuth, Universities, Majors, Minors) {
-  $scope.loading = true;
-  Universities.getAllSchools().success(function(data) {
-    $scope.universityOptions = data.data;
-  });
-  Majors.getAllMajors().success(function(data) {
-    $scope.majorOptions = data.data;
-  });
-  Minors.getAllMinors().success(function(data) {
-    $scope.minorOptions = data.data;
-  });
-  Users.getUser(srvAuth.getUserMongoId()).success(function(data){
-    $scope.user = data.data;
-    $scope.loading = false;
-    console.log("user loaded on edit page");
-  });
-  // $scope.totalSemesters = 8;
-  // $scope.currSemester = 1;
+gradu8Controllers.controller('EditProfileController', ['$scope', '$location', '$q', 'Users', 'srvAuth',  'Universities', 'Majors', 'Minors', function($scope, $location, $q, Users, srvAuth, Universities, Majors, Minors) {
 
-  $scope.user = Users.getPassedUser();
+  $q.all([
+    Universities.getAllSchools(),
+    Majors.getAllMajors(),
+    Minors.getAllMinors(),
+    Users.getUser(srvAuth.getUserMongoId())
+  ]).then(function(data) {
+    $scope.universityOptions = data[0].data.data;
+    $scope.majorOptions = data[1].data.data;
+    $scope.minorOptions = data[2].data.data;
+    $scope.user = data[3].data.data;
+    $scope.user = matchIdObjects($scope.universityOptions, $scope.majorOptions, $scope.minorOptions, $scope.user);
+    $scope.loading = false;
+  });
+
+  $scope.loading = true;
+
+  function matchIdObjects(universities, majors, minors, user) {
+    user.university = searchById(universities, user.university);
+    user.major = searchById(majors, user.major);
+    user.minor = searchById(minors, user.minor);
+    return user;
+  }
+
+  function searchById(array, value) {
+    for (var i=0; i < array.length; i++) {
+      if (array[i]._id === value)
+        return array[i];
+    }
+  }
 
   $scope.editProfile = function(){
+    if ($scope.user.university) $scope.user.university = $scope.user.university._id;
+    if ($scope.user.major) $scope.user.major = $scope.user.major._id;
+    if ($scope.user.minor) $scope.user.minor = $scope.user.minor._id;
+    console.log("posting editted user", $scope.user);
     Users.putUserProfile($scope.user).success(function(data) {
       console.log("Updated user profile", data);
-      Users.setPassedUser(data.data);
-      $location.path( "/add_classes" );
+      $location.path( "/calendar" );
     });
   };
 }]);

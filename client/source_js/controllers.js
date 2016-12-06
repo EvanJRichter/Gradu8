@@ -16,15 +16,9 @@ gradu8Controllers.controller('HeaderController', ['$scope', '$location', functio
 gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$location', 'Users', function($scope, srvAuth, $location, Users) {
   $scope.fb_login = function() {
     FB.login(function(response) {
-      console.log("fb login: ", response);
-
       if (response.authResponse) {
         FB.api('/me', function(response) {
-          console.log("fb me: ", response);
-
           Users.getFBUser(response.id).success(function(userdata){
-            console.log("getfbuser response: ", userdata);
-            console.log("getfbuser length: ", userdata.data.length);
             if (userdata.data.length == 0){
               srvAuth.setUserFacebookId(response.id);
               Users.addUser(response.id).success(function(userdata2){
@@ -197,9 +191,12 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
 
 }]);
 
-gradu8Controllers.controller('CalendarController', ['$scope', 'Users', 'Classes', 'Labels', 'srvAuth', function($scope, Users, Classes, Labels, srvAuth) {
+gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth', 'Users', 'Classes', 'Labels', function($scope, srvAuth, Users, Classes, Labels) {
   //get users to get classes, current semester, total semesters
-
+  console.log(srvAuth.getUser())
+  Users.getUser(srvAuth.getUser().mongoId).success(function(response){
+    console.log(response);
+  });
   //get classes to match class ids
   //get labels to match label ids
 

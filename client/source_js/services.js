@@ -194,13 +194,20 @@ gradu8Services.factory('Users', function($http, $window) {
 
 
 gradu8Services.factory('Classes', function($http, $window) {
-  var baseUrl = "http://localhost:3001"
+  var baseUrl = "http://localhost:3001";
+  var getDepartmentsHandler = function(){
+    var distinctUrl = 'distinct="department"';
+      return $http.get(baseUrl + '/api/classes/?' + distinctUrl);
+  };
   var getClassHandler = function(classId){
       return $http.get(baseUrl + '/api/classes/' + classId);
   };
-
   var getPublicClassesHandler = function() {
     var whereUrl = 'where={"public": true}&limit=1000';
+    return $http.get(baseUrl + '/api/classes/?' + whereUrl);
+  };
+  var getDepartmentClassesHandler = function(department) {
+    var whereUrl = 'where={"department": '+ department + '}';
     return $http.get(baseUrl + '/api/classes/?' + whereUrl);
   };
 
@@ -217,8 +224,10 @@ gradu8Services.factory('Classes', function($http, $window) {
   };
 
   return {
+    getDepartments: getDepartmentsHandler,
     getClass: getClassHandler, //both
     getPublicClasses: getPublicClassesHandler, //public
+    getDepartmentClasses: getDepartmentClassesHandler,
     addClass: addClassHandler, //private
     updateClass: updateClassHandler,//private
     deleteClass: deleteClassHandler//private

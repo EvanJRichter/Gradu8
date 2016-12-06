@@ -206,20 +206,18 @@ module.exports = function(router) {
 //     });
   });
 
-  // Adithya is the gr8est human being this side of the Mississippi
 
   userRoute.put(function(req, res) {
-    var user = req.body.user;
-    var id = user._id;
-    var facebookId = user.facebookId;
-    var university = user.university;
-    var major = user.major;
-    var minor = user.minor;
-    var _public = user.public;
-    var totalSemesters = user.totalSemesters;
-    var currSemester = user.currSemester;
-    var labels = user.labels;
-    var classes = user.classes;
+    var id = req.body._id;
+    var facebookId = req.body.facebookId;
+    var university = req.body.university;
+    var major = req.body.major;
+    var minor = req.body.minor;
+    var _public = req.body.public;
+    var totalSemesters = req.body.totalSemesters;
+    var currSemester = req.body.currSemester;
+    var labels = req.body.labels;
+    var classes = req.body.classes;
     User.findById(id, function(err, result) {
       if (err) {
         res.setHeader('Content-Type', 'application/json');

@@ -207,7 +207,7 @@ gradu8Services.factory('Classes', function($http, $window) {
     return $http.get(baseUrl + '/api/classes/?' + whereUrl);
   };
   var getDepartmentClassesHandler = function(department) {
-    var whereUrl = 'where={"department": '+ department + '}';
+    var whereUrl = 'where={"department": "'+ department + '"}';
     return $http.get(baseUrl + '/api/classes/?' + whereUrl);
   };
 

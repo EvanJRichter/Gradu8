@@ -28,7 +28,6 @@ gradu8Controllers.controller('LandingController', ['$scope', 'srvAuth', '$locati
               }); //TODO: Add failure case for adding user, and for if user length > 1
             } else {
               user = userdata.data[0]
-              Users.setPassedUser(user);
               console.log("getfbuser response: ", user.major);
               console.log("getfbuser response: ", user.classes.length);
 
@@ -98,7 +97,6 @@ gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 
     $scope.user._id = user.mongoId;
     Users.putUser($scope.user).success(function(data) {
       console.log("Created user profile", data.data);
-      Users.setPassedUser(data.data)
       $location.path( "/add_classes" );
     });
   };

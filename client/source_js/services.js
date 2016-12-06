@@ -200,7 +200,7 @@ gradu8Services.factory('Classes', function($http, $window) {
   };
 
   var getPublicClassesHandler = function() {
-    var whereUrl = 'where={"public": true}';
+    var whereUrl = 'where={"public": true}&limit=1000';
     return $http.get(baseUrl + '/api/classes/?' + whereUrl);
   };
 

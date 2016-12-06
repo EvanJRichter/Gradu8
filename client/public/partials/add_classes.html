@@ -14,15 +14,16 @@
 				<div>
 					<input type="text" class="form-control" ng-model="departmentSelected"
 					typeahead="department for department in departments | filter: $viewValue"
-					typeahead-on-select="selectedDepartment($item, $model, $label)">
+					typeahead-on-select="onSelectDepartment($item, $model, $label)">
 				</div>
 
 				<label class="control-label" ng-show="viewClassSearch">Select classes:</label>
 				<div ng-show="viewClassSearch">
 					<input type="text" class="form-control" ng-model="classSelected"
-					typeahead="class.number for class.number in departmentClasses | filter: $viewValue"
-					typeahead-on-select="selectedClasses($item, $model, $label)">
+					typeahead="class.number for class in departmentClasses | filter: $viewValue"
+					typeahead-on-select="onSelectClasses($item, $model, $label)">
 				</div>
+
 		  </div>
 
 			<!-- Unassigned classes -->

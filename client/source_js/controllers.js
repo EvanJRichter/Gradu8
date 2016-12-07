@@ -224,6 +224,7 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
       console.log("classes for department", data.data);
     });
   };
+
   $scope.onSelectClasses = function($item, $model, $label) {
     if (!$scope.semesters || !$scope.semesters[0] || !$scope.semesters[0].classes) {
       return;
@@ -241,13 +242,19 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
         return;
       }
     }
-    var elem = {};
-    elem["classId"] = $item._id;
-    elem["labelId"] = "58433382e7f552075318219f";
-    $scope.semesters[0].classes.push(elem);
-    // $scope.semesters[0].classes.push($item);
-    $scope.classSelected = "";
-    console.log($scope.semesters);
+
+    Classes.getClass($item._id).success(function(data) {
+      var _class = data.data;
+      var elem = {};
+      elem["classId"] = _class._id;
+      elem["labelId"] = "58433382e7f552075318219f";
+      $scope.classesData.push(_class);
+      $scope.semesters[0].classes.push(elem);
+      // $scope.semesters[0].classes.push($item);
+      $scope.classSelected = "";
+      console.log($scope.semesters);
+    });
+
   };
 
 

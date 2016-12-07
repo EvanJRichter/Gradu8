@@ -11,7 +11,8 @@
             ng-model='semester' jqyoui-droppable="{multiple:true}">
 					<div class="class-box" ng-repeat="class in semester" ng-style="{'background-color':getLabelById(class.labelId).color}"
           ng-show="class[0]" data-drag="true" data-jqyoui-options="{revert: 'invalid'}"
-          ng-model="semester" jqyoui-draggable="{index: {{$index}}, animate:true}" >
+          ng-model="semester" jqyoui-draggable="{index: {{$index}}, animate:true}" 
+          data-toggle="modal" data-target="#myModal" ng-click="updateActiveClass(class)">
 						{{getClassById(class.classId).title}}
 					</div>
 				</div>
@@ -20,7 +21,8 @@
 				<div class="class-container"  data-drop="true" ng-model='semesters[0]' jqyoui-droppable="{multiple:true}" >
           <div class="class-box col-md-3" ng-repeat="class in semesters[0]" ng-style="{'background-color':getLabelById(class.labelId).color}"
           ng-show="class[0]" data-drag="true" data-jqyoui-options="{revert: 'invalid'}"
-          ng-model="semesters[0]" jqyoui-draggable="{index: {{$index}}, animate:true}" >
+          ng-model="semesters[0]" jqyoui-draggable="{index: {{$index}}, animate:true}" 
+          data-toggle="modal" data-target="#myModal" ng-click="updateActiveClass(class)">
 						{{getClassById(class.classId).title}}
 					</div>
 				</div>
@@ -32,4 +34,34 @@
 
 <div class="container" ng-show="loading">
 	<img ng-src="../assets/ring.svg" class="img-responsive center-block"></img>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">{{activeClass.title}} - {{activeClass.department}}{{activeClass.number}}</h4>
+      </div>
+      <div class="modal-body">
+        <p>Description: {{activeClass.description}}</p>
+        <br>
+        <p>Credit Hours: {{activeClass.description}}</p>
+        <br>
+        <p>Fall Class: {{activeClass.fall}}
+        <!--<span class="glyphicon glyphicon-ok icon-success" ng-show="{{activeClass.fall}}"></span>-->
+        <!--<span class="glyphicon glyphicon-remove icon-failure" ng-show="{{!activeClass.fall}}"></span></p>-->
+        <p>Spring Class:  {{activeClass.spring}}
+        <!--<span class="glyphicon glyphicon-ok icon-success" ng-show="{{activeClass.spring}}"></span>-->
+        <!--<span class="glyphicon glyphicon-remove icon-failure" ng-show="{{!activeClass.spring}}"></span></p>-->
+        <!--<p>Prerequisites: {{activeClass.prereqs}}</p>-->
+      </div>
+      <!--<div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>-->
+    </div>
+  </div>
 </div>

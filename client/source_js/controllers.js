@@ -199,44 +199,10 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
 }]);
 
 gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', 'Users', 'Classes', 'Labels', function($scope, $q, srvAuth, Users, Classes, Labels) {
-
-  // //dummy data
-  // $scope.classesData = [
-  //   {"_id" : 1, "department" : "CS" , "number" : 125 , "title" : "Intro to Computer Science" },
-  //   {"_id" : 2, "department" : "CE" , "number" : 101 , "title" : "Intro to Computer Engineering" },
-  //   {"_id" : 3, "department" : "CS" , "number" : 225 , "title" : "Data Structures" },
-  //   {"_id" : 4, "department" : "TGMT" , "number" : 460 , "title" : "Shit show"}
-  // ];
-  //
-  // $scope.labelsData = [
-  //   {"_id" : 1, "name" : "Major" , "color" : "#f00" },
-  //   {"_id" : 2, "name" : "Minor" , "color" : "#0f0" },
-  //   {"_id" : 3, "name" : "Elective" , "color" : "#00f" }
-  // ];
-  //
-  // $scope.classesFromUser = [[1, 1, 0], [1, 2, 0], [2, 1, 0], [1, 1, 0], [1, 1, 0], [2, 2, 1], [2, 2, 2], [2, 2, 3], [3, 3, 2], [3, 3, 3],[2, 1, 7], [2, 2, 8]];
-  // $scope.numsemesters = 8;
-  // $scope.currentSemester = 1;
-  // $scope.semesters = [];
-
-  // setTimeout(function(){
-  //   //----- Real Data ----- //
-  //   //get users to get classes, current semester, total semesters
-  //   Users.getUser(srvAuth.getUserMongoId()).success(function(response){
-  //     console.log("Initial get user", response);
-  //     $scope.classesFromUser = response.data.classes[0];
-  //     $scope.numsemesters =  response.data.totalSemesters;
-  //     $scope.currentSemester =  response.data.currSemester;
-  //     updateSemesters();
-  //     //get classes to match class ids
-  //     updateClasses();
-  //     //get labels to match label ids
-  //     updateLabels();
-  //   });
-  // }, 2000);
   $scope.classesData = [];
   $scope.labelsData = [];
   $scope.loading = true;
+  $scope.activeClass = {};
   setTimeout(function(){
     $q.all([
       Labels.getPublicLabels(),
@@ -333,6 +299,10 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
       console.log("Updated user classes", data);
     });
   }
+  $scope.updateActiveClass = function(class_item){
+    $scope.activeClass = $scope.getClassById(class_item.classId);
+  }
+
 
 }]);
 

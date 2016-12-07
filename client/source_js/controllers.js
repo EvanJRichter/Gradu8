@@ -99,7 +99,7 @@ gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 
       console.log("Created user profile", data.data);
       $location.path( "/add_classes" );
     });
-  };
+  };  
 }]);
 
 gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$window', 'Users', 'srvAuth', 'Classes', 'Labels', function($scope, $location, $window, Users, srvAuth, Classes, Labels) {
@@ -237,18 +237,23 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth', 'Users'
   $scope.currentSemester = 1;
   $scope.semesters = [];
 
-  //----- Real Data ----- //
-  //get users to get classes, current semester, total semesters
-  Users.getUser(srvAuth.getUserMongoId()).success(function(response){
-    $scope.classesFromUser = response.data.classes;
-    $scope.numsemesters =  response.data.totalSemesters;
-    $scope.currentSemester =  response.data.currSemester;
-    updateSemesters();
-    //get classes to match class ids
-    updateClasses();
-    //get labels to match label ids
-    updateLabels();
-  });
+  setTimeout(function(){
+    //----- Real Data ----- //
+    //get users to get classes, current semester, total semesters
+    Users.getUser(srvAuth.getUserMongoId()).success(function(response){
+      console.log("Initial get user", response);
+      $scope.classesFromUser = response.data.classes[0];
+      $scope.numsemesters =  response.data.totalSemesters;
+      $scope.currentSemester =  response.data.currSemester;
+      updateSemesters();
+      //get classes to match class ids
+      updateClasses();
+      //get labels to match label ids
+      updateLabels();
+    });
+  }, 500);
+
+  
 
   $scope.getLabelById = function(labelId){
     var ret = null;
@@ -281,21 +286,24 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth', 'Users'
       }
       $scope.semesters.push(sem); ///working on getting classes into calendar view
     }
+    console.log("updated semesters", $scope.semesters);
   };
 
   var updateClasses = function(){
     $scope.classesData = [];
-    console.log($scope.classesFromUser);
-    for (var i = 0; i <= $scope.classesFromUser.length; i++) {
+    for (var i = 0; i < $scope.classesFromUser.length; i++) {
       Classes.getClass($scope.classesFromUser[i].classId).success(function(response){
-         $scope.classesData.push(response.data);
+          $scope.classesData.push(response.data);
+          if (i == $scope.classesFromUser.length){
+            updateSemesters();
+          }
       });
     }
   };
 
   var updateLabels = function(){
     $scope.labelsData = [];
-    for (var i = 0; i <= $scope.classesFromUser.length; i++) {
+    for (var i = 0; i < $scope.classesFromUser.length; i++) {
       Labels.getLabel($scope.classesFromUser[i].labelId).success(function(response){
          $scope.labelsData.push(response.data);
       });

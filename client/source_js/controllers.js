@@ -178,7 +178,6 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
     var finalLabels = $scope.labels;
     finalLabels.push($scope.unassignedLabel);
     var userClasses = createClassesArray(finalLabels);
-    // var user = addUserClasses(user, userClasses);
     var userId = srvAuth.getUserMongoId();
     console.log(userClasses)
     Users.addUserClasses(userId, userClasses).success(function(data) {
@@ -201,15 +200,8 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
         userClasses.push(_class);
       }
     }
-    return userClasses;
-  }
-
-  function addUserClasses(user, classes) {
-    if (user.classes)
-      user.classes.concat(userClasses);
-    else
-      user.classes = userClasses;
-    return user;
+    console.log("this is the array created", userClasses[0]);
+    return userClasses[0];
   }
 
   function findUnassignedLabel(label) {
@@ -275,6 +267,7 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
       $scope.classesFromUser = $scope.user.classes;
       $scope.numSemesters =  $scope.user.totalSemesters;
       // $scope.currentSemester =  $scope.user.currSemester;
+      console.log("User classes", $scope.user.classes);
       $scope.semesters = createSemesters($scope.user.classes, $scope.user.currSemester);
       updateClasses();
       updateLabels();

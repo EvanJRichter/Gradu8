@@ -249,11 +249,11 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
         return;
       }
     }
-    // var elem = {};
-    // elem["classId"] = $item._id;
-    // elem["labelId"] = "58433382e7f552075318219f";
-    // $scope.semesters[0].classes.push(elem);
-    $scope.semesters[0].classes.push($item);
+    var elem = {};
+    elem["classId"] = $item._id;
+    elem["labelId"] = "58433382e7f552075318219f";
+    $scope.semesters[0].classes.push(elem);
+    // $scope.semesters[0].classes.push($item);
     $scope.classSelected = "";
     console.log($scope.semesters);
   };

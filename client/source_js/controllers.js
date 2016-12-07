@@ -130,6 +130,7 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
     }
     $scope.unassignedLabel.classes.push($item);
     $scope.classSelected = "";
+    console.log($scope.labels);
   };
 
   Labels.getPublicLabels().success(function(data) {
@@ -144,8 +145,27 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
     if (index > -1) {
       $scope.labels.splice(index, 1);
     }
-
+    var userId = srvAuth.getUserMongoId();
+    Users.getUser(userId).success(function(data){
+      classes = data.data.classes[0];
+      if (classes && classes.length > 0){
+        for (c = 0; c < classes.length; c++){
+          addToLabels(classes[c]);
+        }
+      }
+    });
   });
+
+  var addToLabels = function(class_item){
+    Classes.getClass(class_item.classId).success(function(response){
+      for (l = 0; l < $scope.labels.length; l++){
+        if ($scope.labels[l]._id == class_item.labelId){
+          console.log("adding", response.data, "to ", $scope.labels[c]["classes"]);
+          $scope.labels[c]["classes"].push(response.data);
+        }
+      }
+    });
+  };
 
   $scope.removeClass = function(_class, array) {
     var index = array.indexOf(_class);

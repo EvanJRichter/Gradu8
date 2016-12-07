@@ -233,22 +233,28 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
   //     updateLabels();
   //   });
   // }, 2000);
-
+  $scope.classesData = [];
+  $scope.labelsData = [];
   $scope.loading = true;
   setTimeout(function(){
     $q.all([
       Labels.getPublicLabels(),
       Users.getUser(srvAuth.getUserMongoId())
     ]).then(function(data) {
+      console.log(data);
       $scope.labelsData = data[0].data.data;
       $scope.user = data[1].data.data;
       console.log("Initial get user", data[1].data);
+      console.log(data);
 
-      $scope.classesFromUser = user.classes[0];
-      $scope.numSemesters =  user.totalSemesters;
-      $scope.currentSemester =  user.currSemester;
-      $scope.semesters = updateSemesters(user.classes[0]);
-      $scope.loading = false;
+      $scope.classesFromUser = $scope.user.classes[0];
+      $scope.numSemesters =  $scope.user.totalSemesters;
+      $scope.currentSemester =  $scope.user.currSemester;
+      $scope.semesters = updateSemesters($scope.user.classes[0]);
+      updateClasses();
+      updateLabels();
+      console.log($scope.semesters);
+      $scope.loading = false; //todo not actually done loading until classes and labels are received
     });
   }, 1000);
 
@@ -256,6 +262,7 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
     var ret = null;
     $scope.labelsData.forEach(function(label) {
       if (label._id === labelId){
+        console.log(ret, labelId);
         ret = label;
       }
     });
@@ -293,9 +300,6 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
     for (var i = 0; i < $scope.classesFromUser.length; i++) {
       Classes.getClass($scope.classesFromUser[i].classId).success(function(response){
           $scope.classesData.push(response.data);
-          if (i == $scope.classesFromUser.length){
-            updateSemesters();
-          }
       });
     }
   };

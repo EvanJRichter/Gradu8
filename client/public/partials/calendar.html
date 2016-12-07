@@ -7,21 +7,21 @@
   	<div class="row">
   		<div id="calendar">
   			<div id="assigned">
-				<div class="class-container" ng-repeat="semester in semesters | limitTo: (1 - numsemesters)"  data-drop="true"
-            ng-model='semester.classes' jqyoui-droppable="{multiple:true}">
-					<div class="class-box" ng-repeat="class in semester.classes" ng-style="{'background-color':getLabelById(class[1]).color}"
+				<div class="class-container" ng-repeat="semester in semesters | limitTo: (1 - numSemesters)"  data-drop="true"
+            ng-model='semester' jqyoui-droppable="{multiple:true}">
+					<div class="class-box" ng-repeat="class in semester" ng-style="{'background-color':getLabelById(class.labelId).color}"
           ng-show="class[0]" data-drag="true" data-jqyoui-options="{revert: 'invalid'}"
-          ng-model="semester.classes" jqyoui-draggable="{index: {{$index}}, animate:true}" >
-						{{getClassById(class[0]).title}}
+          ng-model="semester" jqyoui-draggable="{index: {{$index}}, animate:true}" >
+						{{getClassById(class.classId).title}}
 					</div>
 				</div>
 			</div>
   			<div id="unassigned">
-				<div class="class-container"  data-drop="true" ng-model='semesters[0].classes' jqyoui-droppable="{multiple:true}" >
-          <div class="class-box col-md-3" ng-repeat="class in semesters[0].classes" ng-style="{'background-color':getLabelById(class[1]).color}"
+				<div class="class-container"  data-drop="true" ng-model='semesters[0]' jqyoui-droppable="{multiple:true}" >
+          <div class="class-box col-md-3" ng-repeat="class in semesters[0]" ng-style="{'background-color':getLabelById(class.labelId).color}"
           ng-show="class[0]" data-drag="true" data-jqyoui-options="{revert: 'invalid'}"
-          ng-model="semesters[0].classes" jqyoui-draggable="{index: {{$index}}, animate:true}" >
-						{{getClassById(class[0]).title}}
+          ng-model="semesters[0]" jqyoui-draggable="{index: {{$index}}, animate:true}" >
+						{{getClassById(class.classId).title}}
 					</div>
 				</div>
 			</div>

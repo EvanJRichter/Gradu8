@@ -99,7 +99,7 @@ gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 
       console.log("Created user profile", data.data);
       $location.path( "/add_classes" );
     });
-  };
+  };  
 }]);
 
 gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$window', 'Users', 'srvAuth', 'Classes', 'Labels', function($scope, $location, $window, Users, srvAuth, Classes, Labels) {
@@ -277,7 +277,6 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth', 'Users'
 
   var updateClasses = function(){
     $scope.classesData = [];
-    console.log($scope.classesFromUser);
     for (var i = 0; i < $scope.classesFromUser.length; i++) {
       Classes.getClass($scope.classesFromUser[i].classId).success(function(response){
           $scope.classesData.push(response.data);

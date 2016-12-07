@@ -237,18 +237,23 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth', 'Users'
   $scope.currentSemester = 1;
   $scope.semesters = [];
 
-  //----- Real Data ----- //
-  //get users to get classes, current semester, total semesters
-  Users.getUser(srvAuth.getUserMongoId()).success(function(response){
-    $scope.classesFromUser = response.data.classes[0];
-    $scope.numsemesters =  response.data.totalSemesters;
-    $scope.currentSemester =  response.data.currSemester;
-    updateSemesters();
-    //get classes to match class ids
-    updateClasses();
-    //get labels to match label ids
-    updateLabels();
-  });
+  setTimeout(function(){
+    //----- Real Data ----- //
+    //get users to get classes, current semester, total semesters
+    Users.getUser(srvAuth.getUserMongoId()).success(function(response){
+      console.log("Initial get user", response);
+      $scope.classesFromUser = response.data.classes[0];
+      $scope.numsemesters =  response.data.totalSemesters;
+      $scope.currentSemester =  response.data.currSemester;
+      updateSemesters();
+      //get classes to match class ids
+      updateClasses();
+      //get labels to match label ids
+      updateLabels();
+    });
+  }, 500);
+
+  
 
   $scope.getLabelById = function(labelId){
     var ret = null;

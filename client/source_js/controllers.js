@@ -110,19 +110,28 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
   });
 
   $scope.onSelectDepartment = function($item, $model, $label) {
-    var department = $item;
-    Classes.getDepartmentClasses(department).success(function(data) {
+    Classes.getDepartmentClasses($item).success(function(data) {
       $scope.viewClassSearch = true;
       $scope.departmentClasses = data.data;
+      console.log("classes for department", data.data);
     });
   };
 
   $scope.onSelectClasses = function($item, $model, $label) {
-    var department = $item;
-    Classes.getDepartmentClasses(department).success(function(data) {
-      $scope.viewClassSearch = true;
-      $scope.departmentClasses = data.data;
-    });
+    var index = $scope.unassignedLabel.classes.indexOf($item);
+    if (index > -1) {
+      $scope.classSelected = "";
+      return;
+    }
+    for (i = 0; i < $scope.labels.length; i++) {
+      index = $scope.labels[i].classes.indexOf($item);
+      if (index > -1) {
+        $scope.classSelected = "";
+        return;
+      }
+    }
+    $scope.unassignedLabel.classes.push($item);
+    $scope.classSelected = "";
   };
 
   Users.getUser(srvAuth.getUserMongoId()).success(function(response){

@@ -2,25 +2,19 @@
 	<div class="row">
 	  <div class="col-md-6">
 			<!-- Search box -->
-			<label class="control-label">Add classes:</label>
+			<label class="control-label">Add classes</label>
 			<div class="form-group add-classes">
-		    <!-- <div>
-					<input type="text" class="form-control" ng-model="classSelected"
-					typeahead="class.department + class.number + ' ' + class.title
-					for class in classes | filter: classFilter"
-					typeahead-on-select="addClass($item, $model, $label)">
-				</div> -->
 				<label class="control-label">Select department:</label>
 				<div>
 					<input type="text" class="form-control" ng-model="departmentSelected"
 					typeahead="department for department in departments | filter: $viewValue"
 					typeahead-on-select="onSelectDepartment($item, $model, $label)">
 				</div>
-
+				<br>
 				<label class="control-label" ng-show="viewClassSearch">Select classes:</label>
 				<div ng-show="viewClassSearch">
 					<input type="text" class="form-control" ng-model="classSelected"
-					typeahead="class.number for class in departmentClasses | filter: $viewValue"
+					typeahead="class.number + ' ' + class.title for class in departmentClasses | filter: $viewValue"
 					typeahead-on-select="onSelectClasses($item, $model, $label)">
 				</div>
 

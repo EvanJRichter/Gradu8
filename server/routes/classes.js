@@ -19,7 +19,7 @@ module.exports = function(router) {
     var distinct = eval("("+req.query.distinct+")");
 
     if (distinct) {
-      var classes = Class.find(where, function(err, data) {
+      var classes = Class.find().distinct(distinct).exec(function(err, data) {
         if (err) {
           res.status(500).send({ message: 'Error', data: []});
         }
@@ -27,7 +27,6 @@ module.exports = function(router) {
           res.status(200).send({message: 'OK', data: data});
         }
       });
-      classes.distinct(distinct);
       return classes;
     }
 

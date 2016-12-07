@@ -160,6 +160,7 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
     var userClasses = createClassesArray(finalLabels);
     // var user = addUserClasses(user, userClasses);
     var userId = srvAuth.getUserMongoId();
+    console.log(userClasses)
     Users.addUserClasses(userId, userClasses).success(function(data) {
       console.log("Added Classes to user", data);
       $location.path( "/calendar" );
@@ -241,11 +242,9 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
       Labels.getPublicLabels(),
       Users.getUser(srvAuth.getUserMongoId())
     ]).then(function(data) {
-      console.log(data);
       $scope.labelsData = data[0].data.data;
       $scope.user = data[1].data.data;
-      console.log("Initial get user", data[1].data);
-      console.log(data);
+      console.log($scope.user);
 
       $scope.classesFromUser = $scope.user.classes[0];
       $scope.numSemesters =  $scope.user.totalSemesters;
@@ -253,7 +252,6 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
       $scope.semesters = updateSemesters($scope.user.classes[0]);
       updateClasses();
       updateLabels();
-      console.log($scope.semesters);
       $scope.loading = false; //todo not actually done loading until classes and labels are received
     });
   }, 1000);
@@ -262,7 +260,6 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
     var ret = null;
     $scope.labelsData.forEach(function(label) {
       if (label._id === labelId){
-        console.log(ret, labelId);
         ret = label;
       }
     });
@@ -291,7 +288,6 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
       _class["labelId"] = classes[i].labelId;
       semesters[curr_semester].push(_class);
     }
-    console.log("updated semesters", semesters);
     return semesters;
   };
 
@@ -312,6 +308,31 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
       });
     }
   };
+
+  $scope.updateUserCalendar = function(){
+    //parse classes into usable format
+    classes = [];
+    console.log("updating user calendar", $scope.semesters);
+
+    for (var s = 0 ; s < $scope.semesters.length; s++) {
+      for (var i = 0 ; i < $scope.semesters[s].length; i++) {
+        class_item = {
+          "classId" : $scope.semesters[s][i].classId,
+          "labelId" : $scope.semesters[s][i].labelId,
+          "semester" : s
+        }
+        console.log(class_item);
+
+        classes.push(class_item);
+      }
+    }
+    console.log(classes);
+
+    $scope.user.classes = [classes]; //add brackets because it gets stored as [array] in mongodb
+    Users.putUser($scope.user).success(function(data) {
+      console.log("Updated user classes", data);
+    });
+  }
 
 }]);
 

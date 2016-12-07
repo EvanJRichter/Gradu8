@@ -25,7 +25,7 @@
     			</div>
     		</div>
     	  <div class="row" id="assigned">
-    			<div class="class-container" ng-repeat="semester in semesters | limitTo: (- numSemesters)"  data-drop="true"
+    			<div class="class-container" ng-class="semester.current ? 'class-container-current' : 'class-container-non-current'" ng-repeat="semester in semesters | limitTo: (- numSemesters)"  data-drop="true"
               ng-model='semester.classes' jqyoui-droppable="{multiple:true}">
     				<div class="class-box {{'class-box-' + getClassById(class.classId).credit}}" ng-repeat="class in semester.classes" ng-style="{'background-color':getLabelById(class.labelId).color}"
             ng-show="class[0]" data-drag="true" data-jqyoui-options="{revert: 'invalid'}"
@@ -70,7 +70,8 @@
             ng-show="class[0]" data-drag="true" data-jqyoui-options="{revert: 'invalid'}"
             ng-model="semesters[0].classes" jqyoui-draggable="{index: {{$index}}, animate:true}"
             data-toggle="modal" data-target="#myModal" ng-click="updateActiveClass(class)">
-              {{getClassById(class.classId).department + getClassById(class.classId).number}}
+              <!-- {{getClassById(class.classId).department + getClassById(class.classId).number}} -->
+              {{class.department + class.number}}
               <i ng-click="removeClass(class, semesters[0].classes)" class="fa fa-times pull-right" aria-hidden="true"></i>
             </div>
           </div>

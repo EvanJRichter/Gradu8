@@ -249,10 +249,11 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
         return;
       }
     }
-    var elem = {};
-    elem["classId"] = $item._id;
-    elem["labelId"] = "58433382e7f552075318219f";
-    $scope.semesters[0].classes.push(elem);
+    // var elem = {};
+    // elem["classId"] = $item._id;
+    // elem["labelId"] = "58433382e7f552075318219f";
+    // $scope.semesters[0].classes.push(elem);
+    $scope.semesters[0].classes.push($item);
     $scope.classSelected = "";
     console.log($scope.semesters);
   };
@@ -273,8 +274,8 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
       console.log($scope.user);
       $scope.classesFromUser = $scope.user.classes;
       $scope.numSemesters =  $scope.user.totalSemesters;
-      $scope.currentSemester =  $scope.user.currSemester;
-      $scope.semesters = updateSemesters($scope.user.classes);
+      // $scope.currentSemester =  $scope.user.currSemester;
+      $scope.semesters = createSemesters($scope.user.classes, $scope.user.currSemester);
       updateClasses();
       updateLabels();
       $scope.loading = false; //todo not actually done loading until classes and labels are received
@@ -290,6 +291,7 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
     });
     return ret;
   };
+
   $scope.getClassById = function(classId){
     var ret = null;
     $scope.classesData.forEach(function(_class) {
@@ -300,7 +302,7 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
     return ret;
   };
 
-  var updateSemesters = function(classes){
+  var createSemesters = function(classes, currSemester){
     var semesters = [];
     var semesters_len = $scope.numSemesters + 1;
     for (var i = 0 ; i < semesters_len ; i++) {
@@ -313,8 +315,11 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
         semester["title"] = "3rd semester";
       else
         semester["title"] = i + "th semester";
-
       semester["classes"] = [];
+      semester["current"] = false;
+      if (i == currSemester)
+        semester["current"] = true;
+
       semesters.push(semester);
     }
     for (var i = 0 ; i < classes.length ; i++) {
@@ -346,7 +351,6 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
   };
 
   $scope.updateUserCalendar = function(){
-    //parse classes into usable format
     classes = [];
     console.log("updating user calendar", $scope.semesters);
 
@@ -357,8 +361,6 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
           "labelId" : $scope.semesters[s].classes[i].labelId,
           "semester" : s
         }
-        console.log(class_item);
-
         classes.push(class_item);
       }
     }

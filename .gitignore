@@ -3,8 +3,6 @@
 client/.sass-cache/
 client/node_modules/
 client/npm-debug.log
-client/public/css/
-client/public/js/
 
 server/node_modules
 server/config/secrets.js

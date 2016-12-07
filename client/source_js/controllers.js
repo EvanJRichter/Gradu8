@@ -99,7 +99,7 @@ gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 
       console.log("Created user profile", data.data);
       $location.path( "/add_classes" );
     });
-  };  
+  };
 }]);
 
 gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$window', 'Users', 'srvAuth', 'Classes', 'Labels', function($scope, $location, $window, Users, srvAuth, Classes, Labels) {
@@ -197,44 +197,60 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
 
 }]);
 
-gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth', 'Users', 'Classes', 'Labels', function($scope, srvAuth, Users, Classes, Labels) {
+gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', 'Users', 'Classes', 'Labels', function($scope, $q, srvAuth, Users, Classes, Labels) {
 
-  //dummy data
-  $scope.classesData = [
-    {"_id" : 1, "department" : "CS" , "number" : 125 , "title" : "Intro to Computer Science" },
-    {"_id" : 2, "department" : "CE" , "number" : 101 , "title" : "Intro to Computer Engineering" },
-    {"_id" : 3, "department" : "CS" , "number" : 225 , "title" : "Data Structures" },
-    {"_id" : 4, "department" : "TGMT" , "number" : 460 , "title" : "Shit show"}
-  ];
+  // //dummy data
+  // $scope.classesData = [
+  //   {"_id" : 1, "department" : "CS" , "number" : 125 , "title" : "Intro to Computer Science" },
+  //   {"_id" : 2, "department" : "CE" , "number" : 101 , "title" : "Intro to Computer Engineering" },
+  //   {"_id" : 3, "department" : "CS" , "number" : 225 , "title" : "Data Structures" },
+  //   {"_id" : 4, "department" : "TGMT" , "number" : 460 , "title" : "Shit show"}
+  // ];
+  //
+  // $scope.labelsData = [
+  //   {"_id" : 1, "name" : "Major" , "color" : "#f00" },
+  //   {"_id" : 2, "name" : "Minor" , "color" : "#0f0" },
+  //   {"_id" : 3, "name" : "Elective" , "color" : "#00f" }
+  // ];
+  //
+  // $scope.classesFromUser = [[1, 1, 0], [1, 2, 0], [2, 1, 0], [1, 1, 0], [1, 1, 0], [2, 2, 1], [2, 2, 2], [2, 2, 3], [3, 3, 2], [3, 3, 3],[2, 1, 7], [2, 2, 8]];
+  // $scope.numsemesters = 8;
+  // $scope.currentSemester = 1;
+  // $scope.semesters = [];
 
-  $scope.labelsData = [
-    {"_id" : 1, "name" : "Major" , "color" : "#f00" },
-    {"_id" : 2, "name" : "Minor" , "color" : "#0f0" },
-    {"_id" : 3, "name" : "Elective" , "color" : "#00f" }
-  ];
+  // setTimeout(function(){
+  //   //----- Real Data ----- //
+  //   //get users to get classes, current semester, total semesters
+  //   Users.getUser(srvAuth.getUserMongoId()).success(function(response){
+  //     console.log("Initial get user", response);
+  //     $scope.classesFromUser = response.data.classes[0];
+  //     $scope.numsemesters =  response.data.totalSemesters;
+  //     $scope.currentSemester =  response.data.currSemester;
+  //     updateSemesters();
+  //     //get classes to match class ids
+  //     updateClasses();
+  //     //get labels to match label ids
+  //     updateLabels();
+  //   });
+  // }, 2000);
 
-  $scope.classesFromUser = [[1, 1, 0], [1, 2, 0], [2, 1, 0], [1, 1, 0], [1, 1, 0], [2, 2, 1], [2, 2, 2], [2, 2, 3], [3, 3, 2], [3, 3, 3],[2, 1, 7], [2, 2, 8]];
-  $scope.numsemesters = 8;
-  $scope.currentSemester = 1;
-  $scope.semesters = [];
-
+  $scope.loading = true;
   setTimeout(function(){
-    //----- Real Data ----- //
-    //get users to get classes, current semester, total semesters
-    Users.getUser(srvAuth.getUserMongoId()).success(function(response){
-      console.log("Initial get user", response);
-      $scope.classesFromUser = response.data.classes[0];
-      $scope.numsemesters =  response.data.totalSemesters;
-      $scope.currentSemester =  response.data.currSemester;
-      updateSemesters();
-      //get classes to match class ids
-      updateClasses();
-      //get labels to match label ids
-      updateLabels();
-    });
-  }, 500);
+    $q.all([
+      Labels.getPublicLabels(),
+      Users.getUser(srvAuth.getUserMongoId())
+    ]).then(function(data) {
+      $scope.labelsData = data[0].data.data;
+      $scope.user = data[1].data.data;
+      console.log("Initial get user", data[1].data);
 
-  
+      $scope.classesFromUser = user.classes[0];
+      $scope.numSemesters =  user.totalSemesters;
+      $scope.currentSemester =  user.currSemester;
+      $scope.semesters = updateSemesters(user.classes[0]);
+      $scope.loading = false;
+    });
+  }, 1000);
 
   $scope.getLabelById = function(labelId){
     var ret = null;
@@ -255,19 +271,21 @@ gradu8Controllers.controller('CalendarController', ['$scope', 'srvAuth', 'Users'
     return ret;
   };
 
-  var updateSemesters = function(){
-    $scope.semesters = [];
-    for (var i = 0; i <= $scope.numsemesters; i++) {
-      var sem = {};
-      sem.classes = [];
-      for (var c = 0; c < $scope.classesFromUser.length; c++){
-        if ($scope.classesFromUser[c][2] == i){
-          sem.classes.push($scope.classesFromUser[c]);
-        }
-      }
-      $scope.semesters.push(sem); ///working on getting classes into calendar view
+  var updateSemesters = function(classes){
+    var semesters = [];
+    var semesters_len = $scope.numSemesters + 1;
+    for (var i = 0 ; i < semesters_len ; i++) {
+      semesters.push([]);
     }
-    console.log("updated semesters", $scope.semesters);
+    for (var i = 0 ; i < classes.length ; i++) {
+      var curr_semester = classes[i].semester;
+      var _class = {};
+      _class["classId"] = classes[i].classId;
+      _class["labelId"] = classes[i].labelId;
+      semesters[curr_semester].push(_class);
+    }
+    console.log("updated semesters", semesters);
+    return semesters;
   };
 
   var updateClasses = function(){

@@ -1,26 +1,5 @@
 var gradu8Services = angular.module('gradu8Services', []);
 
-gradu8Services.factory('CommonData', function(){
-    var data = "";
-    return{
-        getData : function(){
-            return data;
-        },
-        setData : function(newData){
-            data = newData;
-        }
-    }
-});
-
-gradu8Services.factory('Llamas', function($http, $window) {
-    return {
-        get : function() {
-            var baseUrl = $window.sessionStorage.baseurl;
-            return $http.get(baseUrl+'/api/llamas');
-        }
-    }
-});
-
 gradu8Services.factory('srvAuth', function($http, $window, $rootScope) {
     var user = {
       mongoId: 0,
@@ -109,7 +88,7 @@ gradu8Services.factory('srvAuth', function($http, $window, $rootScope) {
 });
 
 gradu8Services.factory('Users', function($http, $window) {
-  var baseUrl = "http://localhost:3001"
+  var baseUrl = "http://45.55.219.233:3001"
   var getUserFBHandler = function(fbId) {
     var whereUrl = 'where={"facebookId":"'+ fbId +'"}';
     return $http.get(baseUrl + '/api/users/?' + whereUrl);
@@ -194,7 +173,7 @@ gradu8Services.factory('Users', function($http, $window) {
 
 
 gradu8Services.factory('Classes', function($http, $window) {
-  var baseUrl = "http://localhost:3001";
+  var baseUrl = "http://45.55.219.233:3001";
   var getDepartmentsHandler = function(){
     var distinctUrl = 'distinct="department"';
       return $http.get(baseUrl + '/api/classes/?' + distinctUrl);
@@ -236,7 +215,7 @@ gradu8Services.factory('Classes', function($http, $window) {
 
 
 gradu8Services.factory('Labels', function($http, $window) {
-  var baseUrl = "http://localhost:3001"
+  var baseUrl = "http://45.55.219.233:3001"
   var getLabelHandler = function(labelId){
       return $http.get(baseUrl + '/api/labels/' + labelId);
   };
@@ -278,7 +257,7 @@ gradu8Services.factory('Labels', function($http, $window) {
 
 
 gradu8Services.factory('Majors', function($http, $window) {
-  var baseUrl = "http://localhost:3001"
+  var baseUrl = "http://45.55.219.233:3001"
   var getAllMajorsHandler = function(majorId){
       return $http.get(baseUrl + '/api/majors');
   };
@@ -293,7 +272,7 @@ gradu8Services.factory('Majors', function($http, $window) {
 
 
 gradu8Services.factory('Minors', function($http, $window) {
-  var baseUrl = "http://localhost:3001"
+  var baseUrl = "http://45.55.219.233:3001"
   var getAllMinorsHandler = function(majorId){
       return $http.get(baseUrl + '/api/minors');
   };
@@ -308,7 +287,7 @@ gradu8Services.factory('Minors', function($http, $window) {
 
 
 gradu8Services.factory('Universities', function($http, $window) {
-  var baseUrl = "http://localhost:3001"
+  var baseUrl = "http://45.55.219.233:3001"
   var getAllSchoolsHandler = function(majorId){
       return $http.get(baseUrl + '/api/schools');
   };

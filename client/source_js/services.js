@@ -113,9 +113,10 @@ gradu8Services.factory('Users', function($http, $window) {
       var userObj = data.data;
       console.log("addUserClassesHandler, passed first get. User:", data);
       if (userObj.classes)
-        userObj.classes.push(classes);
+        userObj.classes = userObj.classes.concat(classes);
       else
         userObj.classes = classes;
+      console.log("this is the user that will be saved", userObj);
       return $http.put(baseUrl + '/api/users/' + userObj._id,  userObj);
     });
     return promise;

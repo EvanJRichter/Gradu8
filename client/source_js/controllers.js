@@ -201,7 +201,7 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
       }
     }
     console.log("this is the array created", userClasses[0]);
-    return userClasses[0];
+    return userClasses;
   }
 
   function findUnassignedLabel(label) {

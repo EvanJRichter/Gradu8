@@ -19,6 +19,9 @@ body {
 .add-classes {
   height: 40vh;
 }
+#calendar .add-classes {
+  height: auto !important;
+}
 // .unassigned-classes {
 //   height: 30vh;
 // }
@@ -79,27 +82,58 @@ input.form-control{
 html, body{
     height: 100%;
 }
+.loading {
+  margin-top: 10%;
+}
+#helper-bar {
+  margin-top: 50px
+}
+#legend div {
+  padding: 10px 0px;
+}
 #calendar {
+  padding: 0 100px;
   width:100%;
   height:80vh; /*change this at some point to be more bootstrappy*/
+}
+.center-block {
+  margin-left: auto !important;
+  margin-right:auto !important;
 }
 
 #calendar .class-container{
   padding: 8px 10px;
 }
 
+#add-class {
+  margin: 50px 20px 0 0;
+}
+
 #calendar #assigned{
   display: table;
   table-layout: fixed;
   width:100%;
-  height: 70%;
+  // height: 70%;
+  min-height: 500px;
 }
 #calendar #assigned div {
   display: table-cell;
 }
-
-#calendar #unassigned{
-  height: 30%;
+#calendar #titles{
+  display: table;
+  table-layout: fixed;
+  width:100%;
+  border: 0px !important;
+}
+#calendar #titles div {
+  display: table-cell;
+}
+.title-container {
+  background-color: #fff;
+  width: 100%;
+  min-height: 100px;
+  padding: 8px 23px;
+  font-weight: bold;
 }
 
 #calendar .class-container .class-box {
@@ -107,6 +141,40 @@ html, body{
   margin-bottom: 4px;
   margin-left: 2px;
   margin-right: 2px;
+}
+#calendar #unassigned .class-container{
+  min-height: 200px;
+}
+#calendar #unassigned {
+  margin-top: 70px;
+}
+#calendar #update-calendar {
+  margin-top: 20px;
+}
+.saved-msg {
+  background-color: #dff0d8;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 5px;
+}
+
+.class-box-title {
+  font-weight: bold;
+}
+.class-box-1 {
+  height: 50px;
+}
+.class-box-2 {
+  height: 100px;
+}
+.class-box-3 {
+  height: 150px;
+}
+.class-box-4 {
+  height: 200px;
+}
+.class-box-5 {
+  height: 250px;
 }
 
 // Spinner

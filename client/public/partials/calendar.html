@@ -1,35 +1,89 @@
-<div class="container" ng-show="loading">
-  <div ng-include="partials/spinner.html"></div>
+<div class="container loading" ng-show="loading">
+  <div class="row">
+    <div class="col-lg-6 col-lg-offset-3 text-center">
+      <div ng-include="partials/spinner.html"></div>
+    </div>
 </div>
 
+</div>
 
-<div class="container" ng-hide="loading">
-  	<div class="row">
-  		<div id="calendar">
-  			<div id="assigned">
-				<div class="class-container" ng-repeat="semester in semesters | limitTo: (1 - numSemesters)"  data-drop="true"
-            ng-model='semester' jqyoui-droppable="{multiple:true}">
-					<div class="class-box" ng-repeat="class in semester" ng-style="{'background-color':getLabelById(class.labelId).color}"
-          ng-show="class[0]" data-drag="true" data-jqyoui-options="{revert: 'invalid'}"
-          ng-model="semester" jqyoui-draggable="{index: {{$index}}, animate:true}" 
-          data-toggle="modal" data-target="#myModal" ng-click="updateActiveClass(class)">
-						{{getClassById(class.classId).title}}
-					</div>
-				</div>
-			</div>
-  			<div id="unassigned">
-				<div class="class-container"  data-drop="true" ng-model='semesters[0]' jqyoui-droppable="{multiple:true}" >
-          <div class="class-box col-md-3" ng-repeat="class in semesters[0]" ng-style="{'background-color':getLabelById(class.labelId).color}"
-          ng-show="class[0]" data-drag="true" data-jqyoui-options="{revert: 'invalid'}"
-          ng-model="semesters[0]" jqyoui-draggable="{index: {{$index}}, animate:true}" 
-          data-toggle="modal" data-target="#myModal" ng-click="updateActiveClass(class)">
-						{{getClassById(class.classId).title}}
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="btn btn-primary" ng-click="updateUserCalendar()">Save Calendar</div>
+<div id="calendar" ng-hide="loading">
+
+    <div class="row">
+      <div id="helper-bar" class="col-md-2">
+        <div class="row" id="legend">
+          <div ng-repeat="label in labels">
+            <i class="fa fa-circle" aria-hidden="true" style="color: {{label.color}}"></i>
+            {{label.name}}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-10">
+        <div class="row" id="titles">
+    			<div class="title-container" ng-repeat="semester in semesters | limitTo: (- numSemesters)">
+              {{semester.title}}
+    			</div>
+    		</div>
+    	  <div class="row" id="assigned">
+    			<div class="class-container" ng-repeat="semester in semesters | limitTo: (- numSemesters)"  data-drop="true"
+              ng-model='semester.classes' jqyoui-droppable="{multiple:true}">
+    				<div class="class-box {{'class-box-' + getClassById(class.classId).credit}}" ng-repeat="class in semester.classes" ng-style="{'background-color':getLabelById(class.labelId).color}"
+            ng-show="class[0]" data-drag="true" data-jqyoui-options="{revert: 'invalid'}"
+            ng-model="semester.classes" jqyoui-draggable="{index: {{$index}}, animate:true}"
+            data-toggle="modal" data-target="#myModal" ng-click="updateActiveClass(class)">
+    					{{getClassById(class.classId).department + getClassById(class.classId).number}}
+              	<i ng-click="removeClass(class, semester.classes)" class="fa fa-times pull-right" aria-hidden="true"></i>
+    				</div>
+    			</div>
+    		</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div  class="col-md-2">
+        <div class="row" id="add-class">
+          <label class="control-label">Add classes</label>
+          <div class="form-group add-classes">
+
+            <label class="control-label">Select department:</label>
+            <div>
+              <input type="text" class="form-control" ng-model="departmentSelected"
+              typeahead="department for department in departments | filter: $viewValue"
+              typeahead-on-select="onSelectDepartment($item, $model, $label)">
+            </div>
+            <br>
+            <label class="control-label" ng-show="viewClassSearch">Select classes:</label>
+            <div ng-show="viewClassSearch">
+              <input type="text" class="form-control" ng-model="classSelected"
+              typeahead="class.number + ' ' + class.title for class in departmentClasses | filter: $viewValue"
+              typeahead-on-select="onSelectClasses($item, $model, $label)">
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-10">
+        <div class="row" id="unassigned">
+            Your unassigned classes
+          <div class="class-container"  data-drop="true" ng-model='semesters[0].classes' jqyoui-droppable="{multiple:true}" >
+            <div class="class-box col-md-3" ng-repeat="class in semesters[0].classes" ng-style="{'background-color':getLabelById(class.labelId).color}"
+            ng-show="class[0]" data-drag="true" data-jqyoui-options="{revert: 'invalid'}"
+            ng-model="semesters[0].classes" jqyoui-draggable="{index: {{$index}}, animate:true}"
+            data-toggle="modal" data-target="#myModal" ng-click="updateActiveClass(class)">
+              {{getClassById(class.classId).department + getClassById(class.classId).number}}
+              <i ng-click="removeClass(class, semesters[0].classes)" class="fa fa-times pull-right" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" id="update-calendar">
+      <div class="saved-msg" ng-show="saved">Your classes were saved!</div>
+  	  <div class="btn btn-primary" ng-click="updateUserCalendar()">Save Calendar</div>
+
+    </div>
+
 </div>
 
 <div class="container" ng-show="loading">

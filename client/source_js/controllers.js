@@ -219,6 +219,45 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
 }]);
 
 gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', 'Users', 'Classes', 'Labels', function($scope, $q, srvAuth, Users, Classes, Labels) {
+  $scope.viewClassSearch = false;
+  $scope.saved = false;
+  Classes.getDepartments().success(function(data) {
+    $scope.departments = data.data;
+  });
+
+  $scope.onSelectDepartment = function($item, $model, $label) {
+    Classes.getDepartmentClasses($item).success(function(data) {
+      $scope.viewClassSearch = true;
+      $scope.departmentClasses = data.data;
+      console.log("classes for department", data.data);
+    });
+  };
+  $scope.onSelectClasses = function($item, $model, $label) {
+    if (!$scope.semesters || !$scope.semesters[0] || !$scope.semesters[0].classes) {
+      return;
+    }
+
+    var index = $scope.semesters[0].classes.indexOf($item);
+    if (index > -1) {
+      $scope.classSelected = "";
+      return;
+    }
+    for (i = 0; i < $scope.semesters.length; i++) {
+      index = $scope.semesters[i].classes.indexOf($item);
+      if (index > -1) {
+        $scope.classSelected = "";
+        return;
+      }
+    }
+    var elem = {};
+    elem["classId"] = $item._id;
+    elem["labelId"] = "58433382e7f552075318219f";
+    $scope.semesters[0].classes.push(elem);
+    $scope.classSelected = "";
+    console.log($scope.semesters);
+  };
+
+
   $scope.classesData = [];
   $scope.labelsData = [];
   $scope.loading = true;
@@ -229,13 +268,13 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
       Users.getUser(srvAuth.getUserMongoId())
     ]).then(function(data) {
       $scope.labelsData = data[0].data.data;
+      $scope.labels = data[0].data.data;
       $scope.user = data[1].data.data;
       console.log($scope.user);
-
-      $scope.classesFromUser = $scope.user.classes[0];
+      $scope.classesFromUser = $scope.user.classes;
       $scope.numSemesters =  $scope.user.totalSemesters;
       $scope.currentSemester =  $scope.user.currSemester;
-      $scope.semesters = updateSemesters($scope.user.classes[0]);
+      $scope.semesters = updateSemesters($scope.user.classes);
       updateClasses();
       updateLabels();
       $scope.loading = false; //todo not actually done loading until classes and labels are received
@@ -265,14 +304,25 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
     var semesters = [];
     var semesters_len = $scope.numSemesters + 1;
     for (var i = 0 ; i < semesters_len ; i++) {
-      semesters.push([]);
+      var semester = {};
+      if (i == 1)
+        semester["title"] = "1st semester";
+      else if (i == 2)
+        semester["title"] = "2nd semester";
+      else if (i == 3)
+        semester["title"] = "3rd semester";
+      else
+        semester["title"] = i + "th semester";
+
+      semester["classes"] = [];
+      semesters.push(semester);
     }
     for (var i = 0 ; i < classes.length ; i++) {
       var curr_semester = classes[i].semester;
       var _class = {};
       _class["classId"] = classes[i].classId;
       _class["labelId"] = classes[i].labelId;
-      semesters[curr_semester].push(_class);
+      semesters[curr_semester].classes.push(_class);
     }
     return semesters;
   };
@@ -301,10 +351,10 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
     console.log("updating user calendar", $scope.semesters);
 
     for (var s = 0 ; s < $scope.semesters.length; s++) {
-      for (var i = 0 ; i < $scope.semesters[s].length; i++) {
+      for (var i = 0 ; i < $scope.semesters[s].classes.length; i++) {
         class_item = {
-          "classId" : $scope.semesters[s][i].classId,
-          "labelId" : $scope.semesters[s][i].labelId,
+          "classId" : $scope.semesters[s].classes[i].classId,
+          "labelId" : $scope.semesters[s].classes[i].labelId,
           "semester" : s
         }
         console.log(class_item);
@@ -314,15 +364,22 @@ gradu8Controllers.controller('CalendarController', ['$scope', '$q', 'srvAuth', '
     }
     console.log(classes);
 
-    $scope.user.classes = [classes]; //add brackets because it gets stored as [array] in mongodb
+    $scope.user.classes = classes;
     Users.putUser($scope.user).success(function(data) {
       console.log("Updated user classes", data);
+      $scope.saved = true;
     });
   }
   $scope.updateActiveClass = function(class_item){
     $scope.activeClass = $scope.getClassById(class_item.classId);
-  }
+  };
 
+  $scope.removeClass = function(_class, array) {
+    var index = array.indexOf(_class);
+    if (index > -1) {
+      array.splice(index, 1);
+    }
+  };
 
 }]);
 

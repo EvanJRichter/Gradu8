@@ -104,7 +104,6 @@ gradu8Controllers.controller('CreateProfileController', ['$scope', '$location', 
 
 gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$window', 'Users', 'srvAuth', 'Classes', 'Labels', function($scope, $location, $window, Users, srvAuth, Classes, Labels) {
   $scope.viewClassSearch = false;
-
   Classes.getDepartments().success(function(data) {
     $scope.departments = data.data;
   });
@@ -116,7 +115,6 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
       console.log("classes for department", data.data);
     });
   };
-
   $scope.onSelectClasses = function($item, $model, $label) {
     var index = $scope.unassignedLabel.classes.indexOf($item);
     if (index > -1) {
@@ -134,10 +132,6 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
     $scope.classSelected = "";
   };
 
-  Users.getUser(srvAuth.getUserMongoId()).success(function(response){
-    var user = response.data;
-  });
-
   Labels.getPublicLabels().success(function(data) {
     $scope.labels = data.data;
     for (i = 0; i < $scope.labels.length; i++) {
@@ -152,19 +146,6 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
     }
 
   });
-
-  $scope.classFilter = function(_class) {
-      var regex = new RegExp($scope.classSelected, 'i');
-      return regex.test(_class.title) || regex.test(_class.department + _class.number) || regex.test(_class.department + " " + _class.number); // test on both field
-  };
-
-  $scope.addClass = function($item, $model, $label) {
-    var index = $scope.unassignedLabel.classes.indexOf($item);
-    if (index < 0) {
-      $scope.unassignedLabel.classes.push($item);
-    }
-    $scope.classSelected = "";
-  };
 
   $scope.removeClass = function(_class, array) {
     var index = array.indexOf(_class);

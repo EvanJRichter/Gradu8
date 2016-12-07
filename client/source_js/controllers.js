@@ -159,7 +159,7 @@ gradu8Controllers.controller('AddClassesController', ['$scope', '$location', '$w
   var addToLabels = function(class_item){
     Classes.getClass(class_item.classId).success(function(response){
       for (l = 0; l < $scope.labels.length; l++){
-        if ($scope.labels[l]._id == class_item.labelId){
+        if ($scope.labels[l]._id === class_item.labelId){ //class loading problem is to do with putting it in the correct label, probably around here
           console.log("adding", response.data, "to ", $scope.labels[c]["classes"]);
           $scope.labels[c]["classes"].push(response.data);
         }
